@@ -140,7 +140,7 @@ export default function Sign() {
               }`}>
                 {verificationResult
                   ? 'Signature verification successful!'
-                  : 'Signature verification failed!'
+                  : 'Signature verification failed!'}
               </div>
             )}
           </div>

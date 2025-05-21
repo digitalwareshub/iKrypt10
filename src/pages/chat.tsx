@@ -88,4 +88,75 @@ export default function Chat() {
     return (
       <div className="max-w-md mx-auto mt-8">
         <h1 className="text-2xl font-bold mb-4">Join Encrypted Chat</h1>
-        <div className="space-
+        <div className="space-y-4">
+          <input
+            type="text"
+            value={roomId}
+            onChange={(e) => setRoomId(e.target.value)}
+            placeholder="Enter Room ID"
+            className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:text-white"
+          />
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter Username"
+            className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:text-white"
+          />
+          <button
+            onClick={joinRoom}
+            className="w-full bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700"
+          >
+            Join Room
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Encrypted Chat Room: {roomId}</h1>
+      
+      <div className="h-96 overflow-y-auto border rounded-lg p-4 mb-4 dark:bg-gray-800">
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            className={`mb-2 ${
+              message.sender === username ? 'text-right' : 'text-left'
+            }`}
+          >
+            <div
+              className={`inline-block p-2 rounded-lg ${
+                message.sender === username
+                  ? 'bg-primary-600 text-white'
+                  : 'bg-gray-100 dark:bg-gray-700'
+              }`}
+            >
+              <p className="text-sm font-semibold">{message.sender}</p>
+              <p>{message.content}</p>
+            </div>
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
+
+      <div className="flex space-x-2">
+        <input
+          type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+          placeholder="Type a message..."
+          className="flex-1 p-2 border rounded-lg dark:bg-gray-800 dark:text-white"
+        />
+        <button
+          onClick={sendMessage}
+          className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700"
+        >
+          Send
+        </button>
+      </div>
+    </div>
+  );
+}
