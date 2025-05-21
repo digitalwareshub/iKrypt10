@@ -211,6 +211,26 @@ export default function Home() {
         </svg>
       ),
       path: "/secure-notes"
+    },
+    {
+      title: "Secure Notes",
+      description: "Encrypted notepad for sensitive information with client-side encryption and auto-clearing",
+      icon: (
+        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      ),
+      path: "/secure-notes"
+    },
+    {
+      title: "Encrypted Chat",
+      description: "Secure real-time messaging with end-to-end encryption and ephemeral messages",
+      icon: (
+        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+      ),
+      path: "/chat"
     }
   ];
 
@@ -381,7 +401,7 @@ export default function Home() {
               Available Now
             </div>
             <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
-              12 Privacy Tools Ready To Use
+              14 Privacy Tools Ready To Use
             </h2>
             <p className="mt-4 text-xl text-gray-300 max-w-2xl mx-auto">
               Start protecting your data today with our browser-based encryption toolkit
