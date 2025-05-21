@@ -8,22 +8,6 @@ import EncryptionAnimation from '../components/EncryptionAnimation';
 import NotifyForm from '../components/NotifyForm';
 import '../styles/landing.css';
 
-// Mock component for animation effect - we'll implement this properly later
-const EncryptionAnimation = () => {
-  return (
-    <div className="h-64 bg-gray-800/50 rounded-lg flex items-center justify-center relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/10 to-purple-600/10 animate-pulse"></div>
-      <div className="relative z-10 text-center">
-        <div className="inline-block rounded-full bg-indigo-500/20 p-3 mb-4">
-          <LockClosedIcon className="h-8 w-8 text-indigo-400" />
-        </div>
-        <div className="text-indigo-300 text-xl font-semibold">End-to-End Encryption</div>
-        <div className="mt-3 text-gray-400">Your data never leaves your device unencrypted</div>
-      </div>
-    </div>
-  );
-};
-
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
 
