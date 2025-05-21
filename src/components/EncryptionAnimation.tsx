@@ -116,7 +116,7 @@ const EncryptionAnimation: React.FC = () => {
       
       // Draw connections between blocks
       ctx.lineWidth = 2;
-      blocks.forEach((block, index) => {
+      blocks.forEach((block) => {  // Removed unused 'index' parameter
         block.connections.forEach(targetIndex => {
           const target = blocks[targetIndex];
           ctx.beginPath();
