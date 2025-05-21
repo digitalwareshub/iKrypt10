@@ -10,8 +10,8 @@ import {
   query, 
   orderBy, 
   limit, 
-  getDocs,
-  doc
+  getDocs
+  // Removed 'doc' import as it's not being used
 } from 'firebase/firestore';
 import { CryptoUtils } from '../lib/encryption';
 import { 

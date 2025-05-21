@@ -3,7 +3,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import QRCode from 'qrcode.react';
-import { CryptoUtils } from '../lib/encryption';
+// Removed CryptoUtils import as it's not being used directly
 import { 
   QrCodeIcon, 
   LockClosedIcon, 
@@ -45,7 +45,7 @@ const QRGenerator: React.FC = () => {
   // QR code appearance states
   const [qrSize, setQrSize] = useState(256);
   const [qrColor, setQrColor] = useState('#4F46E5');
-  const [qrBgColor, setQrBgColor] = useState('#FFFFFF');
+  const [qrBgColor, _setQrBgColor] = useState('#FFFFFF'); // Using underscore prefix to indicate intentionally unused
   const [qrIncludeMargin, setQrIncludeMargin] = useState(true);
   const [qrLevel, setQrLevel] = useState<'L' | 'M' | 'Q' | 'H'>('M');
   const [qrLogo, setQrLogo] = useState(true);
@@ -234,7 +234,8 @@ const QRGenerator: React.FC = () => {
       canvas.width = video.videoWidth;
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
       
-      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+      // Removed unused imageData variable to fix error
+      // const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
       
       // Here you would typically use a QR code detector library
       // For this example, we'll simulate finding a QR code after a few seconds
