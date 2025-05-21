@@ -56,38 +56,112 @@ export default function Home() {
   ];
 
   // Tool cards for the featured tools section
-  const featuredTools = [
-    {
-      title: "One-Time Secret",
-      description: "Share self-destructing messages that are automatically deleted after viewing",
-      icon: (
-        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-        </svg>
-      ),
-      path: "/one-time"
-    },
-    {
-      title: "File Encryption",
-      description: "Encrypt files with AES-256 before sharing or storing them securely",
-      icon: (
-        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-        </svg>
-      ),
-      path: "/file-encrypt"
-    },
-    {
-      title: "Digital Signature",
-      description: "Cryptographically sign messages to verify authenticity and integrity",
-      icon: (
-        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-        </svg>
-      ),
-      path: "/sign"
-    }
-  ];
+  // Update in src/pages/index.tsx
+// Replace the featuredTools array and the Featured Tools Section
+
+// Tool cards for all 10 tools in the featured section
+const featuredTools = [
+  {
+    title: "One-Time Secret",
+    description: "Share self-destructing messages that are automatically deleted after viewing",
+    icon: (
+      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+    ),
+    path: "/one-time"
+  },
+  {
+    title: "Digital Signature",
+    description: "Cryptographically sign messages to verify authenticity and integrity",
+    icon: (
+      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+      </svg>
+    ),
+    path: "/sign"
+  },
+  {
+    title: "File Encryption",
+    description: "Encrypt files with AES-256 before sharing or storing them securely",
+    icon: (
+      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+      </svg>
+    ),
+    path: "/file-encrypt"
+  },
+  {
+    title: "Password Key",
+    description: "Generate strong cryptographic keys from passwords using PBKDF2",
+    icon: (
+      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+      </svg>
+    ),
+    path: "/password-key"
+  },
+  {
+    title: "Message Authentication",
+    description: "Create and verify message authentication codes (MACs) to ensure data integrity",
+    icon: (
+      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+    ),
+    path: "/mac"
+  },
+  {
+    title: "Hash Generator",
+    description: "Generate cryptographic hashes of any text or data for verification and integrity",
+    icon: (
+      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+      </svg>
+    ),
+    path: "/hash"
+  },
+  {
+    title: "Random Generator",
+    description: "Generate cryptographically secure random values for keys, passwords, and more",
+    icon: (
+      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+    ),
+    path: "/random"
+  },
+  {
+    title: "Key Splitter",
+    description: "Split secrets into multiple shares that require a threshold to reconstruct",
+    icon: (
+      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+      </svg>
+    ),
+    path: "/split-key"
+  },
+  {
+    title: "Text Encryption",
+    description: "Encrypt and decrypt text messages with password-based encryption",
+    icon: (
+      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+      </svg>
+    ),
+    path: "/text-encrypt"
+  },
+  {
+    title: "Key Management",
+    description: "Generate, store, and manage cryptographic keys for various encryption algorithms",
+    icon: (
+      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+      </svg>
+    ),
+    path: "/keys"
+  }
+];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900 text-white">
@@ -238,47 +312,38 @@ export default function Home() {
       </section>
 
       {/* Featured Tools Section */}
-      <section id="tools" className="py-20 relative">
-        <div className="absolute inset-0 bg-hex-pattern bg-repeat opacity-5"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center">
-            <div className="inline-block px-3 py-1 text-xs font-semibold bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mb-3">
-              Available Now
-            </div>
-            <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
-              10 Privacy Tools Ready To Use
-            </h2>
-            <p className="mt-4 text-xl text-gray-300 max-w-2xl mx-auto">
-              Start protecting your data today with our browser-based encryption toolkit
-            </p>
-          </div>
+<section id="tools" className="py-20 relative">
+  <div className="absolute inset-0 bg-hex-pattern bg-repeat opacity-5"></div>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="text-center">
+      <div className="inline-block px-3 py-1 text-xs font-semibold bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mb-3">
+        Available Now
+      </div>
+      <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
+        10 Privacy Tools Ready To Use
+      </h2>
+      <p className="mt-4 text-xl text-gray-300 max-w-2xl mx-auto">
+        Start protecting your data today with our browser-based encryption toolkit
+      </p>
+    </div>
 
-          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {featuredTools.map((tool, index) => (
-              <Link 
-                key={index}
-                to={tool.path}
-                className="backdrop-blur-card p-6 group card-hover"
-              >
-                <div className="feature-icon bg-indigo-500/20 group-hover:bg-indigo-500/30 transition-colors">
-                  {tool.icon}
-                </div>
-                <h3 className="text-lg font-semibold text-white">{tool.title}</h3>
-                <p className="mt-2 text-gray-300">{tool.description}</p>
-              </Link>
-            ))}
+    <div className="mt-16 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
+      {featuredTools.map((tool, index) => (
+        <Link 
+          key={index}
+          to={tool.path}
+          className="backdrop-blur-card p-6 group card-hover"
+        >
+          <div className="feature-icon bg-indigo-500/20 group-hover:bg-indigo-500/30 transition-colors">
+            {tool.icon}
           </div>
-
-          <div className="mt-12 text-center">
-            <Link to="/tools" className="inline-flex items-center px-8 py-3 rounded-md btn-gradient">
-              View All Tools
-              <svg className="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </section>
+          <h3 className="text-lg font-semibold text-white">{tool.title}</h3>
+          <p className="mt-2 text-gray-300 text-sm">{tool.description}</p>
+        </Link>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* How It Works Section */}
       <section id="how-it-works" className="py-20 relative bg-gray-900">

@@ -1,5 +1,5 @@
 // src/App.tsx
-// Purpose: Main application routing configuration with the new tools page
+// Purpose: Main application routing configuration with corrected background
 
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
@@ -19,7 +19,7 @@ import Keys from './pages/keys';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900">
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
