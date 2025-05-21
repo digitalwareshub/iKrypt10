@@ -113,14 +113,6 @@ const tools = [
     icon: <QrCodeIcon className="h-8 w-8" />,
     color: 'bg-purple-500',
     path: '/qr'
-  },
-  {
-    id: 'chat',
-    name: 'Encrypted Chat',
-    description: 'Secure real-time messaging with end-to-end encryption and ephemeral messages. Create private chat rooms and communicate with zero server knowledge.',
-    icon: <ChatBubbleLeftRightIcon className="h-8 w-8" />,
-    color: 'bg-blue-500',
-    path: '/chat'
   }
 ];
 
