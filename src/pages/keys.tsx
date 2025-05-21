@@ -1,7 +1,7 @@
 // src/pages/keys.tsx
 // Purpose: Key management and generation tool
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface KeyPair {
   id: string;
@@ -17,7 +17,6 @@ export default function Keys() {
   const [keyName, setKeyName] = useState('');
   const [algorithm, setAlgorithm] = useState('ECDSA');
   const [curve, setCurve] = useState('P-256');
-  const [exportFormat, setExportFormat] = useState<'jwk' | 'pem'>('jwk');
   const [exportedPublicKey, setExportedPublicKey] = useState('');
   const [exportedPrivateKey, setExportedPrivateKey] = useState('');
 

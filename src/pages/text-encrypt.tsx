@@ -2,7 +2,6 @@
 // Purpose: Simple text encryption tool
 
 import { useState } from 'react';
-import { CryptoUtils } from '../lib/encryption';
 
 export default function TextEncrypt() {
   const [text, setText] = useState('');

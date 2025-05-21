@@ -1,6 +1,8 @@
-import { Fragment } from 'react';
+// src/components/Navbar.tsx
+// Purpose: Navigation component for the application
+
+import { Disclosure } from '@headlessui/react';
 import { Link } from 'react-router-dom';
-import { Disclosure, Menu } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const navigation = [

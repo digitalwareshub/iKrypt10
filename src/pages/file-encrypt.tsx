@@ -1,9 +1,11 @@
+// src/pages/file-encrypt.tsx
+// Purpose: File encryption and decryption tool
+
 import { useState, useRef } from 'react';
 import { CryptoUtils } from '../lib/encryption';
 
 export default function FileEncrypt() {
   const [file, setFile] = useState<File | null>(null);
-  const [encryptedFile, setEncryptedFile] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -19,10 +21,10 @@ export default function FileEncrypt() {
       const key = await CryptoUtils.generateKey();
       
       // Encrypt the file
-      const { encryptedFile: encrypted, iv } = await CryptoUtils.encryptFile(file, key);
+      const { encryptedFile } = await CryptoUtils.encryptFile(file, key);
       
       // Create download URL
-      const url = URL.createObjectURL(encrypted);
+      const url = URL.createObjectURL(encryptedFile);
       
       // Create download link
       const a = document.createElement('a');
@@ -32,8 +34,6 @@ export default function FileEncrypt() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-
-      setEncryptedFile(encrypted);
     } catch (error) {
       console.error('File encryption failed:', error);
       setError('Failed to encrypt file. Please try again.');
