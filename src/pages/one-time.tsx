@@ -16,29 +16,34 @@ export default function OneTime() {
       setLoading(true);
       setError(null);
 
+      // Generate encryption key
       const key = await CryptoUtils.generateKey();
       const exportedKey = await CryptoUtils.exportKey(key);
+      
+      // Encrypt the message
       const encryptedText = await CryptoUtils.encryptText(text, key);
       
+      // Store in Firebase
       const docRef = await addDoc(collection(db, 'one-time-messages'), {
         content: encryptedText,
         createdAt: new Date().toISOString(),
-        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
       });
 
+      // Create shareable link
       const link = `${window.location.origin}/one-time/${docRef.id}#key=${exportedKey}`;
       setShareableLink(link);
       setText('');
     } catch (error) {
-      setError('Failed to create message. Please try again.');
       console.error('Encryption failed:', error);
+      setError('Failed to create message. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-4">Create One-Time Message</h1>
       
       {error && (
@@ -52,20 +57,20 @@ export default function OneTime() {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Enter your secret message..."
-          className="w-full h-32 p-4 border rounded-lg dark:bg-gray-800 dark:text-white"
+          className="w-full h-32 p-4 border rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
 
         <button
           onClick={createMessage}
           disabled={!text || loading}
-          className="w-full bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 disabled:opacity-50"
+          className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Creating...' : 'Create One-Time Message'}
         </button>
 
         {shareableLink && (
-          <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+          <div className="p-4 bg-gray-100 rounded-lg">
+            <p className="text-sm text-gray-600 mb-2">
               Share this link with the recipient. The message will be deleted after it's read:
             </p>
             <div className="flex">
@@ -73,11 +78,11 @@ export default function OneTime() {
                 type="text"
                 readOnly
                 value={shareableLink}
-                className="flex-1 p-2 border rounded-l-lg dark:bg-gray-700 dark:text-white"
+                className="flex-1 p-2 border rounded-l-lg bg-white"
               />
               <button
                 onClick={() => navigator.clipboard.writeText(shareableLink)}
-                className="bg-primary-600 text-white px-4 rounded-r-lg hover:bg-primary-700"
+                className="bg-blue-600 text-white px-4 rounded-r-lg hover:bg-blue-700"
               >
                 Copy
               </button>
