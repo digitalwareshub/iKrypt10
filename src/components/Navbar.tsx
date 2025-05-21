@@ -1,120 +1,115 @@
-// src/components/FloatingMenu.tsx
-import { useState } from 'react';
+// src/components/Navbar.tsx
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faBars, 
-  faTimes, 
-  faHome, 
-  faShieldAlt, 
-  faCubes, 
-  faTools, 
-  faQuestionCircle, 
-  faSignInAlt 
-} from '@fortawesome/free-solid-svg-icons';
+import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import Logo from './Logo';
 
-const FloatingMenu: React.FC = () => {
+const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
   return (
-    <>
-      {/* Top header for branding */}
-      <header className="fixed top-0 left-0 right-0 bg-gray-900/90 backdrop-blur-lg z-40 px-4 py-3 flex justify-between items-center">
-        <Logo className="h-8 w-auto" />
-        <div className="flex items-center space-x-4">
-          <Link to="/login" className="text-gray-300 hover:text-white transition-colors">
-            Login
-          </Link>
-          <Link to="/signup">
-            <div className="px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors">
-              Sign Up
+    <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
+      scrolled ? 'bg-gray-900/95 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+    }`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          {/* Logo and desktop navigation */}
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center">
+              <Logo className="h-8 w-auto" />
+            </Link>
+            
+            {/* Desktop navigation */}
+            <div className="hidden md:ml-10 md:flex md:space-x-8">
+              <a href="#features" className="text-gray-300 hover:text-white transition-colors px-3 py-2">
+                Features
+              </a>
+              <a href="#products" className="text-gray-300 hover:text-white transition-colors px-3 py-2">
+                Products
+              </a>
+              <a href="#tools" className="text-gray-300 hover:text-white transition-colors px-3 py-2">
+                Tools
+              </a>
+              <a href="#how-it-works" className="text-gray-300 hover:text-white transition-colors px-3 py-2">
+                How It Works
+              </a>
+              <a href="#faq" className="text-gray-300 hover:text-white transition-colors px-3 py-2">
+                FAQ
+              </a>
             </div>
-          </Link>
-        </div>
-      </header>
-      
-      {/* Floating action menu */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <div className="relative">
-          {/* Main floating button */}
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className={`h-14 w-14 rounded-full shadow-lg flex items-center justify-center transition-colors duration-300 ${
-              menuOpen 
-                ? 'bg-red-500 hover:bg-red-600' 
-                : 'bg-indigo-600 hover:bg-indigo-700'
-            }`}
-          >
-            <FontAwesomeIcon 
-              icon={menuOpen ? faTimes : faBars} 
-              className="h-6 w-6 text-white" 
-            />
-          </button>
+          </div>
           
-          {/* Menu items */}
-          {menuOpen && (
-            <div className="absolute bottom-16 right-0 mb-2 space-y-2 flex flex-col items-end">
-              <a 
-                href="#" 
-                className="flex items-center px-4 py-2 bg-gray-800 rounded-lg text-white hover:bg-gray-700 transition-colors whitespace-nowrap shadow-lg"
-              >
-                <span className="mr-2">Home</span>
-                <div className="h-8 w-8 bg-indigo-600 rounded-full flex items-center justify-center">
-                  <FontAwesomeIcon icon={faHome} className="h-4 w-4" />
-                </div>
-              </a>
-              
-              <a 
-                href="#features" 
-                className="flex items-center px-4 py-2 bg-gray-800 rounded-lg text-white hover:bg-gray-700 transition-colors whitespace-nowrap shadow-lg"
-              >
-                <span className="mr-2">Features</span>
-                <div className="h-8 w-8 bg-indigo-600 rounded-full flex items-center justify-center">
-                  <FontAwesomeIcon icon={faShieldAlt} className="h-4 w-4" />
-                </div>
-              </a>
-              
-              <a 
-                href="#products" 
-                className="flex items-center px-4 py-2 bg-gray-800 rounded-lg text-white hover:bg-gray-700 transition-colors whitespace-nowrap shadow-lg"
-              >
-                <span className="mr-2">Products</span>
-                <div className="h-8 w-8 bg-indigo-600 rounded-full flex items-center justify-center">
-                  <FontAwesomeIcon icon={faCubes} className="h-4 w-4" />
-                </div>
-              </a>
-              
-              <a 
-                href="#tools" 
-                className="flex items-center px-4 py-2 bg-gray-800 rounded-lg text-white hover:bg-gray-700 transition-colors whitespace-nowrap shadow-lg"
-              >
-                <span className="mr-2">Tools</span>
-                <div className="h-8 w-8 bg-indigo-600 rounded-full flex items-center justify-center">
-                  <FontAwesomeIcon icon={faTools} className="h-4 w-4" />
-                </div>
-              </a>
-              
-              <a 
-                href="#faq" 
-                className="flex items-center px-4 py-2 bg-gray-800 rounded-lg text-white hover:bg-gray-700 transition-colors whitespace-nowrap shadow-lg"
-              >
-                <span className="mr-2">FAQ</span>
-                <div className="h-8 w-8 bg-indigo-600 rounded-full flex items-center justify-center">
-                  <FontAwesomeIcon icon={faQuestionCircle} className="h-4 w-4" />
-                </div>
-              </a>
-            </div>
-          )}
+          {/* Sign-in and sign-up buttons for desktop */}
+          <div className="hidden md:flex md:items-center md:space-x-4">
+            <Link to="/login" className="text-gray-300 hover:text-white transition-colors px-3 py-2">
+              Log In
+            </Link>
+            <Link to="/signup" className="ml-3">
+              <div className="px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors">
+                Sign Up
+              </div>
+            </Link>
+          </div>
+          
+          {/* Mobile menu button */}
+          <div className="flex items-center md:hidden">
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none"
+            >
+              <FontAwesomeIcon icon={menuOpen ? faXmark : faBars} className="h-6 w-6" />
+            </button>
+          </div>
         </div>
       </div>
       
-      {/* Main content with appropriate padding */}
-      <div className="pt-16">
-        {/* Main content goes here */}
-      </div>
-    </>
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="md:hidden bg-gray-900/95 backdrop-blur-md">
+          <div className="pt-2 pb-3 space-y-1 px-4">
+            <a href="#features" className="block text-gray-300 hover:text-white hover:bg-gray-800 px-3 py-2 rounded-md" onClick={() => setMenuOpen(false)}>
+              Features
+            </a>
+            <a href="#products" className="block text-gray-300 hover:text-white hover:bg-gray-800 px-3 py-2 rounded-md" onClick={() => setMenuOpen(false)}>
+              Products
+            </a>
+            <a href="#tools" className="block text-gray-300 hover:text-white hover:bg-gray-800 px-3 py-2 rounded-md" onClick={() => setMenuOpen(false)}>
+              Tools
+            </a>
+            <a href="#how-it-works" className="block text-gray-300 hover:text-white hover:bg-gray-800 px-3 py-2 rounded-md" onClick={() => setMenuOpen(false)}>
+              How It Works
+            </a>
+            <a href="#faq" className="block text-gray-300 hover:text-white hover:bg-gray-800 px-3 py-2 rounded-md" onClick={() => setMenuOpen(false)}>
+              FAQ
+            </a>
+            <div className="pt-4 flex space-x-3">
+              <Link to="/login" className="w-1/2 block text-center px-3 py-2 rounded-md border border-indigo-500/30 text-gray-300 hover:bg-gray-800" onClick={() => setMenuOpen(false)}>
+                Log In
+              </Link>
+              <Link to="/signup" className="w-1/2 block text-center px-3 py-2 rounded-md bg-indigo-600 text-white" onClick={() => setMenuOpen(false)}>
+                Sign Up
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </nav>
   );
 };
 
-export default FloatingMenu;
+export default Navbar;
