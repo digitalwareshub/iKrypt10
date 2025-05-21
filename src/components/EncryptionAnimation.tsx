@@ -1,217 +1,122 @@
 // src/components/EncryptionAnimation.tsx
 
 import React, { useState, useEffect, useRef } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 const EncryptionAnimation: React.FC = () => {
-  const [stage, setStage] = useState(0);
-  const [animating, setAnimating] = useState(false);
-  const [typedMessage, setTypedMessage] = useState('');
+  const [animationStage, setAnimationStage] = useState(0);
   const [encryptedText, setEncryptedText] = useState('');
-  const [showFingerprint, setShowFingerprint] = useState(false);
+  const [isMessageSent, setIsMessageSent] = useState(false);
+  // Removed unused 'showBlockchain' variable
   const [currentBlock, setCurrentBlock] = useState(1);
-  const [blockVerified, setBlockVerified] = useState(false);
   
   const messageRef = useRef("Hey there! This is a confidential message.");
-  const encryptionTimerRef = useRef<number | null>(null);
+  // Changed the timer type to number instead of NodeJS.Timeout
+  const animationTimerRef = useRef<number | null>(null);
   
-  // Typing animation effect
-  useEffect(() => {
-    if (stage === 1 && !animating) {
-      setAnimating(true);
-      const message = messageRef.current;
-      let i = 0;
-      
-      const timer = setInterval(() => {
-        if (i <= message.length) {
-          setTypedMessage(message.substring(0, i));
-          i++;
-        } else {
-          clearInterval(timer);
-          // Move to encryption stage after typing is complete
-          setTimeout(() => {
-            setStage(2);
-            setAnimating(false);
-          }, 500);
-        }
-      }, 50);
-      
-      return () => clearInterval(timer);
-    }
-  }, [stage, animating]);
-  
-  // Encryption animation effect
-  useEffect(() => {
-    if (stage === 2 && !animating) {
-      setAnimating(true);
-      
-      // Generate encrypted text gradually
-      let encryptedLines = [
-        "MC4JNjEwNTQyMTcxNjM1Mzc5",
-        "NC41MzMRtg3M0YzNTIIODby",
-        "MC4JMjcwNA1ODJzMTA3GOGII"
-      ];
-      
-      let currentLine = 0;
-      let currentChar = 0;
-      let currentEncrypted = '';
-      
-      const encryptTimer = setInterval(() => {
-        if (currentLine < encryptedLines.length) {
-          if (currentChar < encryptedLines[currentLine].length) {
-            currentEncrypted += encryptedLines[currentLine][currentChar];
-            setEncryptedText(prevText => prevText + encryptedLines[currentLine][currentChar]);
-            currentChar++;
-          } else {
-            currentEncrypted += '\n';
-            setEncryptedText(prevText => prevText + '\n');
-            currentLine++;
-            currentChar = 0;
-          }
-        } else {
-          clearInterval(encryptTimer);
-          
-          // Move to sending stage after encryption is complete
-          setTimeout(() => {
-            setStage(3);
-            setAnimating(false);
-          }, 800);
-        }
-      }, 30);
-      
-      encryptionTimerRef.current = window.setTimeout(() => {}, 0);
-      
-      return () => {
-        clearInterval(encryptTimer);
-        if (encryptionTimerRef.current) {
-          clearTimeout(encryptionTimerRef.current);
-        }
-      };
-    }
-  }, [stage, animating]);
-  
-  // Handle progression through all animation stages
-  useEffect(() => {
-    // Start animation sequence after component mount
-    const startDelay = window.setTimeout(() => {
-      setStage(1); // Start with typing
-    }, 1000);
+  // Generate random encrypted text
+  const generateEncryptedText = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    let result = '';
     
-    // Set up timers for remaining stages after sending
-    if (stage === 3 && !animating) {
-      const fingerPrintTimer = window.setTimeout(() => {
-        setShowFingerprint(true);
-        setStage(4);
-      }, 1200);
-      
-      return () => clearTimeout(fingerPrintTimer);
+    // Create 3 lines of encrypted-looking content
+    for (let line = 0; line < 3; line++) {
+      result += 'MC4' + Array(20).fill(0).map(() => 
+        chars.charAt(Math.floor(Math.random() * chars.length))
+      ).join('') + '\n';
     }
     
-    if (stage === 4 && !animating) {
-      const blockchainTimer = window.setTimeout(() => {
-        setStage(5);
-        
-        // Show block verification after a delay
-        const verifyTimer = window.setTimeout(() => {
-          setBlockVerified(true);
-          
-          // Move to second block after first verification
-          const blockChangeTimer = window.setTimeout(() => {
-            setCurrentBlock(2);
-            setBlockVerified(false);
-            
-            // Verify second block after a delay
-            const verifyBlock2Timer = window.setTimeout(() => {
-              setBlockVerified(true);
-              
-              // Reset the entire animation after completion
-              const resetTimer = window.setTimeout(() => {
-                resetAnimation();
-              }, 3000);
-              
-              return () => {
-                clearTimeout(resetTimer);
-              };
-            }, 1000);
-            
-            return () => {
-              clearTimeout(verifyBlock2Timer); // This fixes the unused variable error
-              clearTimeout(blockChangeTimer);
-            };
-          }, 2000);
-          
-          return () => clearTimeout(verifyTimer);
-        }, 1000);
-        
-        return () => clearTimeout(blockchainTimer);
-      }, 1000);
-      
-      return () => clearTimeout(blockchainTimer);
-    }
-    
-    return () => clearTimeout(startDelay);
-  }, [stage, animating]);
-  
-  // Reset animation to start over
-  const resetAnimation = () => {
-    setStage(0);
-    setTypedMessage('');
-    setEncryptedText('');
-    setShowFingerprint(false);
-    setCurrentBlock(1);
-    setBlockVerified(false);
-    setAnimating(false);
-    
-    // Restart animation after a pause
-    const restartTimer = window.setTimeout(() => {
-      setStage(1);
-    }, 2000);
-    
-    return () => clearTimeout(restartTimer);
+    return result;
   };
   
-  // Generate a random fingerprint-like pattern
-  const generateFingerprint = (blockNum: number) => {
-    // Use consistent values for each block to avoid random changes
-    const patterns = [
-      {
-        top: 'a041 a010',
-        bottom: '1158 9951',
-        hash: '1d544ccd'
-      },
-      {
-        top: 'b142 c903',
-        bottom: '3498 d501',
-        hash: '83ef3e0f'
+  // Removed unused 'generateHash' function
+  
+  // Animation sequence
+  useEffect(() => {
+    // Clear any existing timers when the component unmounts
+    return () => {
+      if (animationTimerRef.current !== null) {
+        window.clearTimeout(animationTimerRef.current);
       }
-    ];
-    
-    return patterns[blockNum - 1];
-  };
+    };
+  }, []);
   
-  const fingerprint = generateFingerprint(currentBlock);
+  // Start the animation sequence
+  useEffect(() => {
+    const startAnimation = () => {
+      // Reset animation state
+      setAnimationStage(0);
+      setEncryptedText('');
+      setIsMessageSent(false);
+      setCurrentBlock(1);
+      
+      // Stage 1: Show message
+      animationTimerRef.current = window.setTimeout(() => {
+        setAnimationStage(1);
+        
+        // Stage 2: Show encryption
+        animationTimerRef.current = window.setTimeout(() => {
+          setEncryptedText(generateEncryptedText());
+          setAnimationStage(2);
+          
+          // Stage 3: Show sent
+          animationTimerRef.current = window.setTimeout(() => {
+            setIsMessageSent(true);
+            setAnimationStage(3);
+            
+            // Stage 4: Show blockchain verification
+            animationTimerRef.current = window.setTimeout(() => {
+              // Instead of setShowBlockchain(true), directly update the animation stage
+              setAnimationStage(4);
+              
+              // Stage 5: Show second block
+              animationTimerRef.current = window.setTimeout(() => {
+                setCurrentBlock(2);
+                setAnimationStage(5);
+                
+                // Loop back to start after a delay
+                animationTimerRef.current = window.setTimeout(() => {
+                  startAnimation();
+                }, 3000);
+              }, 1500);
+            }, 1500);
+          }, 1500);
+        }, 1500);
+      }, 1000);
+    };
+    
+    // Start the animation sequence
+    startAnimation();
+    
+    // Clean up the timeouts on unmount
+    return () => {
+      if (animationTimerRef.current !== null) {
+        window.clearTimeout(animationTimerRef.current);
+      }
+    };
+  }, []);
   
   return (
-    <div className="w-full h-full relative rounded-lg overflow-hidden bg-white text-gray-800 shadow-xl border border-indigo-500/20 min-h-[320px]">
+    <div className="w-full relative rounded-lg overflow-hidden bg-white text-gray-800 min-h-[320px] shadow-lg">
       {/* Progress dots */}
       <div className="flex justify-center mt-2 mb-4">
-        {[1, 2, 3, 4, 5].map((dot) => (
+        {[0, 1, 2, 3, 4].map((stage) => (
           <div 
-            key={dot}
+            key={stage}
             className={`h-2 w-2 rounded-full mx-1 ${
-              dot <= stage ? 'bg-indigo-600' : 'bg-indigo-200'
+              stage <= animationStage ? 'bg-indigo-600' : 'bg-indigo-200'
             }`}
           />
         ))}
       </div>
       
-      <div className="px-6 py-4 flex flex-wrap md:flex-nowrap">
-        <div className="w-full md:w-3/5 pr-4 mb-6 md:mb-0">
+      <div className="px-6 py-4 flex">
+        <div className="w-3/5 pr-4">
           {/* Message header */}
           <div className="bg-indigo-300 text-white py-2 px-4 rounded-t-lg flex items-center">
             <div className="bg-white bg-opacity-20 rounded-full h-6 w-6 flex items-center justify-center mr-2">
-              <FontAwesomeIcon icon={faLock} className="h-3 w-3" />
+              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 2C5.03 2 1 6.03 1 11c0 2.38.94 4.55 2.48 6.15l-1.2 3.16a.5.5 0 00.65.65l3.16-1.2A9.864 9.864 0 0010 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-1.87 0-3.62-.57-5.08-1.56a.5.5 0 00-.4-.05l-2.3.87.87-2.3a.5.5 0 00-.05-.4A6.962 6.962 0 014 11c0-3.86 3.14-7 7-7s7 3.14 7 7-3.14 7-7 7z" />
+              </svg>
             </div>
             <span className="font-semibold">iKrypt Message</span>
           </div>
@@ -219,101 +124,74 @@ const EncryptionAnimation: React.FC = () => {
           {/* Message content */}
           <div className="border-l border-r border-gray-200 p-4">
             <div className="text-gray-500 text-sm mb-2">New Message</div>
-            <div className="border border-gray-200 rounded p-3 min-h-[100px] font-mono">
-              {typedMessage}
-              {stage === 1 && <span className="animate-pulse">|</span>}
+            <div className="border border-gray-200 rounded p-3 min-h-[100px]">
+              {animationStage >= 1 && messageRef.current}
             </div>
           </div>
           
           {/* Encrypted data */}
           <div className="border border-gray-200 rounded-b-lg p-4 bg-gray-50">
             <div className="text-gray-500 text-sm mb-2">Encrypted Data</div>
-            <div className="font-mono text-xs text-indigo-500 bg-indigo-50 p-3 rounded border border-indigo-100 min-h-[80px] whitespace-pre-wrap">
+            <div className="font-mono text-xs text-indigo-500 bg-indigo-50 p-3 rounded border border-indigo-100">
               {encryptedText}
-              {stage === 2 && <span className="animate-pulse">_</span>}
             </div>
           </div>
           
           {/* Send button */}
           <div className="flex justify-center mt-4">
             <button 
-              className={`px-6 py-2 rounded-md text-white transition-colors ${
-                stage >= 3 ? 'bg-green-500' : 'bg-indigo-400'
+              className={`px-6 py-2 rounded-md text-white ${
+                isMessageSent ? 'bg-green-500' : 'bg-indigo-400'
               }`}
             >
-              {stage >= 3 ? 'Sent!' : 'Send'}
+              {isMessageSent ? 'Sent!' : 'Send'}
             </button>
           </div>
           
           {/* Status text */}
-          {stage >= 3 && (
+          {animationStage >= 3 && (
             <div className="text-center text-gray-500 text-sm mt-4">
               Sending to recipient...
             </div>
           )}
         </div>
         
-        <div className="w-full md:w-2/5">
-          {showFingerprint && (
+        <div className="w-2/5">
+          {animationStage >= 4 && (
             <div className="flex flex-col h-full">
               {/* Visual verification */}
               <div className="bg-indigo-600 rounded-lg p-4 mb-4 flex flex-col items-center">
                 <div className="text-xs text-indigo-200 mb-2">
-                  {fingerprint.top}
+                  {currentBlock === 1 ? 'a041 a010' : 'b142 c903'}
                 </div>
-                <div className="h-24 w-24 bg-white rounded-lg flex items-center justify-center relative overflow-hidden">
-                  <FontAwesomeIcon icon={faLock} className="h-12 w-12 text-indigo-600" />
-                  {/* Animating pattern overlay */}
-                  <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+                <div className="h-24 w-24 bg-white rounded-lg flex items-center justify-center">
+                  <svg className="h-12 w-12 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
                 </div>
                 <div className="text-xs text-indigo-200 mt-2">
-                  {fingerprint.bottom}
+                  {currentBlock === 1 ? '1158 9951' : '3498 d501'}
                 </div>
               </div>
               
               {/* Blockchain info */}
               <div className="mt-auto">
                 <div className="flex space-x-2 justify-center mb-1">
-                  <div className={`px-3 py-1 rounded-md text-xs flex items-center ${
-                    currentBlock === 1 
-                      ? 'bg-indigo-100 text-indigo-700' 
-                      : 'bg-gray-100 text-gray-500'
+                  <div className={`px-3 py-1 rounded-md text-xs ${
+                    currentBlock === 1 ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-500'
                   }`}>
                     Block #142
-                    {currentBlock === 1 && blockVerified && (
-                      <span className="ml-1 text-green-500">
-                        <FontAwesomeIcon icon={faCheck} />
-                      </span>
-                    )}
                   </div>
-                  <div className={`px-3 py-1 rounded-md text-xs flex items-center ${
-                    currentBlock === 2 
-                      ? 'bg-indigo-100 text-indigo-700' 
-                      : 'bg-gray-100 text-gray-500'
+                  <div className={`px-3 py-1 rounded-md text-xs ${
+                    currentBlock === 2 ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-500'
                   }`}>
                     Block #143
-                    {currentBlock === 2 && blockVerified && (
-                      <span className="ml-1 text-green-500">
-                        <FontAwesomeIcon icon={faCheck} />
-                      </span>
-                    )}
                   </div>
                 </div>
                 
-                <div className="text-center text-xs text-indigo-500 flex items-center justify-center">
-                  <span>Secured on Blockchain</span>
-                  {blockVerified && (
-                    <span className="ml-1 text-green-500">
-                      <FontAwesomeIcon icon={faCheck} className="h-3 w-3" />
-                    </span>
-                  )}
+                <div className="text-center text-xs text-indigo-500">
+                  Secured on Blockchain
                 </div>
-                
-                {stage >= 5 && (
-                  <div className="mt-2 text-center text-xs text-gray-500">
-                    Hash: {fingerprint.hash}
-                  </div>
-                )}
               </div>
             </div>
           )}
