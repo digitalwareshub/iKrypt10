@@ -27,6 +27,14 @@ const tools = [
     path: '/one-time'
   },
   {
+    id: 'chat',
+    name: 'Encrypted Chat',
+    description: 'Secure real-time messaging with end-to-end encryption and ephemeral messages. Create private chat rooms and communicate with zero server knowledge.',
+    icon: <ChatBubbleLeftRightIcon className="h-8 w-8" />,
+    color: 'bg-blue-500',
+    path: '/chat'
+  },
+  {
     id: 'sign',
     name: 'Digital Signature',
     description: 'Cryptographically sign messages to verify authenticity and integrity. Allows recipients to confirm a message came from you and hasn\'t been altered.',
