@@ -1,0 +1,33 @@
+interface Config {
+    firebase: {
+      apiKey: string;
+      authDomain: string;
+      projectId: string;
+      storageBucket: string;
+      messagingSenderId: string;
+      appId: string;
+      measurementId: string;
+    };
+    app: {
+      name: string;
+      version: string;
+      lastUpdated: string;
+    };
+  }
+  
+  export const config: Config = {
+    firebase: {
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+      appId: import.meta.env.VITE_FIREBASE_APP_ID,
+      measurementId: import.meta.env.VITE_MEASUREMENT_ID
+    },
+    app: {
+      name: 'iKrypt',
+      version: '0.1.0',
+      lastUpdated: '2025-05-21'
+    }
+  };
