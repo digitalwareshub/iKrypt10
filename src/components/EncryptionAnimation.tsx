@@ -6,11 +6,12 @@ const EncryptionAnimation: React.FC = () => {
   const [animationStage, setAnimationStage] = useState(0);
   const [encryptedText, setEncryptedText] = useState('');
   const [isMessageSent, setIsMessageSent] = useState(false);
-  const [showBlockchain, setShowBlockchain] = useState(false);
+  // Removed unused 'showBlockchain' variable
   const [currentBlock, setCurrentBlock] = useState(1);
   
   const messageRef = useRef("Hey there! This is a confidential message.");
-  const animationTimerRef = useRef<NodeJS.Timeout | null>(null);
+  // Changed the timer type to number instead of NodeJS.Timeout
+  const animationTimerRef = useRef<number | null>(null);
   
   // Generate random encrypted text
   const generateEncryptedText = () => {
@@ -27,20 +28,14 @@ const EncryptionAnimation: React.FC = () => {
     return result;
   };
   
-  // Generate random hash
-  const generateHash = () => {
-    const chars = '0123456789abcdef';
-    return Array(8).fill(0).map(() => 
-      chars.charAt(Math.floor(Math.random() * chars.length))
-    ).join('');
-  };
+  // Removed unused 'generateHash' function
   
   // Animation sequence
   useEffect(() => {
     // Clear any existing timers when the component unmounts
     return () => {
-      if (animationTimerRef.current) {
-        clearTimeout(animationTimerRef.current);
+      if (animationTimerRef.current !== null) {
+        window.clearTimeout(animationTimerRef.current);
       }
     };
   }, []);
@@ -52,35 +47,34 @@ const EncryptionAnimation: React.FC = () => {
       setAnimationStage(0);
       setEncryptedText('');
       setIsMessageSent(false);
-      setShowBlockchain(false);
       setCurrentBlock(1);
       
       // Stage 1: Show message
-      animationTimerRef.current = setTimeout(() => {
+      animationTimerRef.current = window.setTimeout(() => {
         setAnimationStage(1);
         
         // Stage 2: Show encryption
-        animationTimerRef.current = setTimeout(() => {
+        animationTimerRef.current = window.setTimeout(() => {
           setEncryptedText(generateEncryptedText());
           setAnimationStage(2);
           
           // Stage 3: Show sent
-          animationTimerRef.current = setTimeout(() => {
+          animationTimerRef.current = window.setTimeout(() => {
             setIsMessageSent(true);
             setAnimationStage(3);
             
             // Stage 4: Show blockchain verification
-            animationTimerRef.current = setTimeout(() => {
-              setShowBlockchain(true);
+            animationTimerRef.current = window.setTimeout(() => {
+              // Instead of setShowBlockchain(true), directly update the animation stage
               setAnimationStage(4);
               
               // Stage 5: Show second block
-              animationTimerRef.current = setTimeout(() => {
+              animationTimerRef.current = window.setTimeout(() => {
                 setCurrentBlock(2);
                 setAnimationStage(5);
                 
                 // Loop back to start after a delay
-                animationTimerRef.current = setTimeout(() => {
+                animationTimerRef.current = window.setTimeout(() => {
                   startAnimation();
                 }, 3000);
               }, 1500);
@@ -95,8 +89,8 @@ const EncryptionAnimation: React.FC = () => {
     
     // Clean up the timeouts on unmount
     return () => {
-      if (animationTimerRef.current) {
-        clearTimeout(animationTimerRef.current);
+      if (animationTimerRef.current !== null) {
+        window.clearTimeout(animationTimerRef.current);
       }
     };
   }, []);
