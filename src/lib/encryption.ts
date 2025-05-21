@@ -1,3 +1,6 @@
+// src/lib/encryption.ts
+// Purpose: Encryption utilities for iKrypt with enhanced functionality
+
 /**
  * Encryption utilities for iKrypt
  */
@@ -135,5 +138,138 @@ export class CryptoUtils {
       console.error('Failed to import key:', error);
       throw new Error('Failed to import encryption key');
     }
+  }
+
+  static async encryptFile(file: File, key: CryptoKey): Promise<{ encryptedFile: Blob; iv: Uint8Array }> {
+    try {
+      const iv = window.crypto.getRandomValues(new Uint8Array(this.IV_LENGTH));
+      const fileBuffer = await file.arrayBuffer();
+      
+      const encryptedData = await window.crypto.subtle.encrypt(
+        {
+          name: this.ALGORITHM,
+          iv: iv,
+        },
+        key,
+        fileBuffer
+      );
+
+      // Combine IV and encrypted data
+      const combined = new Uint8Array(iv.length + encryptedData.byteLength);
+      combined.set(iv);
+      combined.set(new Uint8Array(encryptedData), iv.length);
+      
+      // Create a new Blob from the combined data
+      const encryptedFile = new Blob([combined], { type: 'application/octet-stream' });
+      
+      return { encryptedFile, iv };
+    } catch (error) {
+      console.error('Failed to encrypt file:', error);
+      throw new Error('Failed to encrypt file');
+    }
+  }
+
+  static async decryptFile(encryptedBlob: Blob, key: CryptoKey): Promise<Blob> {
+    try {
+      const arrayBuffer = await encryptedBlob.arrayBuffer();
+      const encryptedData = new Uint8Array(arrayBuffer);
+      
+      // Extract IV and encrypted data
+      const iv = encryptedData.slice(0, this.IV_LENGTH);
+      const data = encryptedData.slice(this.IV_LENGTH);
+      
+      const decryptedData = await window.crypto.subtle.decrypt(
+        {
+          name: this.ALGORITHM,
+          iv: iv,
+        },
+        key,
+        data
+      );
+      
+      // Return decrypted data as a Blob
+      return new Blob([decryptedData]);
+    } catch (error) {
+      console.error('Failed to decrypt file:', error);
+      throw new Error('Failed to decrypt file');
+    }
+  }
+
+  static async generatePasswordKey(password: string, salt?: Uint8Array): Promise<CryptoKey> {
+    try {
+      // Use provided salt or generate a new one
+      const saltValue = salt || window.crypto.getRandomValues(new Uint8Array(16));
+      
+      // Import password as key material
+      const encoder = new TextEncoder();
+      const passwordBuffer = encoder.encode(password);
+      
+      const keyMaterial = await window.crypto.subtle.importKey(
+        'raw',
+        passwordBuffer,
+        { name: 'PBKDF2' },
+        false,
+        ['deriveBits', 'deriveKey']
+      );
+      
+      // Derive an AES-GCM key using PBKDF2
+      return await window.crypto.subtle.deriveKey(
+        {
+          name: 'PBKDF2',
+          salt: saltValue,
+          iterations: 100000,
+          hash: 'SHA-256'
+        },
+        keyMaterial,
+        { name: this.ALGORITHM, length: this.KEY_LENGTH },
+        true,
+        ['encrypt', 'decrypt']
+      );
+    } catch (error) {
+      console.error('Failed to generate key from password:', error);
+      throw new Error('Failed to generate key from password');
+    }
+  }
+
+  static async hashData(data: string | ArrayBuffer, algorithm: string = 'SHA-256'): Promise<string> {
+    try {
+      let dataBuffer: ArrayBuffer;
+      
+      if (typeof data === 'string') {
+        const encoder = new TextEncoder();
+        dataBuffer = encoder.encode(data);
+      } else {
+        dataBuffer = data;
+      }
+      
+      const hashBuffer = await window.crypto.subtle.digest(algorithm, dataBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      
+      // Convert to hex string
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch (error) {
+      console.error('Failed to hash data:', error);
+      throw new Error('Failed to hash data');
+    }
+  }
+
+  static generateRandomBytes(length: number = 32): Uint8Array {
+    const bytes = new Uint8Array(length);
+    window.crypto.getRandomValues(bytes);
+    return bytes;
+  }
+
+  static bytesToHex(bytes: Uint8Array): string {
+    return Array.from(bytes)
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+  }
+
+  static hexToBytes(hex: string): Uint8Array {
+    const bytes = new Uint8Array(hex.length / 2);
+    for (let i = 0; i < hex.length; i += 2) {
+      bytes[i / 2] = parseInt(hex.substring(i, i + 2), 16);
+    }
+    return bytes;
   }
 }
