@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { 
-  ViewGridIcon, 
+  QueueListIcon, 
   ClipboardIcon, 
   ArrowsPointingOutIcon,
   ArrowsPointingInIcon,
@@ -46,22 +46,6 @@ const SplitKey: React.FC = () => {
   // Helper function to convert Uint8Array to string
   const uint8ArrayToString = (array: Uint8Array): string => {
     return new TextDecoder().decode(array);
-  };
-  
-  // Helper function to convert string to hex
-  const stringToHex = (str: string): string => {
-    return Array.from(stringToUint8Array(str))
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
-  };
-  
-  // Helper function to convert hex to string
-  const hexToString = (hex: string): string => {
-    const bytes = new Uint8Array(hex.length / 2);
-    for (let i = 0; i < hex.length; i += 2) {
-      bytes[i / 2] = parseInt(hex.substring(i, i + 2), 16);
-    }
-    return uint8ArrayToString(bytes);
   };
   
   // Polynomial evaluation in a finite field (GF(256))
@@ -283,7 +267,7 @@ const SplitKey: React.FC = () => {
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
-          <ViewGridIcon className="h-8 w-8 text-indigo-400" />
+          <QueueListIcon className="h-8 w-8 text-indigo-400" />
         </div>
         <h1 className="text-3xl font-bold text-white mb-2">Secret Sharing</h1>
         <p className="text-gray-300 max-w-2xl mx-auto">
@@ -415,7 +399,7 @@ const SplitKey: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <ViewGridIcon className="h-5 w-5 mr-2" />
+                  <QueueListIcon className="h-5 w-5 mr-2" />
                   Split Secret
                 </>
               )}
