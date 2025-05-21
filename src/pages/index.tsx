@@ -25,7 +25,7 @@ import {
 import Logo from '../components/Logo';
 import EncryptionAnimation from '../components/EncryptionAnimation';
 import '../styles/landing.css';
-import Navbar from '../components/Navbar';
+
 
 // FAQ Component
 const FAQ: React.FC<{ faq: { question: string; answer: string } }> = ({ faq }) => {
