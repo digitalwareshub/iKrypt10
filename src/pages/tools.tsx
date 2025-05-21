@@ -1,6 +1,7 @@
 // src/pages/tools.tsx
 // Purpose: Interactive tools showcase page with descriptions and visual cards
 
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   LockClosedIcon, 

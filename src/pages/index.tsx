@@ -4,9 +4,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { LockClosedIcon, ShieldCheckIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
-import '../styles/landing.css';
 import EncryptionAnimation from '../components/EncryptionAnimation';
 import NotifyForm from '../components/NotifyForm';
+import '../styles/landing.css';
 
 // Mock component for animation effect - we'll implement this properly later
 const EncryptionAnimation = () => {
@@ -365,23 +365,22 @@ export default function Home() {
       </section>
 
       {/* Notification Sign-up Section */}
-      {/* Notification Sign-up Section */}
-<section id="notify" className="relative py-20 overflow-hidden">
-  <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600"></div>
-  <div className="absolute inset-0 bg-cta-pattern bg-center mix-blend-overlay opacity-10"></div>
-  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="text-center mb-12">
-      <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Ready to secure your digital life?</h2>
-      <p className="mt-4 text-xl text-indigo-100 max-w-2xl mx-auto">
-        Try our encryption tools today, and sign up to be notified when our full platform launches.
-      </p>
-    </div>
-    
-    <div className="cta-container max-w-md mx-auto">
-      <NotifyForm formspreeUrl="https://formspree.io/f/mqapjgza" />
-    </div>
-  </div>
-</section>
+      <section id="notify" className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600"></div>
+        <div className="absolute inset-0 bg-cta-pattern bg-center mix-blend-overlay opacity-10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Ready to secure your digital life?</h2>
+            <p className="mt-4 text-xl text-indigo-100 max-w-2xl mx-auto">
+              Try our encryption tools today, and sign up to be notified when our full platform launches.
+            </p>
+          </div>
+          
+          <div className="cta-container max-w-md mx-auto">
+            <NotifyForm formspreeUrl="https://formspree.io/f/mqapjgza" />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
