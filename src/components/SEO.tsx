@@ -1,7 +1,7 @@
 // src/components/SEO.tsx
-// Purpose: Component for managing SEO metadata for individual pages
+// Purpose: Component for managing SEO metadata without using react-helmet
 
-import { Helmet } from 'react-helmet';
+import { useEffect } from 'react';
 
 interface SEOProps {
   title?: string;
@@ -19,28 +19,66 @@ const SEO: React.FC<SEOProps> = ({
   const siteUrl = 'https://ikrypt.com';
   const fullCanonicalUrl = canonicalUrl.startsWith('http') ? canonicalUrl : `${siteUrl}${canonicalUrl}`;
   
-  return (
-    <Helmet>
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <meta name="keywords" content={keywords} />
-      <link rel="canonical" href={fullCanonicalUrl} />
-      
-      {/* Open Graph / Facebook */}
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content={fullCanonicalUrl} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={`${siteUrl}/og-image.png`} />
-
-      {/* Twitter */}
-      <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:url" content={fullCanonicalUrl} />
-      <meta property="twitter:title" content={title} />
-      <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content={`${siteUrl}/og-image.png`} />
-    </Helmet>
-  );
+  useEffect(() => {
+    // Update title
+    document.title = title;
+    
+    // Update meta tags
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute('content', description);
+    
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.setAttribute('name', 'keywords');
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.setAttribute('content', keywords);
+    
+    // Update canonical link
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.setAttribute('href', fullCanonicalUrl);
+    
+    // Update Open Graph tags
+    updateMetaTag('og:type', 'website');
+    updateMetaTag('og:url', fullCanonicalUrl);
+    updateMetaTag('og:title', title);
+    updateMetaTag('og:description', description);
+    updateMetaTag('og:image', `${siteUrl}/og-image.png`);
+    
+    // Update Twitter tags
+    updateMetaTag('twitter:card', 'summary_large_image');
+    updateMetaTag('twitter:url', fullCanonicalUrl);
+    updateMetaTag('twitter:title', title);
+    updateMetaTag('twitter:description', description);
+    updateMetaTag('twitter:image', `${siteUrl}/og-image.png`);
+    
+    return () => {
+      // No cleanup needed, as we're updating existing tags
+    };
+  }, [title, description, keywords, fullCanonicalUrl]);
+  
+  const updateMetaTag = (property: string, content: string) => {
+    let metaTag = document.querySelector(`meta[property="${property}"]`);
+    if (!metaTag) {
+      metaTag = document.createElement('meta');
+      metaTag.setAttribute('property', property);
+      document.head.appendChild(metaTag);
+    }
+    metaTag.setAttribute('content', content);
+  };
+  
+  return null;
 };
 
 export default SEO;

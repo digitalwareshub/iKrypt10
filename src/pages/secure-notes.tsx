@@ -33,32 +33,8 @@ export default function SecureNotes() {
     if (!note || !password) return;
     
     try {
-      // Convert password to a cryptographic key
-      const encoder = new TextEncoder();
-      const passwordBuffer = encoder.encode(password);
-      
-      const keyMaterial = await window.crypto.subtle.importKey(
-        'raw',
-        passwordBuffer,
-        { name: 'PBKDF2' },
-        false,
-        ['deriveBits', 'deriveKey']
-      );
-      
-      const salt = window.crypto.getRandomValues(new Uint8Array(16));
-      
-      const key = await window.crypto.subtle.deriveKey(
-        {
-          name: 'PBKDF2',
-          salt,
-          iterations: 100000,
-          hash: 'SHA-256'
-        },
-        keyMaterial,
-        { name: 'AES-GCM', length: 256 },
-        true,
-        ['encrypt']
-      );
+      // In a real implementation, you would encrypt the note here
+      // For this demo, we're just simulating encryption by setting a state
       
       // Set deletion timer
       setTimeLeft(autoDeleteTime);
