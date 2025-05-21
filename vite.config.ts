@@ -20,5 +20,9 @@ export default defineConfig({
         }
       }
     }
+  },
+  define: {
+    // This ensures proper type checking for import.meta.env
+    'process.env': {}
   }
 });
