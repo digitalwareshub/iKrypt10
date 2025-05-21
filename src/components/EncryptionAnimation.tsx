@@ -1,256 +1,207 @@
 // src/components/EncryptionAnimation.tsx
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const EncryptionAnimation: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [animationStarted, setAnimationStarted] = useState(false);
+  const [animationStage, setAnimationStage] = useState(0);
+  const [encryptedText, setEncryptedText] = useState('');
+  const [isMessageSent, setIsMessageSent] = useState(false);
+  const [showBlockchain, setShowBlockchain] = useState(false);
+  const [currentBlock, setCurrentBlock] = useState(1);
   
-  // Animation state
-  const blockchainRef = useRef<{
-    blocks: Array<{
-      x: number;
-      y: number;
-      width: number;
-      height: number;
-      color: string;
-      hash: string;
-      connections: number[];
-    }>;
-    particles: Array<{
-      x: number;
-      y: number;
-      radius: number;
-      color: string;
-      speed: number;
-      direction: number;
-      connected: boolean;
-    }>;
-  }>({
-    blocks: [],
-    particles: []
-  });
+  const messageRef = useRef("Hey there! This is a confidential message.");
+  const animationTimerRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Initialize the animation
+  // Generate random encrypted text
+  const generateEncryptedText = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    let result = '';
+    
+    // Create 3 lines of encrypted-looking content
+    for (let line = 0; line < 3; line++) {
+      result += 'MC4' + Array(20).fill(0).map(() => 
+        chars.charAt(Math.floor(Math.random() * chars.length))
+      ).join('') + '\n';
+    }
+    
+    return result;
+  };
+  
+  // Generate random hash
+  const generateHash = () => {
+    const chars = '0123456789abcdef';
+    return Array(8).fill(0).map(() => 
+      chars.charAt(Math.floor(Math.random() * chars.length))
+    ).join('');
+  };
+  
+  // Animation sequence
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    
-    // Set canvas dimensions to match container
-    const resizeCanvas = () => {
-      const container = canvas.parentElement;
-      if (container) {
-        canvas.width = container.clientWidth;
-        canvas.height = container.clientHeight;
-      }
-    };
-    
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    
-    // Create initial blockchain blocks
-    const initBlockchain = () => {
-      const colors = ['#6366F1', '#8B5CF6', '#EC4899']; // Indigo, Purple, Pink
-      
-      // Create 5 blocks in a horizontal chain
-      const blocks = [];
-      const blockWidth = 80;
-      const blockHeight = 60;
-      const blockSpacing = 140;
-      
-      const startX = (canvas.width - (blockWidth * 5 + blockSpacing * 4)) / 2;
-      const y = canvas.height / 2 - blockHeight / 2;
-      
-      for (let i = 0; i < 5; i++) {
-        blocks.push({
-          x: startX + i * (blockWidth + blockSpacing),
-          y,
-          width: blockWidth,
-          height: blockHeight,
-          color: colors[i % colors.length],
-          hash: generateFakeHash(),
-          connections: i < 4 ? [i + 1] : [] // Connect to next block
-        });
-      }
-      
-      // Create particles
-      const particles = [];
-      for (let i = 0; i < 50; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          radius: Math.random() * 3 + 1,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          speed: Math.random() * 2 + 0.5,
-          direction: Math.random() * Math.PI * 2,
-          connected: false
-        });
-      }
-      
-      blockchainRef.current = { blocks, particles };
-    };
-    
-    // Generate a random hash-like string for visualization
-    const generateFakeHash = () => {
-      const chars = '0123456789abcdef';
-      let hash = '';
-      for (let i = 0; i < 8; i++) {
-        hash += chars[Math.floor(Math.random() * chars.length)];
-      }
-      return hash;
-    };
-    
-    // Animation frame
-    let animationFrame: number;
-    
-    const animate = () => {
-      if (!canvas || !ctx) return;
-      
-      // Clear canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      const { blocks, particles } = blockchainRef.current;
-      
-      // Draw connections between blocks
-      ctx.lineWidth = 2;
-      blocks.forEach((block) => {  // Removed unused 'index' parameter
-        block.connections.forEach(targetIndex => {
-          const target = blocks[targetIndex];
-          ctx.beginPath();
-          ctx.moveTo(block.x + block.width, block.y + block.height / 2);
-          ctx.lineTo(target.x, target.y + target.height / 2);
-          ctx.strokeStyle = 'rgba(99, 102, 241, 0.4)';
-          ctx.stroke();
-          
-          // Draw animated data particles along connections
-          if (animationStarted) {
-            const dataParticles = particles.filter(p => !p.connected).slice(0, 5);
-            dataParticles.forEach(particle => {
-              particle.connected = true;
-              
-              // Position at start of connection
-              particle.x = block.x + block.width;
-              particle.y = block.y + block.height / 2;
-              
-              // Set direction toward target block
-              const dx = target.x - particle.x;
-              const dy = target.y + target.height / 2 - particle.y;
-              particle.direction = Math.atan2(dy, dx);
-            });
-          }
-        });
-      });
-      
-      // Draw blocks
-      blocks.forEach((block, index) => {
-        // Draw block
-        ctx.fillStyle = block.color + '30'; // Add transparency
-        ctx.strokeStyle = block.color;
-        ctx.lineWidth = 2;
-        
-        // Draw block with rounded corners
-        const radius = 8;
-        ctx.beginPath();
-        ctx.moveTo(block.x + radius, block.y);
-        ctx.lineTo(block.x + block.width - radius, block.y);
-        ctx.arcTo(block.x + block.width, block.y, block.x + block.width, block.y + radius, radius);
-        ctx.lineTo(block.x + block.width, block.y + block.height - radius);
-        ctx.arcTo(block.x + block.width, block.y + block.height, block.x + block.width - radius, block.y + block.height, radius);
-        ctx.lineTo(block.x + radius, block.y + block.height);
-        ctx.arcTo(block.x, block.y + block.height, block.x, block.y + block.height - radius, radius);
-        ctx.lineTo(block.x, block.y + radius);
-        ctx.arcTo(block.x, block.y, block.x + radius, block.y, radius);
-        ctx.closePath();
-        
-        ctx.fill();
-        ctx.stroke();
-        
-        // Draw block number
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '16px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(`#${index + 1}`, block.x + block.width / 2, block.y + block.height / 2 - 10);
-        
-        // Draw hash text
-        ctx.font = '12px monospace';
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-        ctx.fillText(block.hash, block.x + block.width / 2, block.y + block.height / 2 + 12);
-      });
-      
-      // Update and draw particles
-      particles.forEach(particle => {
-        if (particle.connected) {
-          // Move along connection line
-          particle.x += Math.cos(particle.direction) * particle.speed;
-          particle.y += Math.sin(particle.direction) * particle.speed;
-          
-          // Check if reached destination
-          const targetBlock = blocks.find(b => 
-            particle.x >= b.x - particle.radius && 
-            particle.x <= b.x + particle.radius && 
-            particle.y >= b.y - particle.radius && 
-            particle.y <= b.y + particle.radius
-          );
-          
-          if (targetBlock) {
-            particle.connected = false;
-            particle.x = Math.random() * canvas.width;
-            particle.y = Math.random() * canvas.height;
-          }
-        } else {
-          // Random movement for free particles
-          particle.x += Math.cos(particle.direction) * particle.speed * 0.2;
-          particle.y += Math.sin(particle.direction) * particle.speed * 0.2;
-          
-          // Bounce off edges
-          if (particle.x < 0 || particle.x > canvas.width) {
-            particle.direction = Math.PI - particle.direction;
-          }
-          if (particle.y < 0 || particle.y > canvas.height) {
-            particle.direction = -particle.direction;
-          }
-          
-          // Occasionally change direction
-          if (Math.random() < 0.01) {
-            particle.direction += (Math.random() * 0.5 - 0.25);
-          }
-        }
-        
-        // Draw particle
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fillStyle = particle.color + (particle.connected ? '80' : '40'); // More opaque if connected
-        ctx.fill();
-      });
-      
-      animationFrame = requestAnimationFrame(animate);
-    };
-    
-    initBlockchain();
-    animate();
-    
-    // Start the animation after a short delay
-    const timer = setTimeout(() => setAnimationStarted(true), 1000);
-    
+    // Clear any existing timers when the component unmounts
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      cancelAnimationFrame(animationFrame);
-      clearTimeout(timer);
+      if (animationTimerRef.current) {
+        clearTimeout(animationTimerRef.current);
+      }
+    };
+  }, []);
+  
+  // Start the animation sequence
+  useEffect(() => {
+    const startAnimation = () => {
+      // Reset animation state
+      setAnimationStage(0);
+      setEncryptedText('');
+      setIsMessageSent(false);
+      setShowBlockchain(false);
+      setCurrentBlock(1);
+      
+      // Stage 1: Show message
+      animationTimerRef.current = setTimeout(() => {
+        setAnimationStage(1);
+        
+        // Stage 2: Show encryption
+        animationTimerRef.current = setTimeout(() => {
+          setEncryptedText(generateEncryptedText());
+          setAnimationStage(2);
+          
+          // Stage 3: Show sent
+          animationTimerRef.current = setTimeout(() => {
+            setIsMessageSent(true);
+            setAnimationStage(3);
+            
+            // Stage 4: Show blockchain verification
+            animationTimerRef.current = setTimeout(() => {
+              setShowBlockchain(true);
+              setAnimationStage(4);
+              
+              // Stage 5: Show second block
+              animationTimerRef.current = setTimeout(() => {
+                setCurrentBlock(2);
+                setAnimationStage(5);
+                
+                // Loop back to start after a delay
+                animationTimerRef.current = setTimeout(() => {
+                  startAnimation();
+                }, 3000);
+              }, 1500);
+            }, 1500);
+          }, 1500);
+        }, 1500);
+      }, 1000);
+    };
+    
+    // Start the animation sequence
+    startAnimation();
+    
+    // Clean up the timeouts on unmount
+    return () => {
+      if (animationTimerRef.current) {
+        clearTimeout(animationTimerRef.current);
+      }
     };
   }, []);
   
   return (
-    <div className="h-64 w-full bg-gray-800/40 rounded-lg relative overflow-hidden">
-      <canvas 
-        ref={canvasRef} 
-        className="absolute inset-0 w-full h-full"
-      />
-      <div className="absolute bottom-4 left-4 text-xs text-gray-400">
-        End-to-end encrypted with blockchain verification
+    <div className="w-full relative rounded-lg overflow-hidden bg-white text-gray-800 min-h-[320px] shadow-lg">
+      {/* Progress dots */}
+      <div className="flex justify-center mt-2 mb-4">
+        {[0, 1, 2, 3, 4].map((stage) => (
+          <div 
+            key={stage}
+            className={`h-2 w-2 rounded-full mx-1 ${
+              stage <= animationStage ? 'bg-indigo-600' : 'bg-indigo-200'
+            }`}
+          />
+        ))}
+      </div>
+      
+      <div className="px-6 py-4 flex">
+        <div className="w-3/5 pr-4">
+          {/* Message header */}
+          <div className="bg-indigo-300 text-white py-2 px-4 rounded-t-lg flex items-center">
+            <div className="bg-white bg-opacity-20 rounded-full h-6 w-6 flex items-center justify-center mr-2">
+              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 2C5.03 2 1 6.03 1 11c0 2.38.94 4.55 2.48 6.15l-1.2 3.16a.5.5 0 00.65.65l3.16-1.2A9.864 9.864 0 0010 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-1.87 0-3.62-.57-5.08-1.56a.5.5 0 00-.4-.05l-2.3.87.87-2.3a.5.5 0 00-.05-.4A6.962 6.962 0 014 11c0-3.86 3.14-7 7-7s7 3.14 7 7-3.14 7-7 7z" />
+              </svg>
+            </div>
+            <span className="font-semibold">iKrypt Message</span>
+          </div>
+          
+          {/* Message content */}
+          <div className="border-l border-r border-gray-200 p-4">
+            <div className="text-gray-500 text-sm mb-2">New Message</div>
+            <div className="border border-gray-200 rounded p-3 min-h-[100px]">
+              {animationStage >= 1 && messageRef.current}
+            </div>
+          </div>
+          
+          {/* Encrypted data */}
+          <div className="border border-gray-200 rounded-b-lg p-4 bg-gray-50">
+            <div className="text-gray-500 text-sm mb-2">Encrypted Data</div>
+            <div className="font-mono text-xs text-indigo-500 bg-indigo-50 p-3 rounded border border-indigo-100">
+              {encryptedText}
+            </div>
+          </div>
+          
+          {/* Send button */}
+          <div className="flex justify-center mt-4">
+            <button 
+              className={`px-6 py-2 rounded-md text-white ${
+                isMessageSent ? 'bg-green-500' : 'bg-indigo-400'
+              }`}
+            >
+              {isMessageSent ? 'Sent!' : 'Send'}
+            </button>
+          </div>
+          
+          {/* Status text */}
+          {animationStage >= 3 && (
+            <div className="text-center text-gray-500 text-sm mt-4">
+              Sending to recipient...
+            </div>
+          )}
+        </div>
+        
+        <div className="w-2/5">
+          {animationStage >= 4 && (
+            <div className="flex flex-col h-full">
+              {/* Visual verification */}
+              <div className="bg-indigo-600 rounded-lg p-4 mb-4 flex flex-col items-center">
+                <div className="text-xs text-indigo-200 mb-2">
+                  {currentBlock === 1 ? 'a041 a010' : 'b142 c903'}
+                </div>
+                <div className="h-24 w-24 bg-white rounded-lg flex items-center justify-center">
+                  <svg className="h-12 w-12 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <div className="text-xs text-indigo-200 mt-2">
+                  {currentBlock === 1 ? '1158 9951' : '3498 d501'}
+                </div>
+              </div>
+              
+              {/* Blockchain info */}
+              <div className="mt-auto">
+                <div className="flex space-x-2 justify-center mb-1">
+                  <div className={`px-3 py-1 rounded-md text-xs ${
+                    currentBlock === 1 ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-500'
+                  }`}>
+                    Block #142
+                  </div>
+                  <div className={`px-3 py-1 rounded-md text-xs ${
+                    currentBlock === 2 ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-500'
+                  }`}>
+                    Block #143
+                  </div>
+                </div>
+                
+                <div className="text-center text-xs text-indigo-500">
+                  Secured on Blockchain
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
