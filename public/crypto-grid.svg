@@ -1,0 +1,21 @@
+<!-- /public/crypto-grid.svg -->
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="crypto-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <!-- Grid lines -->
+      <path d="M0,0 H40 M0,10 H40 M0,20 H40 M0,30 H40 M0,40 H40" stroke="#ffffff" stroke-width="0.2" opacity="0.3" />
+      <path d="M0,0 V40 M10,0 V40 M20,0 V40 M30,0 V40 M40,0 V40" stroke="#ffffff" stroke-width="0.2" opacity="0.3" />
+      
+      <!-- Binary data representation -->
+      <text x="2" y="8" font-family="monospace" font-size="4" fill="#ffffff" opacity="0.4">01</text>
+      <text x="22" y="8" font-family="monospace" font-size="4" fill="#ffffff" opacity="0.4">10</text>
+      <text x="12" y="18" font-family="monospace" font-size="4" fill="#ffffff" opacity="0.4">00</text>
+      <text x="32" y="18" font-family="monospace" font-size="4" fill="#ffffff" opacity="0.4">11</text>
+      <text x="2" y="28" font-family="monospace" font-size="4" fill="#ffffff" opacity="0.4">11</text>
+      <text x="22" y="28" font-family="monospace" font-size="4" fill="#ffffff" opacity="0.4">00</text>
+      <text x="12" y="38" font-family="monospace" font-size="4" fill="#ffffff" opacity="0.4">10</text>
+      <text x="32" y="38" font-family="monospace" font-size="4" fill="#ffffff" opacity="0.4">01</text>
+    </pattern>
+  </defs>
+  <rect width="200" height="200" fill="url(#crypto-grid)" />
+</svg>
