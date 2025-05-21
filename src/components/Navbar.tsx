@@ -1,9 +1,10 @@
 // src/components/Navbar.tsx
-// Purpose: Simplified navigation without individual tool links
+// Update the Navbar to include the Logo component
 
 import { Disclosure } from '@headlessui/react';
 import { Link } from 'react-router-dom';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import Logo from './Logo';
 
 export default function Navbar() {
   return (
@@ -14,7 +15,7 @@ export default function Navbar() {
             <div className="flex h-16 items-center justify-between">
               <div className="flex items-center">
                 <Link to="/" className="flex-shrink-0">
-                  <span className="text-white text-xl font-bold">iKrypt</span>
+                  <Logo />
                 </Link>
               </div>
               <div className="-mr-2 flex md:hidden">

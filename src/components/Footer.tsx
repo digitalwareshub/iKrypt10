@@ -2,6 +2,7 @@
 // Purpose: Enhanced footer with branding, links, and social icons
 
 import { Link } from 'react-router-dom';
+import Logo from './Logo';
 
 export default function Footer() {
   return (
@@ -11,7 +12,7 @@ export default function Footer() {
           {/* Branding */}
           <div className="col-span-1">
             <Link to="/" className="flex items-center">
-              <span className="text-2xl font-bold text-white">iKrypt</span>
+              <Logo />
             </Link>
             <p className="mt-2 text-sm text-gray-400">
               Privacy-focused encryption tools with zero server-side processing.
@@ -44,12 +45,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
+                <a href="#notify" className="text-gray-400 hover:text-indigo-400 transition-colors">
                   iKrypt Mail
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
+                <a href="#notify" className="text-gray-400 hover:text-indigo-400 transition-colors">
                   iKrypt Vault
                 </a>
               </li>
@@ -78,7 +79,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/tools" className="text-gray-400 hover:text-indigo-400 transition-colors">
+                <Link to="/one-time" className="text-gray-400 hover:text-indigo-400 transition-colors">
                   View All Tools
                 </Link>
               </li>

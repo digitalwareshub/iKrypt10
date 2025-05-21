@@ -1,5 +1,4 @@
-// src/App.tsx
-// Purpose: Main application routing configuration with corrected background
+// Update App.tsx to include new routes
 
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
@@ -16,6 +15,8 @@ import Random from './pages/random';
 import SplitKey from './pages/split-key';
 import TextEncrypt from './pages/text-encrypt';
 import Keys from './pages/keys';
+import PasswordGenerator from './pages/password-generator';
+import SecureNotes from './pages/secure-notes';
 
 export default function App() {
   return (
@@ -35,6 +36,8 @@ export default function App() {
           <Route path="split-key" element={<SplitKey />} />
           <Route path="text-encrypt" element={<TextEncrypt />} />
           <Route path="keys" element={<Keys />} />
+          <Route path="password-generator" element={<PasswordGenerator />} />
+          <Route path="secure-notes" element={<SecureNotes />} />
         </Route>
       </Routes>
     </div>

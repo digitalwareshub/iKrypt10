@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import { LockClosedIcon, ShieldCheckIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import EncryptionAnimation from '../components/EncryptionAnimation';
 import NotifyForm from '../components/NotifyForm';
+import SEO from '../components/SEO';
+import Logo from '../components/Logo';
 import '../styles/landing.css';
 
 export default function Home() {
@@ -15,6 +17,39 @@ export default function Home() {
     setIsClient(true);
   }, []);
 
+  // Add structured data with schema.org markup
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "iKrypt Privacy Toolbox",
+      "url": "https://ikrypt.com/",
+      "description": "Suite of 12 secure, browser-based privacy tools for encryption and data protection",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "End-to-end encryption",
+        "Self-destructing messages",
+        "File encryption",
+        "Password generation",
+        "Digital signatures"
+      ]
+    });
+    
+    document.head.appendChild(script);
+    
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
   // Products with correct availability and buttons
   const products = [
     {
@@ -22,7 +57,7 @@ export default function Home() {
       description: "End-to-end encrypted messaging with visual cryptographic verification and optional on-chain attestation.",
       icon: <LockClosedIcon className="h-10 w-10 text-white" />,
       color: "bg-indigo-600",
-      available: true, // Changed to true as requested
+      available: true,
       benefits: [
         "Instant secure messaging",
         "Public/private key architecture",
@@ -55,116 +90,139 @@ export default function Home() {
     }
   ];
 
-  // Tool cards for the featured tools section
-  // Update in src/pages/index.tsx
-// Replace the featuredTools array and the Featured Tools Section
-
-// Tool cards for all 10 tools in the featured section
-const featuredTools = [
-  {
-    title: "One-Time Secret",
-    description: "Share self-destructing messages that are automatically deleted after viewing",
-    icon: (
-      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-      </svg>
-    ),
-    path: "/one-time"
-  },
-  {
-    title: "Digital Signature",
-    description: "Cryptographically sign messages to verify authenticity and integrity",
-    icon: (
-      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-      </svg>
-    ),
-    path: "/sign"
-  },
-  {
-    title: "File Encryption",
-    description: "Encrypt files with AES-256 before sharing or storing them securely",
-    icon: (
-      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-      </svg>
-    ),
-    path: "/file-encrypt"
-  },
-  {
-    title: "Password Key",
-    description: "Generate strong cryptographic keys from passwords using PBKDF2",
-    icon: (
-      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-      </svg>
-    ),
-    path: "/password-key"
-  },
-  {
-    title: "Message Authentication",
-    description: "Create and verify message authentication codes (MACs) to ensure data integrity",
-    icon: (
-      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-    ),
-    path: "/mac"
-  },
-  {
-    title: "Hash Generator",
-    description: "Generate cryptographic hashes of any text or data for verification and integrity",
-    icon: (
-      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
-      </svg>
-    ),
-    path: "/hash"
-  },
-  {
-    title: "Random Generator",
-    description: "Generate cryptographically secure random values for keys, passwords, and more",
-    icon: (
-      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-      </svg>
-    ),
-    path: "/random"
-  },
-  {
-    title: "Key Splitter",
-    description: "Split secrets into multiple shares that require a threshold to reconstruct",
-    icon: (
-      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-      </svg>
-    ),
-    path: "/split-key"
-  },
-  {
-    title: "Text Encryption",
-    description: "Encrypt and decrypt text messages with password-based encryption",
-    icon: (
-      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-      </svg>
-    ),
-    path: "/text-encrypt"
-  },
-  {
-    title: "Key Management",
-    description: "Generate, store, and manage cryptographic keys for various encryption algorithms",
-    icon: (
-      <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
-      </svg>
-    ),
-    path: "/keys"
-  }
-];
+  // Tool cards for all 12 tools in the featured section
+  const featuredTools = [
+    {
+      title: "One-Time Secret",
+      description: "Share self-destructing messages that are automatically deleted after viewing",
+      icon: (
+        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+      ),
+      path: "/one-time"
+    },
+    {
+      title: "Digital Signature",
+      description: "Cryptographically sign messages to verify authenticity and integrity",
+      icon: (
+        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+        </svg>
+      ),
+      path: "/sign"
+    },
+    {
+      title: "File Encryption",
+      description: "Encrypt files with AES-256 before sharing or storing them securely",
+      icon: (
+        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+        </svg>
+      ),
+      path: "/file-encrypt"
+    },
+    {
+      title: "Password Key",
+      description: "Generate strong cryptographic keys from passwords using PBKDF2",
+      icon: (
+        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+        </svg>
+      ),
+      path: "/password-key"
+    },
+    {
+      title: "Message Authentication",
+      description: "Create and verify message authentication codes (MACs) to ensure data integrity",
+      icon: (
+        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+      ),
+      path: "/mac"
+    },
+    {
+      title: "Hash Generator",
+      description: "Generate cryptographic hashes of any text or data for verification and integrity",
+      icon: (
+        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+        </svg>
+      ),
+      path: "/hash"
+    },
+    {
+      title: "Random Generator",
+      description: "Generate cryptographically secure random values for keys, passwords, and more",
+      icon: (
+        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+      ),
+      path: "/random"
+    },
+    {
+      title: "Key Splitter",
+      description: "Split secrets into multiple shares that require a threshold to reconstruct",
+      icon: (
+        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+      ),
+      path: "/split-key"
+    },
+    {
+      title: "Text Encryption",
+      description: "Encrypt and decrypt text messages with password-based encryption",
+      icon: (
+        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+        </svg>
+      ),
+      path: "/text-encrypt"
+    },
+    {
+      title: "Key Management",
+      description: "Generate, store, and manage cryptographic keys for various encryption algorithms",
+      icon: (
+        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+        </svg>
+      ),
+      path: "/keys"
+    },
+    {
+      title: "Password Generator",
+      description: "Create strong, cryptographically secure passwords with customizable length and complexity",
+      icon: (
+        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+        </svg>
+      ),
+      path: "/password-generator"
+    },
+    {
+      title: "Secure Notes",
+      description: "Encrypted notepad for sensitive information with client-side encryption and auto-clearing",
+      icon: (
+        <svg className="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      ),
+      path: "/secure-notes"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900 text-white">
+      <SEO 
+        title="iKrypt - Privacy Toolbox | Secure Encryption Tools"
+        description="10+ free, browser-based privacy tools with end-to-end encryption. Encrypt messages, files, and more without registration."
+        canonicalUrl="/"
+        keywords="encryption tools, privacy, secure messaging, file encryption, end-to-end encryption, cryptography, password generator, secure notes"
+      />
+      
       {/* Hero Section */}
       <section className="relative pt-10 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern bg-center opacity-10"></div>
@@ -179,6 +237,9 @@ const featuredTools = [
             <div className="lg:col-span-6">
               <div className="inline-block px-3 py-1 text-xs font-semibold bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mb-5">
                 Blockchain-Secured Encryption
+              </div>
+              <div className="mb-6">
+                <Logo className="h-16 w-auto" />
               </div>
               <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl mb-6">
                 <span className="block text-white">Cryptographic Security</span>
@@ -230,9 +291,9 @@ const featuredTools = [
                         <div className="inline-block h-20 w-20 rounded-full bg-indigo-500/20 flex items-center justify-center mb-6">
                           <LockClosedIcon className="h-10 w-10 text-indigo-400" />
                         </div>
-                        <h3 className="text-xl font-bold text-white mb-2">10 Privacy Tools Available Now</h3>
+                        <h3 className="text-xl font-bold text-white mb-2">12 Privacy Tools Available Now</h3>
                         <p className="text-gray-400 mb-6">Try our suite of encryption and privacy tools while we build our next-generation platform</p>
-                        <Link to="/tools" className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors">
+                        <Link to="/one-time" className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors">
                           Explore Tools
                         </Link>
                       </div>
@@ -312,38 +373,38 @@ const featuredTools = [
       </section>
 
       {/* Featured Tools Section */}
-<section id="tools" className="py-20 relative">
-  <div className="absolute inset-0 bg-hex-pattern bg-repeat opacity-5"></div>
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    <div className="text-center">
-      <div className="inline-block px-3 py-1 text-xs font-semibold bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mb-3">
-        Available Now
-      </div>
-      <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
-        10 Privacy Tools Ready To Use
-      </h2>
-      <p className="mt-4 text-xl text-gray-300 max-w-2xl mx-auto">
-        Start protecting your data today with our browser-based encryption toolkit
-      </p>
-    </div>
-
-    <div className="mt-16 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
-      {featuredTools.map((tool, index) => (
-        <Link 
-          key={index}
-          to={tool.path}
-          className="backdrop-blur-card p-6 group card-hover"
-        >
-          <div className="feature-icon bg-indigo-500/20 group-hover:bg-indigo-500/30 transition-colors">
-            {tool.icon}
+      <section id="tools" className="py-20 relative">
+        <div className="absolute inset-0 bg-hex-pattern bg-repeat opacity-5"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center">
+            <div className="inline-block px-3 py-1 text-xs font-semibold bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mb-3">
+              Available Now
+            </div>
+            <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
+              12 Privacy Tools Ready To Use
+            </h2>
+            <p className="mt-4 text-xl text-gray-300 max-w-2xl mx-auto">
+              Start protecting your data today with our browser-based encryption toolkit
+            </p>
           </div>
-          <h3 className="text-lg font-semibold text-white">{tool.title}</h3>
-          <p className="mt-2 text-gray-300 text-sm">{tool.description}</p>
-        </Link>
-      ))}
-    </div>
-  </div>
-</section>
+
+          <div className="mt-16 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            {featuredTools.map((tool, index) => (
+              <Link 
+                key={index}
+                to={tool.path}
+                className="backdrop-blur-card p-6 group card-hover"
+              >
+                <div className="feature-icon bg-indigo-500/20 group-hover:bg-indigo-500/30 transition-colors">
+                  {tool.icon}
+                </div>
+                <h3 className="text-lg font-semibold text-white">{tool.title}</h3>
+                <p className="mt-2 text-gray-300 text-sm">{tool.description}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* How It Works Section */}
       <section id="how-it-works" className="py-20 relative bg-gray-900">
