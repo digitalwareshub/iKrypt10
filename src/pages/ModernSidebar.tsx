@@ -14,7 +14,7 @@ import {
   faChevronRight,
   faInfo
 } from '@fortawesome/free-solid-svg-icons';
-import Logo from './Logo';
+import Logo from '../components/Logo';
 
 const ModernSidebar: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
