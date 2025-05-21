@@ -47,7 +47,7 @@ const EncryptionAnimation: React.FC = () => {
       setAnimating(true);
       
       // Generate encrypted text gradually
-      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+      // Removed the unused chars variable
       let encryptedLines = [
         "MC4JNjEwNTQyMTcxNjM1Mzc5",
         "NC41MzMRtg3M0YzNTIIODby",
@@ -134,13 +134,13 @@ const EncryptionAnimation: React.FC = () => {
               return () => clearTimeout(resetTimer);
             }, 1000);
             
-            return () => clearTimeout(verifyBlock2Timer);
+            return () => clearTimeout(blockChangeTimer);
           }, 2000);
           
-          return () => clearTimeout(blockChangeTimer);
+          return () => clearTimeout(verifyTimer);
         }, 1000);
         
-        return () => clearTimeout(verifyTimer);
+        return () => clearTimeout(blockchainTimer);
       }, 1000);
       
       return () => clearTimeout(blockchainTimer);
