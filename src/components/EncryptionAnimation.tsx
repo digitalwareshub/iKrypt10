@@ -47,7 +47,6 @@ const EncryptionAnimation: React.FC = () => {
       setAnimating(true);
       
       // Generate encrypted text gradually
-      // Removed the unused chars variable
       let encryptedLines = [
         "MC4JNjEwNTQyMTcxNjM1Mzc5",
         "NC41MzMRtg3M0YzNTIIODby",
@@ -131,10 +130,15 @@ const EncryptionAnimation: React.FC = () => {
                 resetAnimation();
               }, 3000);
               
-              return () => clearTimeout(resetTimer);
+              return () => {
+                clearTimeout(resetTimer);
+              };
             }, 1000);
             
-            return () => clearTimeout(blockChangeTimer);
+            return () => {
+              clearTimeout(verifyBlock2Timer); // This fixes the unused variable error
+              clearTimeout(blockChangeTimer);
+            };
           }, 2000);
           
           return () => clearTimeout(verifyTimer);
