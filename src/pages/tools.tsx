@@ -105,6 +105,14 @@ const tools = [
     icon: <QrCodeIcon className="h-8 w-8" />,
     color: 'bg-cyan-500',
     path: '/keys'
+  },
+  {
+    id: 'qr',
+    name: 'Encrypted QR Codes',
+    description: 'Create and scan password-protected QR codes for securely sharing sensitive data. Customize appearance and encrypt content with AES-256.',
+    icon: <QrCodeIcon className="h-8 w-8" />,
+    color: 'bg-purple-500',
+    path: '/qr'
   }
 ];
 

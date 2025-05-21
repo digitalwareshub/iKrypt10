@@ -10,20 +10,15 @@ import {
   query, 
   orderBy, 
   limit, 
-  serverTimestamp, 
-  where,
   getDocs,
-  deleteDoc,
-  doc 
+  doc
 } from 'firebase/firestore';
 import { CryptoUtils } from '../lib/encryption';
 import { 
   ChatBubbleLeftRightIcon, 
-  UserCircleIcon, 
   LockClosedIcon,
   ClockIcon,
   ShieldCheckIcon,
-  ArrowPathIcon,
   TrashIcon
 } from '@heroicons/react/24/outline';
 
@@ -44,7 +39,6 @@ const EncryptedChat: React.FC = () => {
   const [key, setKey] = useState('');
   const [isJoined, setIsJoined] = useState(false);
   const [isCreatingRoom, setIsCreatingRoom] = useState(false);
-  const [memberCount, setMemberCount] = useState(1);
   
   // Message expiration states
   const [expiryEnabled, setExpiryEnabled] = useState(false);
@@ -53,7 +47,6 @@ const EncryptedChat: React.FC = () => {
   // UI states
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [unreadCount, setUnreadCount] = useState(0);
   
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -171,10 +164,9 @@ const EncryptedChat: React.FC = () => {
       
       const unsubscribe = onSnapshot(q, async (snapshot) => {
         const newMessages: Message[] = [];
-        let unreadMessages = 0;
         
-        for (const doc of snapshot.docs) {
-          const data = doc.data();
+        for (const docSnapshot of snapshot.docs) {
+          const data = docSnapshot.data();
           try {
             // Skip decryption if it's a newly added message by the current user
             let content = '';
@@ -184,15 +176,10 @@ const EncryptedChat: React.FC = () => {
             } else {
               const key = await CryptoUtils.importKey(keyToUse);
               content = await CryptoUtils.decryptText(data.content, key);
-              
-              // Count unread messages (those added since the last check)
-              if (isJoined && !doc.metadata.hasPendingWrites && doc.data().sender !== username) {
-                unreadMessages++;
-              }
             }
             
             newMessages.push({
-              id: doc.id,
+              id: docSnapshot.id,
               content,
               sender: data.sender,
               timestamp: data.timestamp,
@@ -205,10 +192,6 @@ const EncryptedChat: React.FC = () => {
         }
         
         setMessages(newMessages);
-        
-        if (unreadMessages > 0) {
-          setUnreadCount(prev => prev + unreadMessages);
-        }
       });
       
       // Join notification - only after verification
@@ -569,7 +552,7 @@ const EncryptedChat: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {messages.map((message, index) => {
+                  {messages.map((message) => {
                     const isCurrentUser = message.sender === username;
                     const isSystem = message.sender === 'iKrypt System';
                     
