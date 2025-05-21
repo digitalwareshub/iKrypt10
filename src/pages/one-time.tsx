@@ -2,7 +2,6 @@
 // Purpose: Creates AES-256 encrypted messages that self-destruct after being read once
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { db } from '../lib/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import { CryptoUtils } from '../lib/encryption';
@@ -14,7 +13,7 @@ const OneTimeSecret: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [ttl, setTtl] = useState(24); // Time to live in hours
-  const navigate = useNavigate();
+  
 
   const handleGenerateSecret = async () => {
     if (!message) return;

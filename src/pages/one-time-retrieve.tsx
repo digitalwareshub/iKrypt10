@@ -6,7 +6,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { db } from '../lib/firebase';
 import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { CryptoUtils } from '../lib/encryption';
-import { LockClosedIcon, ShieldCheckIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { LockClosedIcon, ShieldCheckIcon, ExclamationTriangleIcon, ClipboardIcon } from '@heroicons/react/24/outline';
 
 const OneTimeRetrieve: React.FC = () => {
   const { id } = useParams<{ id: string }>();
