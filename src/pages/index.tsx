@@ -1,6 +1,9 @@
 // src/pages/index.tsx
 // Purpose: Main landing page with improved layout, product descriptions, and proper call-to-actions
 
+// src/pages/index.tsx
+// Purpose: Main landing page with modern design for iKrypt
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,13 +18,8 @@ import {
   faChevronUp, 
   faCommentAlt,
   faPaperPlane,
-  faFileShield,
   faRecycle,
   faDice,
-  faPuzzlePiece,
-  faQrcode,
-  faUserLock,
-  faStickyNote,
   faCheck
 } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../components/Logo';
