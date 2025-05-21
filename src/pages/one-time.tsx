@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { CryptoUtils } from '../lib/encryption';
 import { db } from '../lib/firebase';
-import { collection, addDoc, getDoc, doc, deleteDoc } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 
 export default function OneTime() {
   const [text, setText] = useState('');
   const [shareableLink, setShareableLink] = useState('');
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const createMessage = async () => {
@@ -24,7 +23,7 @@ export default function OneTime() {
       const docRef = await addDoc(collection(db, 'one-time-messages'), {
         content: encryptedText,
         createdAt: new Date().toISOString(),
-        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
       });
 
       const link = `${window.location.origin}/one-time/${docRef.id}#key=${exportedKey}`;
@@ -38,33 +37,9 @@ export default function OneTime() {
     }
   };
 
-  // This function will be used in the message retrieval route component
-  // const retrieveMessage = async (messageId: string, key: string) => {
-  //   try {
-  //     const messageRef = doc(db, 'one-time-messages', messageId);
-  //     const messageSnap = await getDoc(messageRef);
-  //     
-  //     if (!messageSnap.exists()) {
-  //       throw new Error('Message not found or already read');
-  //     }
-  //     
-  //     const data = messageSnap.data();
-  //     const cryptoKey = await CryptoUtils.importKey(key);
-  //     const decryptedText = await CryptoUtils.decryptText(data.content, cryptoKey);
-  //     
-  //     // Delete the message after reading
-  //     await deleteDoc(messageRef);
-  //     
-  //     setMessage(decryptedText);
-  //   } catch (error) {
-  //     setError('Failed to retrieve message. It may have been already read or expired.');
-  //     console.error('Decryption failed:', error);
-  //   }
-  // };
-
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">One-Time Secret Message</h1>
+      <h1 className="text-2xl font-bold mb-4">Create One-Time Message</h1>
       
       {error && (
         <div className="mb-4 p-4 bg-red-100 text-red-800 rounded-lg">
@@ -107,13 +82,6 @@ export default function OneTime() {
                 Copy
               </button>
             </div>
-          </div>
-        )}
-
-        {message && (
-          <div className="p-4 bg-green-100 text-green-800 rounded-lg">
-            <p className="font-medium">Retrieved Message:</p>
-            <p className="mt-2">{message}</p>
           </div>
         )}
       </div>
