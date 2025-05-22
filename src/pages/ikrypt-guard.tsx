@@ -21,6 +21,10 @@ import {
 // Import TOTP library
 import { authenticator } from 'otplib';
 
+// Import jsQR for QR code scanning
+// Note: Install with: npm install jsqr @types/jsqr
+import jsQR from 'jsqr';
+
 // Types
 interface TOTPAccount {
   id: string;
@@ -41,6 +45,220 @@ interface TOTPCode {
   remainingTime: number;
   progress: number;
 }
+
+// QR Scanner Component with jsQR
+const QRScanner: React.FC<{
+  onScan: (data: string) => void;
+  onClose: () => void;
+}> = ({ onScan, onClose }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isScanning, setIsScanning] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const [manualUrl, setManualUrl] = useState('');
+
+  useEffect(() => {
+    startCamera();
+    return () => {
+      stopCamera();
+    };
+  }, []);
+
+  const startCamera = async () => {
+    try {
+      setError(null);
+      
+      // Request camera access with back camera preference for mobile
+      const constraints: MediaStreamConstraints = {
+        video: {
+          facingMode: { ideal: 'environment' }, // Prefer back camera
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        },
+        audio: false
+      };
+
+      const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+      setStream(mediaStream);
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = mediaStream;
+        videoRef.current.onloadedmetadata = () => {
+          if (videoRef.current) {
+            videoRef.current.play();
+            setIsScanning(true);
+            requestAnimationFrame(scanQR);
+          }
+        };
+      }
+    } catch (err) {
+      console.error('Camera access error:', err);
+      if (err instanceof Error) {
+        if (err.name === 'NotAllowedError') {
+          setError('Camera permission denied. Please allow camera access and try again.');
+        } else if (err.name === 'NotFoundError') {
+          setError('No camera found. Please connect a camera and try again.');
+        } else {
+          setError(`Camera error: ${err.message}`);
+        }
+      } else {
+        setError('Unable to access camera. Please check permissions.');
+      }
+    }
+  };
+
+  const stopCamera = () => {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+      setStream(null);
+    }
+    setIsScanning(false);
+  };
+
+  const scanQR = () => {
+    if (!isScanning || !videoRef.current || !canvasRef.current) {
+      return;
+    }
+
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+
+    if (!context || video.readyState !== video.HAVE_ENOUGH_DATA) {
+      requestAnimationFrame(scanQR);
+      return;
+    }
+
+    // Set canvas dimensions to match video
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    // Draw video frame to canvas
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Get image data from canvas
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+    // Scan for QR code using jsQR
+    const code = jsQR(imageData.data, imageData.width, imageData.height, {
+      inversionAttempts: 'dontInvert' // Better performance
+    });
+
+    if (code && code.data) {
+      // QR code found
+      console.log('QR code detected:', code.data);
+      stopCamera();
+      onScan(code.data);
+    } else {
+      // Continue scanning
+      requestAnimationFrame(scanQR);
+    }
+  };
+
+  const handleManualSubmit = () => {
+    if (manualUrl.trim().startsWith('otpauth://')) {
+      onScan(manualUrl.trim());
+    } else {
+      setError('Please enter a valid otpauth:// URL');
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-gray-800 rounded-xl max-w-md w-full p-6 border border-gray-700 max-h-[90vh] overflow-y-auto">
+        <h3 className="text-xl font-semibold text-white mb-4">QR Code Scanner</h3>
+        
+        {error ? (
+          <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 mb-4">
+            <p className="text-red-300 text-sm">{error}</p>
+          </div>
+        ) : (
+          <div className="relative mb-4">
+            <video
+              ref={videoRef}
+              className="w-full h-64 bg-gray-900 rounded-lg object-cover"
+              playsInline
+              muted
+              autoPlay
+            />
+            <canvas
+              ref={canvasRef}
+              className="hidden"
+            />
+            
+            {/* Scanning overlay */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="w-48 h-48 border-2 border-orange-500 rounded-lg relative">
+                {/* Corner markers */}
+                <div className="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-orange-500 rounded-tl"></div>
+                <div className="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-orange-500 rounded-tr"></div>
+                <div className="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-orange-500 rounded-bl"></div>
+                <div className="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-orange-500 rounded-br"></div>
+                
+                {/* Scanning line animation */}
+                <div className="absolute inset-0 overflow-hidden rounded-lg">
+                  <div className="absolute top-0 left-0 right-0 h-0.5 bg-orange-500 animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+            
+            {isScanning && (
+              <div className="absolute bottom-4 left-0 right-0 text-center">
+                <p className="text-white text-sm bg-black/70 rounded-full px-3 py-1 inline-block">
+                  <FontAwesomeIcon icon={faCamera} className="mr-2" />
+                  Point camera at QR code
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Manual URL Input */}
+        <div className="border-t border-gray-600 pt-4">
+          <label className="block text-sm font-medium text-gray-300 mb-2">
+            Or paste OTP Auth URL manually:
+          </label>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={manualUrl}
+              onChange={(e) => setManualUrl(e.target.value)}
+              placeholder="otpauth://totp/Example:user@example.com?secret=JBSWY3DPEHPK3PXP&issuer=Example"
+              className="flex-1 p-3 bg-gray-900 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+            />
+            <button
+              onClick={handleManualSubmit}
+              disabled={!manualUrl.trim()}
+              className="bg-orange-600 hover:bg-orange-700 disabled:bg-gray-600 text-white px-4 py-3 rounded-lg transition-colors text-sm font-medium"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex space-x-3 mt-6">
+          {error && (
+            <button
+              onClick={startCamera}
+              className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 rounded-lg transition-colors"
+            >
+              <FontAwesomeIcon icon={faCamera} className="mr-2" />
+              Retry Camera
+            </button>
+          )}
+          <button
+            onClick={onClose}
+            className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 rounded-lg transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function IKryptGuard() {
   const [accounts, setAccounts] = useState<TOTPAccount[]>([]);
@@ -77,24 +295,12 @@ export default function IKryptGuard() {
     return () => clearInterval(interval);
   }, [accounts, isUnlocked]);
 
-  // Initialize the app - check if there are existing accounts
-  useEffect(() => {
-    const checkExistingData = () => {
-      const stored = localStorage.getItem('ikrypt-guard-accounts');
-      if (!stored) {
-        console.log('No existing accounts found');
-      }
-    };
-    checkExistingData();
-  }, []);
-
   // Improved encryption/decryption using Web Crypto API
   const encrypt = async (text: string, password: string): Promise<string> => {
     try {
       const encoder = new TextEncoder();
       const data = encoder.encode(text);
       
-      // Create a key from the password
       const passwordKey = await crypto.subtle.importKey(
         'raw',
         encoder.encode(password),
@@ -103,10 +309,8 @@ export default function IKryptGuard() {
         ['deriveBits', 'deriveKey']
       );
       
-      // Generate a random salt
       const salt = crypto.getRandomValues(new Uint8Array(16));
       
-      // Derive an encryption key
       const key = await crypto.subtle.deriveKey(
         {
           name: 'PBKDF2',
@@ -120,23 +324,19 @@ export default function IKryptGuard() {
         ['encrypt']
       );
       
-      // Generate a random IV
       const iv = crypto.getRandomValues(new Uint8Array(12));
       
-      // Encrypt the data
       const encrypted = await crypto.subtle.encrypt(
         { name: 'AES-GCM', iv: iv },
         key,
         data
       );
       
-      // Combine salt, iv, and encrypted data
       const combined = new Uint8Array(salt.length + iv.length + encrypted.byteLength);
       combined.set(salt, 0);
       combined.set(iv, salt.length);
       combined.set(new Uint8Array(encrypted), salt.length + iv.length);
       
-      // Return as base64
       return btoa(String.fromCharCode(...combined));
     } catch (error) {
       console.error('Encryption error:', error);
@@ -149,17 +349,14 @@ export default function IKryptGuard() {
       const encoder = new TextEncoder();
       const decoder = new TextDecoder();
       
-      // Decode from base64
       const combined = new Uint8Array(
         atob(encryptedData).split('').map(char => char.charCodeAt(0))
       );
       
-      // Extract salt, iv, and encrypted data
       const salt = combined.slice(0, 16);
       const iv = combined.slice(16, 28);
       const encrypted = combined.slice(28);
       
-      // Create a key from the password
       const passwordKey = await crypto.subtle.importKey(
         'raw',
         encoder.encode(password),
@@ -168,7 +365,6 @@ export default function IKryptGuard() {
         ['deriveBits', 'deriveKey']
       );
       
-      // Derive the decryption key
       const key = await crypto.subtle.deriveKey(
         {
           name: 'PBKDF2',
@@ -182,7 +378,6 @@ export default function IKryptGuard() {
         ['decrypt']
       );
       
-      // Decrypt the data
       const decrypted = await crypto.subtle.decrypt(
         { name: 'AES-GCM', iv: iv },
         key,
@@ -225,24 +420,20 @@ export default function IKryptGuard() {
       }
     }
     
-    // No stored accounts or no password - this is fine for first-time setup
     return true;
   };
 
   // TOTP generation function
   const generateTOTP = (secret: string, digits: number = 6, period: number = 30): TOTPCode => {
     try {
-      // Configure TOTP options
       authenticator.options = {
         digits,
         step: period,
         window: 1
       };
       
-      // Generate real TOTP code
       const code = authenticator.generate(secret);
       
-      // Calculate remaining time
       const now = Math.floor(Date.now() / 1000);
       const remainingTime = period - (now % period);
       const progress = ((period - remainingTime) / period) * 100;
@@ -277,6 +468,47 @@ export default function IKryptGuard() {
     return codes;
   };
 
+  // Parse QR code URL
+  const parseQRCodeURL = (url: string) => {
+    try {
+      console.log('Parsing QR URL:', url);
+      const urlObj = new URL(url);
+      
+      if (urlObj.protocol === 'otpauth:') {
+        const type = urlObj.host.toUpperCase() as 'TOTP' | 'HOTP';
+        const label = decodeURIComponent(urlObj.pathname.slice(1));
+        const [issuer, name] = label.includes(':') ? label.split(':', 2) : ['', label];
+        
+        const secret = urlObj.searchParams.get('secret') || '';
+        const algorithm = (urlObj.searchParams.get('algorithm') || 'SHA1') as 'SHA1' | 'SHA256' | 'SHA512';
+        const digits = parseInt(urlObj.searchParams.get('digits') || '6') as 6 | 8;
+        const period = parseInt(urlObj.searchParams.get('period') || '30');
+
+        if (!/^[A-Z2-7]+=*$/i.test(secret)) {
+          throw new Error('Invalid secret format. Must be Base32.');
+        }
+
+        setNewAccount({
+          name: name.trim() || 'Scanned Account',
+          issuer: issuer.trim(),
+          secret: secret.toUpperCase().replace(/\s/g, ''),
+          type,
+          algorithm,
+          digits,
+          period
+        });
+        
+        setShowAddModal(true);
+        setError(null);
+      } else {
+        throw new Error('Invalid QR code format. Must be otpauth:// URL.');
+      }
+    } catch (error) {
+      console.error('Invalid QR code URL:', error);
+      setError(error instanceof Error ? error.message : 'Invalid QR code format.');
+    }
+  };
+
   // Add new account with validation
   const addAccount = async () => {
     if (!newAccount.name.trim() || !newAccount.secret.trim()) {
@@ -284,13 +516,11 @@ export default function IKryptGuard() {
       return;
     }
 
-    // Validate secret format (Base32)
     if (!/^[A-Z2-7]+=*$/i.test(newAccount.secret)) {
       setError('Invalid secret format. Must be Base32 encoded.');
       return;
     }
 
-    // Test TOTP generation to ensure secret is valid
     try {
       authenticator.options = { digits: newAccount.digits, step: newAccount.period };
       authenticator.generate(newAccount.secret.toUpperCase().replace(/\s/g, ''));
@@ -345,41 +575,6 @@ export default function IKryptGuard() {
       setTimeout(() => setCopySuccess(null), 2000);
     } catch (err) {
       console.error('Failed to copy text: ', err);
-    }
-  };
-
-  // Parse QR code URL
-  const parseQRCodeURL = (url: string) => {
-    try {
-      const urlObj = new URL(url);
-      if (urlObj.protocol === 'otpauth:') {
-        const type = urlObj.host.toUpperCase() as 'TOTP' | 'HOTP';
-        const label = decodeURIComponent(urlObj.pathname.slice(1));
-        const [issuer, name] = label.includes(':') ? label.split(':', 2) : ['', label];
-        
-        const secret = urlObj.searchParams.get('secret') || '';
-        const algorithm = (urlObj.searchParams.get('algorithm') || 'SHA1') as 'SHA1' | 'SHA256' | 'SHA512';
-        const digits = parseInt(urlObj.searchParams.get('digits') || '6') as 6 | 8;
-        const period = parseInt(urlObj.searchParams.get('period') || '30');
-
-        if (!/^[A-Z2-7]+=*$/.test(secret)) {
-          throw new Error('Invalid secret format. Must be Base32.');
-        }
-
-        setNewAccount({
-          name: name.trim(),
-          issuer: issuer.trim(),
-          secret,
-          type,
-          algorithm,
-          digits,
-          period
-        });
-        setShowAddModal(true);
-      }
-    } catch (error) {
-      console.error('Invalid QR code URL:', error);
-      setError('Invalid QR code format. Please check the otpauth:// URL.');
     }
   };
 
@@ -777,42 +972,15 @@ export default function IKryptGuard() {
             </div>
           )}
 
-          {/* QR Scanner Modal - For now, just manual input */}
+          {/* QR Scanner Modal with jsQR */}
           {showQRScanner && (
-            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-              <div className="bg-gray-800 rounded-xl max-w-md w-full p-6 border border-gray-700">
-                <h3 className="text-xl font-semibold text-white mb-4">QR Code Scanner</h3>
-                
-                <div className="bg-gray-900 rounded-lg p-8 text-center mb-4">
-                  <FontAwesomeIcon icon={faCamera} className="h-16 w-16 text-gray-600 mb-4" />
-                  <p className="text-gray-400">Camera QR scanner will be available after installing jsQR</p>
-                  <p className="text-sm text-gray-500 mt-2">For now, paste the otpauth:// URL below</p>
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-300 mb-2">OTP Auth URL</label>
-                  <input
-                    type="text"
-                    placeholder="otpauth://totp/Example:user@example.com?secret=JBSWY3DPEHPK3PXP&issuer=Example"
-                    className="w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
-                    onPaste={(e) => {
-                      const url = e.clipboardData.getData('text');
-                      if (url.startsWith('otpauth://')) {
-                        parseQRCodeURL(url);
-                        setShowQRScanner(false);
-                      }
-                    }}
-                  />
-                </div>
-
-                <button
-                  onClick={() => setShowQRScanner(false)}
-                  className="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 rounded-lg transition-colors"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
+            <QRScanner
+              onScan={(data) => {
+                parseQRCodeURL(data);
+                setShowQRScanner(false);
+              }}
+              onClose={() => setShowQRScanner(false)}
+            />
           )}
 
           {/* Info Section */}
