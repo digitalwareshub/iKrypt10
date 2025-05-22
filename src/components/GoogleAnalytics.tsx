@@ -1,10 +1,11 @@
 /*
 File: src/components/GoogleAnalytics.tsx
-Purpose: Production Google Analytics integration component for GA4 tracking
+Purpose: Component to dynamically load and configure Google Analytics with proper environment variable usage
 */
 
 import { useEffect } from 'react';
 
+// Extend the Window interface to include Google Analytics global functions
 declare global {
   interface Window {
     gtag: (...args: any[]) => void;
@@ -18,8 +19,9 @@ interface GoogleAnalyticsProps {
 
 const GoogleAnalytics: React.FC<GoogleAnalyticsProps> = ({ trackingId }) => {
   useEffect(() => {
-    // Only load Google Analytics if trackingId is provided and we're in production
+    // Only load Google Analytics if trackingId is provided and we're not in development mode
     if (!trackingId || import.meta.env.DEV) {
+      console.log('Google Analytics not loaded: Missing tracking ID or in development mode');
       return;
     }
 
@@ -35,16 +37,19 @@ const GoogleAnalytics: React.FC<GoogleAnalyticsProps> = ({ trackingId }) => {
       window.dataLayer.push(args);
     };
 
-    // Configure Google Analytics
+    // Configure Google Analytics with the provided tracking ID
     window.gtag('js', new Date());
     window.gtag('config', trackingId, {
       page_title: document.title,
       page_location: window.location.href,
-      anonymize_ip: true,
+      // Additional configuration options can be added here
+      anonymize_ip: true, // For GDPR compliance
       send_page_view: true,
     });
 
-    // Cleanup function
+    console.log(`Google Analytics initialized with tracking ID: ${trackingId}`);
+
+    // Cleanup function to remove the script when component unmounts
     return () => {
       const existingScript = document.querySelector(`script[src*="${trackingId}"]`);
       if (existingScript) {
@@ -53,6 +58,7 @@ const GoogleAnalytics: React.FC<GoogleAnalyticsProps> = ({ trackingId }) => {
     };
   }, [trackingId]);
 
+  // This component doesn't render anything, it just handles the analytics setup
   return null;
 };
 
