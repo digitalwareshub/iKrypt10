@@ -18,14 +18,12 @@ import {
   faRecycle,
   faDice,
   faCheck,
-  faBars,
-  faHome,
   faTools,
-  faQuestionCircle,
-  faSignInAlt,
-  faChevronLeft,
-  faChevronRight,
-  faInfo
+  faRandom,
+  faFileAlt,
+  faCog,
+  faDatabase,
+  faShield
 } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../components/Logo';
 import EncryptionAnimation from '../components/EncryptionAnimation';
@@ -56,184 +54,6 @@ const FAQ: React.FC<{ faq: { question: string; answer: string } }> = ({ faq }) =
         </div>
       )}
     </div>
-  );
-};
-
-// Sidebar Component
-const ModernSidebar: React.FC = () => {
-  const [expanded, setExpanded] = useState(false);
-  
-  return (
-    <>
-      {/* Mobile header with toggle button */}
-      <div className="md:hidden fixed top-0 left-0 right-0 bg-gray-900/90 backdrop-blur-lg z-50 px-4 py-3 flex justify-between items-center">
-        <Logo className="h-8 w-auto" />
-        <button 
-          onClick={() => setExpanded(!expanded)}
-          className="p-2 rounded-full bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600/30"
-        >
-          <FontAwesomeIcon icon={faBars} className="h-5 w-5" />
-        </button>
-      </div>
-      
-      {/* Sidebar - hidden on mobile when not expanded */}
-      <div className={`fixed top-0 h-full bg-gray-900/80 backdrop-blur-lg border-r border-indigo-500/20 z-40 transition-all duration-300 ${
-        expanded ? 'left-0 w-64' : 'left-0 w-0 md:w-20'
-      }`}>
-        <div className="h-full flex flex-col">
-          {/* Logo */}
-          <div className={`md:flex items-center justify-center py-6 ${
-            expanded ? 'flex px-4' : 'hidden md:flex px-0'
-          }`}>
-            {expanded ? (
-              <Logo className="h-10 w-auto" />
-            ) : (
-              <div className="h-10 w-10 bg-indigo-600 rounded-full flex items-center justify-center">
-                <FontAwesomeIcon icon={faShieldAlt} className="h-5 w-5 text-white" />
-              </div>
-            )}
-          </div>
-          
-          {/* Nav Links */}
-          <div className="flex-1 overflow-y-auto py-4">
-            <nav className="px-2 space-y-2">
-              <a 
-                href="#"
-                className={`flex items-center p-3 rounded-xl transition-all ${
-                  expanded ? 'justify-start' : 'justify-center'
-                } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
-              >
-                <FontAwesomeIcon icon={faHome} className="h-5 w-5" />
-                {expanded && <span className="ml-3">Home</span>}
-                {!expanded && (
-                  <span className="absolute left-full ml-2 p-2 bg-gray-800 rounded-md text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    Home
-                  </span>
-                )}
-              </a>
-              
-              <a 
-                href="#features"
-                className={`flex items-center p-3 rounded-xl transition-all ${
-                  expanded ? 'justify-start' : 'justify-center'
-                } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
-              >
-                <FontAwesomeIcon icon={faShieldAlt} className="h-5 w-5" />
-                {expanded && <span className="ml-3">Features</span>}
-                {!expanded && (
-                  <span className="absolute left-full ml-2 p-2 bg-gray-800 rounded-md text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    Features
-                  </span>
-                )}
-              </a>
-              
-              <a 
-                href="#products"
-                className={`flex items-center p-3 rounded-xl transition-all ${
-                  expanded ? 'justify-start' : 'justify-center'
-                } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
-              >
-                <FontAwesomeIcon icon={faCubes} className="h-5 w-5" />
-                {expanded && <span className="ml-3">Products</span>}
-                {!expanded && (
-                  <span className="absolute left-full ml-2 p-2 bg-gray-800 rounded-md text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    Products
-                  </span>
-                )}
-              </a>
-              
-              <a 
-                href="#tools"
-                className={`flex items-center p-3 rounded-xl transition-all ${
-                  expanded ? 'justify-start' : 'justify-center'
-                } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
-              >
-                <FontAwesomeIcon icon={faTools} className="h-5 w-5" />
-                {expanded && <span className="ml-3">Tools</span>}
-                {!expanded && (
-                  <span className="absolute left-full ml-2 p-2 bg-gray-800 rounded-md text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    Tools
-                  </span>
-                )}
-              </a>
-              
-              <a 
-                href="#how-it-works"
-                className={`flex items-center p-3 rounded-xl transition-all ${
-                  expanded ? 'justify-start' : 'justify-center'
-                } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
-              >
-                <FontAwesomeIcon icon={faInfo} className="h-5 w-5" />
-                {expanded && <span className="ml-3">How It Works</span>}
-                {!expanded && (
-                  <span className="absolute left-full ml-2 p-2 bg-gray-800 rounded-md text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    How It Works
-                  </span>
-                )}
-              </a>
-              
-              <a 
-                href="#faq"
-                className={`flex items-center p-3 rounded-xl transition-all ${
-                  expanded ? 'justify-start' : 'justify-center'
-                } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
-              >
-                <FontAwesomeIcon icon={faQuestionCircle} className="h-5 w-5" />
-                {expanded && <span className="ml-3">FAQ</span>}
-                {!expanded && (
-                  <span className="absolute left-full ml-2 p-2 bg-gray-800 rounded-md text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    FAQ
-                  </span>
-                )}
-              </a>
-            </nav>
-          </div>
-          
-          {/* Login/Signup */}
-          <div className={`py-4 ${expanded ? 'px-4' : 'px-2'}`}>
-            <Link
-              to="/login"
-              className={`flex items-center p-3 rounded-xl transition-all ${
-                expanded ? 'justify-start' : 'justify-center'
-              } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
-            >
-              <FontAwesomeIcon icon={faSignInAlt} className="h-5 w-5" />
-              {expanded && <span className="ml-3">Login</span>}
-              {!expanded && (
-                <span className="absolute left-full ml-2 p-2 bg-gray-800 rounded-md text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                  Login
-                </span>
-              )}
-            </Link>
-            
-            {expanded && (
-              <Link
-                to="/signup"
-                className="mt-2 block text-center px-4 py-2 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors"
-              >
-                Sign Up
-              </Link>
-            )}
-          </div>
-          
-          {/* Toggle Button */}
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="hidden md:flex items-center justify-center p-2 mx-auto mb-4 rounded-full bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600/30"
-          >
-            <FontAwesomeIcon 
-              icon={expanded ? faChevronLeft : faChevronRight} 
-              className="h-4 w-4" 
-            />
-          </button>
-        </div>
-      </div>
-      
-      {/* Mobile sidebar overlay - only shown when expanded on mobile */}
-      {expanded && (
-        <div className="md:hidden fixed inset-0 bg-black/50 z-30" onClick={() => setExpanded(false)}></div>
-      )}
-    </>
   );
 };
 
@@ -326,8 +146,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900 text-white">
-      {/* Add the ModernSidebar component */}
-      <ModernSidebar />
+      {/* REMOVED THE DUPLICATE ModernSidebar COMPONENT - Now using the one from Layout */}
       
       {/* Main content container with margin for sidebar */}
       <div className="md:ml-20 transition-all duration-300">
@@ -579,7 +398,6 @@ export default function Home() {
         </section>
 
         {/* Tools Section */}
-        {/* Tools Section */}
         <section id="tools" className="py-20 relative">
           <div className="absolute inset-0 bg-[url('/hex-pattern.svg')] bg-repeat opacity-5"></div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -605,16 +423,7 @@ export default function Home() {
                 <p className="mt-2 text-gray-300">Share self-destructing messages with automatic deletion after viewing</p>
               </Link>
 
-              {/* Tool 2: Encrypted Chat */}
-              <Link to="/chat" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-indigo-500/10 hover:border-indigo-500/30 transition-all duration-300 group">
-                <div className="h-12 w-12 bg-indigo-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-indigo-500/30 transition-colors">
-                  <FontAwesomeIcon icon={faCommentAlt} className="h-6 w-6 text-indigo-400" />
-                </div>
-                <h3 className="text-lg font-semibold text-white">Encrypted Chat</h3>
-                <p className="mt-2 text-gray-300">Real-time messaging with end-to-end encryption and ephemeral messages</p>
-              </Link>
-
-              {/* Tool 3: Digital Signature */}
+              {/* Tool 2: Digital Signature */}
               <Link to="/sign" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-indigo-500/10 hover:border-indigo-500/30 transition-all duration-300 group">
                 <div className="h-12 w-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-purple-500/30 transition-colors">
                   <FontAwesomeIcon icon={faKey} className="h-6 w-6 text-purple-400" />
@@ -623,16 +432,16 @@ export default function Home() {
                 <p className="mt-2 text-gray-300">Cryptographically sign messages to verify authenticity and integrity</p>
               </Link>
 
-              {/* Tool 4: File Encryption */}
+              {/* Tool 3: File Encryption */}
               <Link to="/file-encrypt" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-indigo-500/10 hover:border-indigo-500/30 transition-all duration-300 group">
                 <div className="h-12 w-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-500/30 transition-colors">
-                  <FontAwesomeIcon icon={faKey} className="h-6 w-6 text-blue-400" />
+                  <FontAwesomeIcon icon={faFileAlt} className="h-6 w-6 text-blue-400" />
                 </div>
                 <h3 className="text-lg font-semibold text-white">File Encryption</h3>
                 <p className="mt-2 text-gray-300">Encrypt files with AES-256 before sharing or storing them</p>
               </Link>
 
-              {/* Tool 5: Password Key */}
+              {/* Tool 4: Password Key */}
               <Link to="/password-key" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-indigo-500/10 hover:border-indigo-500/30 transition-all duration-300 group">
                 <div className="h-12 w-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-green-500/30 transition-colors">
                   <FontAwesomeIcon icon={faKey} className="h-6 w-6 text-green-400" />
@@ -641,7 +450,7 @@ export default function Home() {
                 <p className="mt-2 text-gray-300">Generate strong cryptographic keys from passwords using PBKDF2</p>
               </Link>
 
-              {/* Tool 6: Message Authentication */}
+              {/* Tool 5: Message Authentication */}
               <Link to="/mac" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-indigo-500/10 hover:border-indigo-500/30 transition-all duration-300 group">
                 <div className="h-12 w-12 bg-pink-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-pink-500/30 transition-colors">
                   <FontAwesomeIcon icon={faFingerprint} className="h-6 w-6 text-pink-400" />
@@ -650,7 +459,7 @@ export default function Home() {
                 <p className="mt-2 text-gray-300">Create and verify message authentication codes for data integrity</p>
               </Link>
 
-              {/* Tool 7: Hash Generator */}
+              {/* Tool 6: Hash Generator */}
               <Link to="/hash" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-indigo-500/10 hover:border-indigo-500/30 transition-all duration-300 group">
                 <div className="h-12 w-12 bg-yellow-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-yellow-500/30 transition-colors">
                   <FontAwesomeIcon icon={faRecycle} className="h-6 w-6 text-yellow-400" />
@@ -659,13 +468,58 @@ export default function Home() {
                 <p className="mt-2 text-gray-300">Generate cryptographic hashes of any text or data</p>
               </Link>
 
-              {/* Tool 8: Random Generator */}
+              {/* Tool 7: Random Generator */}
               <Link to="/random" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-indigo-500/10 hover:border-indigo-500/30 transition-all duration-300 group">
                 <div className="h-12 w-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-red-500/30 transition-colors">
                   <FontAwesomeIcon icon={faDice} className="h-6 w-6 text-red-400" />
                 </div>
                 <h3 className="text-lg font-semibold text-white">Random Generator</h3>
                 <p className="mt-2 text-gray-300">Generate cryptographically secure random values for keys and passwords</p>
+              </Link>
+
+              {/* Tool 8: Split Key */}
+              <Link to="/split-key" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-indigo-500/10 hover:border-indigo-500/30 transition-all duration-300 group">
+                <div className="h-12 w-12 bg-teal-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-teal-500/30 transition-colors">
+                  <FontAwesomeIcon icon={faShareAlt} className="h-6 w-6 text-teal-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-white">Split Key</h3>
+                <p className="mt-2 text-gray-300">Split cryptographic keys using Shamir's Secret Sharing algorithm</p>
+              </Link>
+
+              {/* Tool 9: Text Encryption */}
+              <Link to="/text-encrypt" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-indigo-500/10 hover:border-indigo-500/30 transition-all duration-300 group">
+                <div className="h-12 w-12 bg-orange-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-orange-500/30 transition-colors">
+                  <FontAwesomeIcon icon={faCommentAlt} className="h-6 w-6 text-orange-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-white">Text Encryption</h3>
+                <p className="mt-2 text-gray-300">Encrypt and decrypt text messages with symmetric encryption</p>
+              </Link>
+
+              {/* Tool 10: Keys */}
+              <Link to="/keys" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-indigo-500/10 hover:border-indigo-500/30 transition-all duration-300 group">
+                <div className="h-12 w-12 bg-cyan-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-cyan-500/30 transition-colors">
+                  <FontAwesomeIcon icon={faCog} className="h-6 w-6 text-cyan-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-white">Keys</h3>
+                <p className="mt-2 text-gray-300">Generate and manage cryptographic key pairs for encryption</p>
+              </Link>
+
+              {/* Tool 11: Password Generator */}
+              <Link to="/password-generator" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-indigo-500/10 hover:border-indigo-500/30 transition-all duration-300 group">
+                <div className="h-12 w-12 bg-emerald-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-emerald-500/30 transition-colors">
+                  <FontAwesomeIcon icon={faRandom} className="h-6 w-6 text-emerald-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-white">Password Generator</h3>
+                <p className="mt-2 text-gray-300">Generate strong, cryptographically secure passwords</p>
+              </Link>
+
+              {/* Tool 12: Secure Notes */}
+              <Link to="/secure-notes" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-indigo-500/10 hover:border-indigo-500/30 transition-all duration-300 group">
+                <div className="h-12 w-12 bg-violet-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-violet-500/30 transition-colors">
+                  <FontAwesomeIcon icon={faDatabase} className="h-6 w-6 text-violet-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-white">Secure Notes</h3>
+                <p className="mt-2 text-gray-300">Create encrypted notes with client-side storage protection</p>
               </Link>
             </div>
 
