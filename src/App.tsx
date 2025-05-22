@@ -1,6 +1,7 @@
-// Update App.tsx to include new routes and ScrollToTop
+// Update App.tsx to include Vercel Analytics
 
 import { Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import Chat from './pages/chat';
 import Layout from './components/Layout';
 import ScrollToTop from './components/ScrollToTop';
@@ -48,14 +49,16 @@ export default function App() {
           <Route path="secure-notes" element={<SecureNotes />} />
           <Route path="chat" element={<Chat />} />
           <Route path="ikrypt-code" element={<IKryptCode />} />
-          <Route path="404" element={<NotFound />} /> {/* Add explicit 404 route */}
-          <Route path="*" element={<NotFound />} /> {/* Add catch-all route */}
+          <Route path="404" element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
           <Route path="contact" element={<Contact />} />
           <Route path="ikrypt-guard" element={<IKryptGuard />} />
           <Route path="ikrypt-shield" element={<IKryptShield />} />
-
         </Route>
       </Routes>
+      
+      {/* Add Vercel Analytics */}
+      <Analytics />
     </div>
   );
 }
