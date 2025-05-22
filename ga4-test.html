@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GA4 Debug Checker</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-78JFERH2DN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-78JFERH2DN', {
+        debug_mode: true
+      });
+      
+      // Debug info
+      console.log('GA4 Debug: Script loaded');
+      console.log('GA4 Tracking ID: G-78JFERH2DN');
+      
+      // Send a test event
+      setTimeout(() => {
+        gtag('event', 'test_event', {
+          custom_parameter: 'testing_ga4'
+        });
+        console.log('GA4 Debug: Test event sent');
+      }, 2000);
+    </script>
+</head>
+<body>
+    <h1>GA4 Debug Test Page</h1>
+    <p>Check browser console for debug info</p>
+    <button onclick="gtag('event', 'button_click', {test: 'manual_click'})">Test Button</button>
+</body>
+</html>
