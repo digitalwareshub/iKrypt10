@@ -10,20 +10,13 @@ import {
   faExclamationTriangle,
   faCheckCircle,
   faTimesCircle,
-  faClock,
   faServer,
-  faKey,
-  faCertificate,
   faNetworkWired,
-  faEye,
   faSearch,
   faDownload,
-  faCopy,
   faCheck,
   faInfoCircle,
-  faSpinner,
-  faChartBar,
-  faExclamationCircle
+  faSpinner
 } from '@fortawesome/free-solid-svg-icons';
 
 // Types
@@ -108,7 +101,6 @@ export default function IKryptShield() {
   const [scanHistory, setScanHistory] = useState<SecurityScan[]>([]);
   const [currentUrl, setCurrentUrl] = useState('');
   const [selectedTool, setSelectedTool] = useState<ScanTool>('full');
-  const [copySuccess, setCopySuccess] = useState<string | null>(null);
 
   // Real security scanning functions
   const performSSLScan = async (url: string): Promise<SSLResults> => {
@@ -198,8 +190,6 @@ export default function IKryptShield() {
 
   const performDNSScan = async (url: string): Promise<DNSResults> => {
     try {
-      const domain = new URL(url).hostname;
-      
       // Simulate DNS security record checks
       // In production, use DNS over HTTPS or DNS API
       const mockDNSData: DNSResults = {
@@ -226,17 +216,15 @@ export default function IKryptShield() {
 
   const performPortScan = async (url: string): Promise<ServerResults> => {
     try {
-      const domain = new URL(url).hostname;
       const startTime = Date.now();
       
       // Test common ports using fetch with timeout
-      const commonPorts = [80, 443, 21, 22, 25, 53, 110, 143, 993, 995];
       const openPorts: number[] = [];
       
       // Simulate port scanning (limited by CORS in browser)
       for (const port of [80, 443]) {
         try {
-          const testUrl = `${port === 443 ? 'https' : 'http'}://${domain}:${port}`;
+          const testUrl = `${port === 443 ? 'https' : 'http'}://${new URL(url).hostname}:${port}`;
           await fetch(testUrl, { method: 'HEAD', mode: 'no-cors' });
           openPorts.push(port);
         } catch {
@@ -425,16 +413,6 @@ export default function IKryptShield() {
     recommendations.push('Keep server software updated');
     
     return recommendations;
-  };
-
-  const copyToClipboard = async (text: string, id: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopySuccess(id);
-      setTimeout(() => setCopySuccess(null), 2000);
-    } catch (err) {
-      console.error('Failed to copy text: ', err);
-    }
   };
 
   const exportReport = (scan: SecurityScan) => {
