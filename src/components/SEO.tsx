@@ -8,6 +8,7 @@ interface SEOProps {
   description?: string;
   canonicalUrl?: string;
   keywords?: string;
+  image?: string;
 }
 
 const SEO: React.FC<SEOProps> = ({
@@ -15,9 +16,11 @@ const SEO: React.FC<SEOProps> = ({
   description = '10+ free, browser-based privacy tools. End-to-end encryption with zero server-side processing. Encrypt messages, files, and more without registration.',
   canonicalUrl = 'https://ikrypt.com/',
   keywords = 'encryption tools, privacy, secure messaging, file encryption, end-to-end encryption, cryptography',
+  image = '/preview_image.png',
 }) => {
   const siteUrl = 'https://ikrypt.com';
   const fullCanonicalUrl = canonicalUrl.startsWith('http') ? canonicalUrl : `${siteUrl}${canonicalUrl}`;
+  const fullImageUrl = image.startsWith('http') ? image : `${siteUrl}${image}`;
   
   useEffect(() => {
     // Update title
@@ -54,19 +57,19 @@ const SEO: React.FC<SEOProps> = ({
     updateMetaTag('og:url', fullCanonicalUrl);
     updateMetaTag('og:title', title);
     updateMetaTag('og:description', description);
-    updateMetaTag('og:image', `${siteUrl}/og-image.png`);
+    updateMetaTag('og:image', fullImageUrl);
     
     // Update Twitter tags
     updateMetaTag('twitter:card', 'summary_large_image');
     updateMetaTag('twitter:url', fullCanonicalUrl);
     updateMetaTag('twitter:title', title);
     updateMetaTag('twitter:description', description);
-    updateMetaTag('twitter:image', `${siteUrl}/og-image.png`);
+    updateMetaTag('twitter:image', fullImageUrl);
     
     return () => {
       // No cleanup needed, as we're updating existing tags
     };
-  }, [title, description, keywords, fullCanonicalUrl]);
+  }, [title, description, keywords, fullCanonicalUrl, fullImageUrl]);
   
   const updateMetaTag = (property: string, content: string) => {
     let metaTag = document.querySelector(`meta[property="${property}"]`);
