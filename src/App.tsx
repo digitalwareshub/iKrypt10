@@ -1,6 +1,7 @@
 // Update App.tsx to include new routes and ScrollToTop
 
 import { Routes, Route } from 'react-router-dom';
+import Chat from './pages/chat';
 import Layout from './components/Layout';
 import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/index';
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="keys" element={<Keys />} />
           <Route path="password-generator" element={<PasswordGenerator />} />
           <Route path="secure-notes" element={<SecureNotes />} />
+          <Route path="chat" element={<Chat />} />
         </Route>
       </Routes>
     </div>
