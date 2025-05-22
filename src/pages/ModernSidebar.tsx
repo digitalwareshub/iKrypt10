@@ -15,12 +15,9 @@ import {
   faInfo
 } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../components/Logo';
+import { FEATURES } from '../config/features';
 
-interface ModernSidebarProps {
-  disableAuth?: boolean; // Add prop to control auth buttons
-}
-
-const ModernSidebar: React.FC<ModernSidebarProps> = ({ disableAuth = false }) => {
+const ModernSidebar: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -45,15 +42,6 @@ const ModernSidebar: React.FC<ModernSidebarProps> = ({ disableAuth = false }) =>
   const handleHomeNavigation = () => {
     navigate('/');
     setExpanded(false);
-  };
-
-  // Handle auth button clicks when disabled
-  const handleAuthClick = (e: React.MouseEvent) => {
-    if (disableAuth) {
-      e.preventDefault();
-      // Optionally show a message or do nothing
-      console.log('Auth buttons are disabled');
-    }
   };
   
   return (
@@ -185,54 +173,36 @@ const ModernSidebar: React.FC<ModernSidebarProps> = ({ disableAuth = false }) =>
             </nav>
           </div>
           
-          {/* Login/Signup - Modified to support disabled state */}
-          <div className={`py-4 ${expanded ? 'px-4' : 'px-2'}`}>
-            <Link
-              to={disableAuth ? "#" : "/login"}
-              onClick={(e) => {
-                if (disableAuth) {
-                  handleAuthClick(e);
-                } else {
-                  setExpanded(false);
-                }
-              }}
-              className={`flex items-center p-3 rounded-xl transition-all ${
-                expanded ? 'justify-start' : 'justify-center'
-              } ${
-                disableAuth 
-                  ? 'text-gray-500 cursor-not-allowed opacity-50' 
-                  : 'text-gray-300 hover:text-white hover:bg-indigo-600/20'
-              } group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
-            >
-              <FontAwesomeIcon icon={faSignInAlt} className="h-5 w-5" />
-              {expanded && <span className="ml-3">Login</span>}
-              {!expanded && (
-                <span className="absolute left-full ml-2 p-2 bg-gray-800 rounded-md text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                  {disableAuth ? 'Login (Disabled)' : 'Login'}
-                </span>
-              )}
-            </Link>
-            
-            {expanded && (
+          {/* Login/Signup - Only shown when feature is enabled */}
+          {FEATURES.USER_AUTH_ENABLED && (
+            <div className={`py-4 ${expanded ? 'px-4' : 'px-2'}`}>
               <Link
-                to={disableAuth ? "#" : "/signup"}
-                onClick={(e) => {
-                  if (disableAuth) {
-                    handleAuthClick(e);
-                  } else {
-                    setExpanded(false);
-                  }
-                }}
-                className={`mt-2 block text-center px-4 py-2 rounded-xl font-medium transition-colors ${
-                  disableAuth
-                    ? 'bg-gray-600 text-gray-400 cursor-not-allowed opacity-50'
-                    : 'bg-indigo-600 text-white hover:bg-indigo-700'
-                }`}
+                to="/login"
+                onClick={() => setExpanded(false)}
+                className={`flex items-center p-3 rounded-xl transition-all ${
+                  expanded ? 'justify-start' : 'justify-center'
+                } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
               >
-                Sign Up
+                <FontAwesomeIcon icon={faSignInAlt} className="h-5 w-5" />
+                {expanded && <span className="ml-3">Login</span>}
+                {!expanded && (
+                  <span className="absolute left-full ml-2 p-2 bg-gray-800 rounded-md text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    Login
+                  </span>
+                )}
               </Link>
-            )}
-          </div>
+              
+              {expanded && (
+                <Link
+                  to="/signup"
+                  onClick={() => setExpanded(false)}
+                  className="mt-2 block text-center px-4 py-2 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors"
+                >
+                  Sign Up
+                </Link>
+              )}
+            </div>
+          )}
           
           {/* Toggle Button */}
           <button
