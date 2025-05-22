@@ -1,4 +1,6 @@
 // src/components/ScrollToTop.tsx
+// Purpose: Scroll to top on route changes
+
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 

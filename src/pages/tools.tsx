@@ -1,7 +1,7 @@
 // src/pages/tools.tsx
 // Purpose: Interactive tools showcase page with descriptions and visual cards
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   LockClosedIcon, 
@@ -13,7 +13,11 @@ import {
   QrCodeIcon,
   ChatBubbleLeftRightIcon,
   CubeIcon,
-  ArrowPathIcon
+  ArrowPathIcon,
+  DocumentDuplicateIcon,
+  BeakerIcon,
+  DocumentIcon,
+  SparklesIcon
 } from '@heroicons/react/24/outline';
 
 // Define all the tools with descriptions and icons
@@ -78,15 +82,15 @@ const tools = [
     id: 'random',
     name: 'Random Generator',
     description: 'Generate cryptographically secure random values for keys, passwords, and more. Creates strong entropy for security applications.',
-    icon: <CubeIcon className="h-8 w-8" />,
+    icon: <SparklesIcon className="h-8 w-8" />,
     color: 'bg-red-500',
     path: '/random'
   },
   {
     id: 'split-key',
-    name: 'Key Splitter',
+    name: 'Secret Sharing',
     description: 'Split secrets into multiple shares that require a threshold to reconstruct. Implements Shamir\'s Secret Sharing for distributed key management.',
-    icon: <ClipboardIcon className="h-8 w-8" />,
+    icon: <CubeIcon className="h-8 w-8" />,
     color: 'bg-orange-500',
     path: '/split-key'
   },
@@ -94,7 +98,7 @@ const tools = [
     id: 'text-encrypt',
     name: 'Text Encryption',
     description: 'Encrypt and decrypt text messages with password-based encryption. Secure communication for sensitive information using AES-256.',
-    icon: <ChatBubbleLeftRightIcon className="h-8 w-8" />,
+    icon: <DocumentIcon className="h-8 w-8" />,
     color: 'bg-teal-500',
     path: '/text-encrypt'
   },
@@ -102,7 +106,7 @@ const tools = [
     id: 'keys',
     name: 'Key Management',
     description: 'Generate, store, and manage cryptographic keys for various encryption algorithms. Create and export RSA and ECDSA key pairs.',
-    icon: <QrCodeIcon className="h-8 w-8" />,
+    icon: <BeakerIcon className="h-8 w-8" />,
     color: 'bg-cyan-500',
     path: '/keys'
   },
@@ -113,10 +117,31 @@ const tools = [
     icon: <QrCodeIcon className="h-8 w-8" />,
     color: 'bg-purple-500',
     path: '/qr'
+  },
+  {
+    id: 'password-generator',
+    name: 'Password Generator',
+    description: 'Create strong, cryptographically secure passwords with customizable complexity and entropy calculation for maximum security.',
+    icon: <KeyIcon className="h-8 w-8" />,
+    color: 'bg-emerald-500',
+    path: '/password-generator'
+  },
+  {
+    id: 'secure-notes',
+    name: 'Secure Notes',
+    description: 'Encrypted notepad for sensitive information with client-side encryption and automatic deletion. Your notes never leave your browser.',
+    icon: <DocumentDuplicateIcon className="h-8 w-8" />,
+    color: 'bg-violet-500',
+    path: '/secure-notes'
   }
 ];
 
 export default function Tools() {
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900 text-white">
       {/* Header */}
@@ -128,7 +153,7 @@ export default function Tools() {
               Privacy Toolkit
             </div>
             <h1 className="text-4xl font-extrabold text-white sm:text-5xl mb-6">
-              10 Encryption Tools
+              {tools.length} Encryption Tools
             </h1>
             <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-300">
               A comprehensive suite of browser-based encryption and security tools with zero data storage on our servers

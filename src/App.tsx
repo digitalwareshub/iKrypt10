@@ -1,7 +1,8 @@
-// Update App.tsx to include new routes
+// Update App.tsx to include new routes and ScrollToTop
 
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
+import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/index';
 import Tools from './pages/tools';
 import OneTime from './pages/one-time';
@@ -21,6 +22,7 @@ import SecureNotes from './pages/secure-notes';
 export default function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900">
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />

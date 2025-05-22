@@ -579,6 +579,7 @@ export default function Home() {
         </section>
 
         {/* Tools Section */}
+        {/* Tools Section */}
         <section id="tools" className="py-20 relative">
           <div className="absolute inset-0 bg-[url('/hex-pattern.svg')] bg-repeat opacity-5"></div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -666,8 +667,6 @@ export default function Home() {
                 <h3 className="text-lg font-semibold text-white">Random Generator</h3>
                 <p className="mt-2 text-gray-300">Generate cryptographically secure random values for keys and passwords</p>
               </Link>
-
-              {/* More tool cards would go here... */}
             </div>
 
             <div className="mt-12 text-center">
