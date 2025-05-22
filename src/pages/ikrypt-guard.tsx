@@ -52,6 +52,8 @@ export default function IKryptGuard() {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [copySuccess, setCopySuccess] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   
   // Add account form state
   const [newAccount, setNewAccount] = useState({
@@ -64,11 +66,6 @@ export default function IKryptGuard() {
     period: 30
   });
 
-  // Load accounts from localStorage on component mount
-  useEffect(() => {
-    loadAccounts();
-  }, []);
-
   // Update TOTP codes every second
   useEffect(() => {
     if (!isUnlocked) return;
@@ -80,48 +77,160 @@ export default function IKryptGuard() {
     return () => clearInterval(interval);
   }, [accounts, isUnlocked]);
 
-  // Encryption/Decryption functions (simplified for demo)
-  const encrypt = (text: string, password: string): string => {
-    // In production, use proper encryption like AES
-    return btoa(text + '|' + password);
+  // Initialize the app - check if there are existing accounts
+  useEffect(() => {
+    const checkExistingData = () => {
+      const stored = localStorage.getItem('ikrypt-guard-accounts');
+      if (!stored) {
+        // No existing data, user can set any password
+        console.log('No existing accounts found');
+      }
+    };
+    checkExistingData();
+  }, []);
+
+  // Improved encryption/decryption using Web Crypto API
+  const encrypt = async (text: string, password: string): Promise<string> => {
+    try {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+      
+      // Create a key from the password
+      const passwordKey = await crypto.subtle.importKey(
+        'raw',
+        encoder.encode(password),
+        { name: 'PBKDF2' },
+        false,
+        ['deriveBits', 'deriveKey']
+      );
+      
+      // Generate a random salt
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      
+      // Derive an encryption key
+      const key = await crypto.subtle.deriveKey(
+        {
+          name: 'PBKDF2',
+          salt: salt,
+          iterations: 100000,
+          hash: 'SHA-256'
+        },
+        passwordKey,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt']
+      );
+      
+      // Generate a random IV
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      
+      // Encrypt the data
+      const encrypted = await crypto.subtle.encrypt(
+        { name: 'AES-GCM', iv: iv },
+        key,
+        data
+      );
+      
+      // Combine salt, iv, and encrypted data
+      const combined = new Uint8Array(salt.length + iv.length + encrypted.byteLength);
+      combined.set(salt, 0);
+      combined.set(iv, salt.length);
+      combined.set(new Uint8Array(encrypted), salt.length + iv.length);
+      
+      // Return as base64
+      return btoa(String.fromCharCode(...combined));
+    } catch (error) {
+      console.error('Encryption error:', error);
+      throw new Error('Failed to encrypt data');
+    }
   };
 
-  const decrypt = (encryptedText: string, password: string): string => {
+  const decrypt = async (encryptedData: string, password: string): Promise<string> => {
     try {
-      const decoded = atob(encryptedText);
-      const [text, pass] = decoded.split('|');
-      return pass === password ? text : '';
-    } catch {
-      return '';
+      const encoder = new TextEncoder();
+      const decoder = new TextDecoder();
+      
+      // Decode from base64
+      const combined = new Uint8Array(
+        atob(encryptedData).split('').map(char => char.charCodeAt(0))
+      );
+      
+      // Extract salt, iv, and encrypted data
+      const salt = combined.slice(0, 16);
+      const iv = combined.slice(16, 28);
+      const encrypted = combined.slice(28);
+      
+      // Create a key from the password
+      const passwordKey = await crypto.subtle.importKey(
+        'raw',
+        encoder.encode(password),
+        { name: 'PBKDF2' },
+        false,
+        ['deriveBits', 'deriveKey']
+      );
+      
+      // Derive the decryption key
+      const key = await crypto.subtle.deriveKey(
+        {
+          name: 'PBKDF2',
+          salt: salt,
+          iterations: 100000,
+          hash: 'SHA-256'
+        },
+        passwordKey,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['decrypt']
+      );
+      
+      // Decrypt the data
+      const decrypted = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv: iv },
+        key,
+        encrypted
+      );
+      
+      return decoder.decode(decrypted);
+    } catch (error) {
+      console.error('Decryption error:', error);
+      throw new Error('Failed to decrypt data - invalid password or corrupted data');
     }
   };
 
   // Save accounts to localStorage
-  const saveAccounts = (accountsToSave: TOTPAccount[]) => {
+  const saveAccounts = async (accountsToSave: TOTPAccount[]) => {
     if (masterPassword) {
-      const encrypted = encrypt(JSON.stringify(accountsToSave), masterPassword);
-      localStorage.setItem('ikrypt-guard-accounts', encrypted);
-    }
-  };
-
-  // Load accounts from localStorage
-  const loadAccounts = () => {
-    const stored = localStorage.getItem('ikrypt-guard-accounts');
-    if (stored && masterPassword) {
       try {
-        const decrypted = decrypt(stored, masterPassword);
-        if (decrypted) {
-          const parsedAccounts = JSON.parse(decrypted);
-          setAccounts(parsedAccounts);
-          setIsUnlocked(true);
-        }
+        const encrypted = await encrypt(JSON.stringify(accountsToSave), masterPassword);
+        localStorage.setItem('ikrypt-guard-accounts', encrypted);
       } catch (error) {
-        console.error('Failed to load accounts');
+        console.error('Failed to save accounts:', error);
+        setError('Failed to save accounts');
       }
     }
   };
 
-  // TOTP generation function - REAL implementation
+  // Load accounts from localStorage
+  const loadAccounts = async (): Promise<boolean> => {
+    const stored = localStorage.getItem('ikrypt-guard-accounts');
+    
+    if (stored && masterPassword) {
+      try {
+        const decrypted = await decrypt(stored, masterPassword);
+        const parsedAccounts = JSON.parse(decrypted);
+        setAccounts(parsedAccounts);
+        return true;
+      } catch (error) {
+        console.error('Failed to load accounts:', error);
+        throw new Error('Invalid master password');
+      }
+    }
+    
+    // No stored accounts or no password - this is fine for first-time setup
+    return true;
+  };
+
+  // TOTP generation function
   const generateTOTP = (secret: string, digits: number = 6, period: number = 30): TOTPCode => {
     try {
       // Configure TOTP options
@@ -157,11 +266,10 @@ export default function IKryptGuard() {
     setCodes(newCodes);
   };
 
-  // Generate backup codes - REAL implementation
+  // Generate backup codes
   const generateBackupCodes = (): string[] => {
     const codes = [];
     for (let i = 0; i < 10; i++) {
-      // Generate cryptographically secure random codes
       const array = new Uint8Array(4);
       crypto.getRandomValues(array);
       const code = Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('').toUpperCase();
@@ -171,16 +279,15 @@ export default function IKryptGuard() {
   };
 
   // Add new account with validation
-  const addAccount = () => {
-    // Validate required fields
+  const addAccount = async () => {
     if (!newAccount.name.trim() || !newAccount.secret.trim()) {
-      alert('Name and secret are required');
+      setError('Name and secret are required');
       return;
     }
 
     // Validate secret format (Base32)
     if (!/^[A-Z2-7]+=*$/i.test(newAccount.secret)) {
-      alert('Invalid secret format. Must be Base32 encoded.');
+      setError('Invalid secret format. Must be Base32 encoded.');
       return;
     }
 
@@ -189,7 +296,7 @@ export default function IKryptGuard() {
       authenticator.options = { digits: newAccount.digits, step: newAccount.period };
       authenticator.generate(newAccount.secret.toUpperCase().replace(/\s/g, ''));
     } catch (error) {
-      alert('Invalid secret key. Please check and try again.');
+      setError('Invalid secret key. Please check and try again.');
       return;
     }
 
@@ -197,7 +304,7 @@ export default function IKryptGuard() {
       id: Date.now().toString(),
       name: newAccount.name.trim(),
       issuer: newAccount.issuer.trim(),
-      secret: newAccount.secret.toUpperCase().replace(/\s/g, ''), // Normalize secret
+      secret: newAccount.secret.toUpperCase().replace(/\s/g, ''),
       type: newAccount.type,
       algorithm: newAccount.algorithm,
       digits: newAccount.digits,
@@ -209,7 +316,7 @@ export default function IKryptGuard() {
 
     const updatedAccounts = [...accounts, account];
     setAccounts(updatedAccounts);
-    saveAccounts(updatedAccounts);
+    await saveAccounts(updatedAccounts);
     
     setNewAccount({
       name: '',
@@ -221,13 +328,14 @@ export default function IKryptGuard() {
       period: 30
     });
     setShowAddModal(false);
+    setError(null);
   };
 
   // Delete account
-  const deleteAccount = (id: string) => {
+  const deleteAccount = async (id: string) => {
     const updatedAccounts = accounts.filter(acc => acc.id !== id);
     setAccounts(updatedAccounts);
-    saveAccounts(updatedAccounts);
+    await saveAccounts(updatedAccounts);
   };
 
   // Copy to clipboard
@@ -241,7 +349,7 @@ export default function IKryptGuard() {
     }
   };
 
-  // Parse QR code URL - REAL implementation
+  // Parse QR code URL
   const parseQRCodeURL = (url: string) => {
     try {
       const urlObj = new URL(url);
@@ -255,7 +363,6 @@ export default function IKryptGuard() {
         const digits = parseInt(urlObj.searchParams.get('digits') || '6') as 6 | 8;
         const period = parseInt(urlObj.searchParams.get('period') || '30');
 
-        // Validate secret format (Base32)
         if (!/^[A-Z2-7]+=*$/.test(secret)) {
           throw new Error('Invalid secret format. Must be Base32.');
         }
@@ -273,14 +380,35 @@ export default function IKryptGuard() {
       }
     } catch (error) {
       console.error('Invalid QR code URL:', error);
-      alert('Invalid QR code format. Please check the otpauth:// URL.');
+      setError('Invalid QR code format. Please check the otpauth:// URL.');
     }
   };
 
-  // Unlock with master password
-  const unlock = () => {
-    if (masterPassword) {
-      loadAccounts();
+  // Fixed unlock function
+  const unlock = async () => {
+    setError(null);
+    setIsLoading(true);
+    
+    if (!masterPassword.trim()) {
+      setError('Please enter a master password');
+      setIsLoading(false);
+      return;
+    }
+    
+    if (masterPassword.length < 4) {
+      setError('Master password must be at least 4 characters long');
+      setIsLoading(false);
+      return;
+    }
+    
+    try {
+      await loadAccounts();
+      setIsUnlocked(true);
+    } catch (error) {
+      setError('Invalid master password. Please try again.');
+      setMasterPassword('');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -317,20 +445,37 @@ export default function IKryptGuard() {
                       type="password"
                       value={masterPassword}
                       onChange={(e) => setMasterPassword(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && unlock()}
-                      className="w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      onKeyPress={(e) => e.key === 'Enter' && !isLoading && unlock()}
+                      disabled={isLoading}
+                      className="w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:opacity-50"
                       placeholder="Enter master password"
                     />
                   </div>
                   
                   <button
                     onClick={unlock}
-                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                    disabled={!masterPassword.trim() || isLoading}
+                    className="w-full bg-orange-600 hover:bg-orange-700 disabled:bg-gray-600 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
                   >
-                    <FontAwesomeIcon icon={faLock} className="mr-2" />
-                    Unlock
+                    {isLoading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Unlocking...
+                      </>
+                    ) : (
+                      <>
+                        <FontAwesomeIcon icon={faLock} className="mr-2" />
+                        Unlock
+                      </>
+                    )}
                   </button>
                 </div>
+
+                {error && (
+                  <div className="mt-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
+                    <p className="text-red-300 text-sm">{error}</p>
+                  </div>
+                )}
 
                 <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
                   <div className="flex items-start">
@@ -383,6 +528,13 @@ export default function IKryptGuard() {
               </button>
             </div>
           </div>
+
+          {/* Error Display */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg">
+              <p className="text-red-300">{error}</p>
+            </div>
+          )}
 
           {/* Search */}
           <div className="mb-6">
@@ -566,7 +718,10 @@ export default function IKryptGuard() {
                     Add Account
                   </button>
                   <button
-                    onClick={() => setShowAddModal(false)}
+                    onClick={() => {
+                      setShowAddModal(false);
+                      setError(null);
+                    }}
                     className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 rounded-lg transition-colors"
                   >
                     Cancel
@@ -623,7 +778,7 @@ export default function IKryptGuard() {
             </div>
           )}
 
-          {/* QR Scanner Placeholder */}
+          {/* QR Scanner Modal */}
           {showQRScanner && (
             <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
               <div className="bg-gray-800 rounded-xl max-w-md w-full p-6 border border-gray-700">
@@ -666,7 +821,7 @@ export default function IKryptGuard() {
               <div>
                 <h3 className="text-lg font-semibold text-white mb-2">Security & Privacy</h3>
                 <ul className="text-gray-300 space-y-1 text-sm">
-                  <li>• All 2FA data is encrypted with your master password and stored locally</li>
+                  <li>• All 2FA data is encrypted with AES-256-GCM and your master password</li>
                   <li>• Your secrets never leave your device - complete zero-knowledge architecture</li>
                   <li>• TOTP codes generated using industry-standard algorithms (RFC 6238)</li>
                   <li>• Backup codes are generated cryptographically and should be stored securely</li>
