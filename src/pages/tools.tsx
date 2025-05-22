@@ -9,7 +9,6 @@ import {
   KeyIcon,
   FingerPrintIcon,
   ShieldCheckIcon,
-  ClipboardIcon,
   QrCodeIcon,
   ChatBubbleLeftRightIcon,
   CubeIcon,
