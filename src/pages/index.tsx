@@ -584,7 +584,7 @@ export default function Home() {
               </Link>
 
               {/* iKrypt Code */}
-              <Link to="/404" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300 group hover:shadow-lg hover:shadow-blue-500/10">
+              <Link to="/ikrypt-code" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300 group hover:shadow-lg hover:shadow-blue-500/10">
                 <div className="flex items-start justify-between mb-4">
                   <div className="h-12 w-12 bg-blue-500/20 rounded-lg flex items-center justify-center group-hover:bg-blue-500/30 transition-colors">
                     <FontAwesomeIcon icon={faCode} className="h-6 w-6 text-blue-400" />
