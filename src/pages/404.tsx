@@ -15,10 +15,7 @@ import {
   faExclamationTriangle,
   faShieldAlt,
   faQrcode,
-  faHammer,
-  faMagnifyingGlass,
-  faCode,
-  faChain
+  faCode
 } from '@fortawesome/free-solid-svg-icons';
 
 export default function NotFound() {
