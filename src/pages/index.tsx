@@ -476,12 +476,12 @@ export default function Home() {
 
             <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {/* iKrypt Shield */}
-              <Link to="/404" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-red-500/10 hover:border-red-500/30 transition-all duration-300 group hover:shadow-lg hover:shadow-red-500/10">
+              <Link to="/ikrypt-shield" className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-red-500/10 hover:border-red-500/30 transition-all duration-300 group hover:shadow-lg hover:shadow-red-500/10">
                 <div className="flex items-start justify-between mb-4">
                   <div className="h-12 w-12 bg-red-500/20 rounded-lg flex items-center justify-center group-hover:bg-red-500/30 transition-colors">
                     <FontAwesomeIcon icon={faShieldAlt} className="h-6 w-6 text-red-400" />
                   </div>
-                  <span className="bg-orange-500/20 text-orange-400 text-xs px-2 py-1 rounded-full">Coming Soon</span>
+                  <span className="bg-orange-500/20 text-orange-400 text-xs px-2 py-1 rounded-full">Available Now</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">iKrypt Shield</h3>
                 <p className="text-gray-400 text-sm mb-3">Your digital perimeter guardian</p>

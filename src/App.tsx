@@ -23,6 +23,7 @@ import NotFound from './pages/404';
 import IKryptCode from './pages/ikrypt-code';
 import Contact from './pages/contact';
 import IKryptGuard from './pages/ikrypt-guard';
+import IKryptShield from './pages/ikrypt-shield';
 
 export default function App() {
   return (
@@ -51,6 +52,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} /> {/* Add catch-all route */}
           <Route path="contact" element={<Contact />} />
           <Route path="ikrypt-guard" element={<IKryptGuard />} />
+          <Route path="ikrypt-shield" element={<IKryptShield />} />
 
         </Route>
       </Routes>
