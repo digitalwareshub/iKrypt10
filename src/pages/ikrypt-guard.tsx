@@ -21,9 +21,6 @@ import {
 // Import TOTP library
 import { authenticator } from 'otplib';
 
-// Import jsQR for QR code scanning (you need to install: npm install jsqr @types/jsqr)
-import jsQR from 'jsqr';
-
 // Types
 interface TOTPAccount {
   id: string;
@@ -44,182 +41,6 @@ interface TOTPCode {
   remainingTime: number;
   progress: number;
 }
-
-// QR Scanner Component
-const QRScanner: React.FC<{
-  onScan: (data: string) => void;
-  onClose: () => void;
-}> = ({ onScan, onClose }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isScanning, setIsScanning] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [stream, setStream] = useState<MediaStream | null>(null);
-
-  useEffect(() => {
-    startCamera();
-    return () => {
-      stopCamera();
-    };
-  }, []);
-
-  const startCamera = async () => {
-    try {
-      setError(null);
-      
-      // Request camera access with back camera preference
-      const constraints: MediaStreamConstraints = {
-        video: {
-          facingMode: { ideal: 'environment' }, // Try to use back camera
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
-        },
-        audio: false
-      };
-
-      const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
-      setStream(mediaStream);
-      
-      if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
-        videoRef.current.onloadedmetadata = () => {
-          videoRef.current?.play();
-          setIsScanning(true);
-          requestAnimationFrame(scanQR);
-        };
-      }
-    } catch (err) {
-      console.error('Camera access error:', err);
-      setError('Unable to access camera. Please ensure camera permissions are granted.');
-    }
-  };
-
-  const stopCamera = () => {
-    if (stream) {
-      stream.getTracks().forEach(track => track.stop());
-      setStream(null);
-    }
-    setIsScanning(false);
-  };
-
-  const scanQR = () => {
-    if (!isScanning || !videoRef.current || !canvasRef.current) {
-      return;
-    }
-
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-
-    if (!context || video.readyState !== video.HAVE_ENOUGH_DATA) {
-      requestAnimationFrame(scanQR);
-      return;
-    }
-
-    // Set canvas dimensions to match video
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    // Draw video frame to canvas
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // Get image data from canvas
-    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-
-    // Scan for QR code
-    const code = jsQR(imageData.data, imageData.width, imageData.height, {
-      inversionAttempts: 'dontInvert'
-    });
-
-    if (code) {
-      // QR code found
-      stopCamera();
-      onScan(code.data);
-    } else {
-      // Continue scanning
-      requestAnimationFrame(scanQR);
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-gray-800 rounded-xl max-w-md w-full p-6 border border-gray-700">
-        <h3 className="text-xl font-semibold text-white mb-4">QR Code Scanner</h3>
-        
-        {error ? (
-          <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 mb-4">
-            <p className="text-red-300 text-sm">{error}</p>
-          </div>
-        ) : (
-          <div className="relative">
-            <video
-              ref={videoRef}
-              className="w-full h-64 bg-gray-900 rounded-lg object-cover"
-              playsInline
-              muted
-            />
-            <canvas
-              ref={canvasRef}
-              className="hidden"
-            />
-            
-            {/* Scanning overlay */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-48 h-48 border-2 border-orange-500 rounded-lg relative">
-                <div className="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-orange-500"></div>
-                <div className="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-orange-500"></div>
-                <div className="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-orange-500"></div>
-                <div className="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-orange-500"></div>
-              </div>
-            </div>
-            
-            {isScanning && (
-              <div className="absolute bottom-4 left-0 right-0 text-center">
-                <p className="text-white text-sm bg-black/50 rounded px-2 py-1 inline-block">
-                  Point camera at QR code
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-
-        <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Or paste OTP Auth URL manually:
-          </label>
-          <input
-            type="text"
-            placeholder="otpauth://totp/Example:user@example.com?secret=JBSWY3DPEHPK3PXP&issuer=Example"
-            className="w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm mb-4"
-            onPaste={(e) => {
-              const url = e.clipboardData.getData('text');
-              if (url.startsWith('otpauth://')) {
-                onScan(url);
-              }
-            }}
-          />
-        </div>
-
-        <div className="flex space-x-3">
-          {error && (
-            <button
-              onClick={startCamera}
-              className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 rounded-lg transition-colors"
-            >
-              Retry Camera
-            </button>
-          )}
-          <button
-            onClick={onClose}
-            className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 rounded-lg transition-colors"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default function IKryptGuard() {
   const [accounts, setAccounts] = useState<TOTPAccount[]>([]);
@@ -956,15 +777,42 @@ export default function IKryptGuard() {
             </div>
           )}
 
-          {/* QR Scanner Modal - Using Real Scanner Component */}
+          {/* QR Scanner Modal - For now, just manual input */}
           {showQRScanner && (
-            <QRScanner
-              onScan={(data) => {
-                parseQRCodeURL(data);
-                setShowQRScanner(false);
-              }}
-              onClose={() => setShowQRScanner(false)}
-            />
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+              <div className="bg-gray-800 rounded-xl max-w-md w-full p-6 border border-gray-700">
+                <h3 className="text-xl font-semibold text-white mb-4">QR Code Scanner</h3>
+                
+                <div className="bg-gray-900 rounded-lg p-8 text-center mb-4">
+                  <FontAwesomeIcon icon={faCamera} className="h-16 w-16 text-gray-600 mb-4" />
+                  <p className="text-gray-400">Camera QR scanner will be available after installing jsQR</p>
+                  <p className="text-sm text-gray-500 mt-2">For now, paste the otpauth:// URL below</p>
+                </div>
+
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">OTP Auth URL</label>
+                  <input
+                    type="text"
+                    placeholder="otpauth://totp/Example:user@example.com?secret=JBSWY3DPEHPK3PXP&issuer=Example"
+                    className="w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                    onPaste={(e) => {
+                      const url = e.clipboardData.getData('text');
+                      if (url.startsWith('otpauth://')) {
+                        parseQRCodeURL(url);
+                        setShowQRScanner(false);
+                      }
+                    }}
+                  />
+                </div>
+
+                <button
+                  onClick={() => setShowQRScanner(false)}
+                  className="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 rounded-lg transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           )}
 
           {/* Info Section */}
