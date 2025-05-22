@@ -1,12 +1,10 @@
 /*
 File: src/App.tsx
-Purpose: Main application component with routing and analytics integration
+Purpose: Main application component with simplified analytics setup
 */
 
 import { Routes, Route } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
-import GoogleAnalytics from './components/GoogleAnalytics';
-import { config } from './lib/config';
 import Chat from './pages/chat';
 import Layout from './components/Layout';
 import ScrollToTop from './components/ScrollToTop';
@@ -63,7 +61,6 @@ export default function App() {
         </Route>
       </Routes>
       
-      <GoogleAnalytics trackingId={config.analytics.googleAnalyticsId} />
       <Analytics />
     </div>
   );
