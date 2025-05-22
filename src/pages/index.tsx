@@ -396,7 +396,7 @@ export default function Home() {
                           <div className="inline-block h-20 w-20 rounded-full bg-indigo-500/20 flex items-center justify-center mb-6">
                             <FontAwesomeIcon icon={faLock} className="h-10 w-10 text-indigo-400" />
                           </div>
-                          <h3 className="text-xl font-bold text-white mb-2">10 Privacy Tools Available Now</h3>
+                          <h3 className="text-xl font-bold text-white mb-2">14 Privacy Tools Available Now</h3>
                           <p className="text-gray-400 mb-6">Try our suite of encryption and privacy tools while we build our next-generation platform</p>
                           <Link to="/one-time" className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors">
                             Explore Tools
