@@ -1,7 +1,7 @@
 // src/pages/ikrypt-guard.tsx
 // Purpose: iKrypt Guard - Two-Factor Authentication Generator with TOTP/HOTP support
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faQrcode,
@@ -9,17 +9,11 @@ import {
   faShieldAlt,
   faCopy,
   faCheck,
-  faEdit,
   faTrash,
-  faDownload,
-  faUpload,
   faKey,
   faClock,
-  faEye,
-  faEyeSlash,
   faExclamationTriangle,
   faInfoCircle,
-  faRefresh,
   faCamera,
   faLock
 } from '@fortawesome/free-solid-svg-icons';
@@ -125,7 +119,7 @@ export default function IKryptGuard() {
   };
 
   // TOTP generation function
-  const generateTOTP = (secret: string, algorithm: string = 'SHA1', digits: number = 6, period: number = 30): TOTPCode => {
+  const generateTOTP = (secret: string, digits: number = 6, period: number = 30): TOTPCode => {
     try {
       // Simplified TOTP implementation for demo
       // In production, use a proper TOTP library like 'otplib'
@@ -150,7 +144,7 @@ export default function IKryptGuard() {
     const newCodes: {[key: string]: TOTPCode} = {};
     accounts.forEach(account => {
       if (account.type === 'TOTP') {
-        newCodes[account.id] = generateTOTP(account.secret, account.algorithm, account.digits, account.period);
+        newCodes[account.id] = generateTOTP(account.secret, account.digits, account.period);
       }
     });
     setCodes(newCodes);

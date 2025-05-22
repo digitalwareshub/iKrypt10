@@ -508,7 +508,7 @@ export default function Home() {
                   <div className="h-12 w-12 bg-orange-500/20 rounded-lg flex items-center justify-center group-hover:bg-orange-500/30 transition-colors">
                     <FontAwesomeIcon icon={faQrcode} className="h-6 w-6 text-orange-400" />
                   </div>
-                  <span className="bg-orange-500/20 text-orange-400 text-xs px-2 py-1 rounded-full">Coming Soon</span>
+                  <span className="bg-orange-500/20 text-orange-400 text-xs px-2 py-1 rounded-full">Available Now</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">iKrypt Guard</h3>
                 <p className="text-gray-400 text-sm mb-3">Two-factor security made simple</p>
@@ -589,7 +589,7 @@ export default function Home() {
                   <div className="h-12 w-12 bg-blue-500/20 rounded-lg flex items-center justify-center group-hover:bg-blue-500/30 transition-colors">
                     <FontAwesomeIcon icon={faCode} className="h-6 w-6 text-blue-400" />
                   </div>
-                  <span className="bg-orange-500/20 text-orange-400 text-xs px-2 py-1 rounded-full">Coming Soon</span>
+                  <span className="bg-orange-500/20 text-orange-400 text-xs px-2 py-1 rounded-full">Available Now</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">iKrypt Code</h3>
                 <p className="text-gray-400 text-sm mb-3">Crypto tools for developers</p>
