@@ -23,7 +23,7 @@ import {
   faCog,
   faDatabase
 } from '@fortawesome/free-solid-svg-icons';
-import Logo from '../components/Logo';
+
 import EncryptionAnimation from '../components/EncryptionAnimation';
 import '../styles/landing.css';
 
