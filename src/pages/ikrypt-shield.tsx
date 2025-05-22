@@ -16,8 +16,7 @@ import {
   faDownload,
   faCheck,
   faInfoCircle,
-  faSpinner,
-  faRefresh
+  faSpinner
 } from '@fortawesome/free-solid-svg-icons';
 
 // Types
@@ -170,7 +169,6 @@ export default function IKryptShield() {
 
       // Basic HTTPS connectivity test
       let hasHSTS = false;
-      let serverInfo = '';
       
       try {
         console.log('Testing basic HTTPS connectivity...');
@@ -182,7 +180,6 @@ export default function IKryptShield() {
             
             if (response.ok) {
               hasHSTS = !!response.headers.get('strict-transport-security');
-              serverInfo = response.headers.get('server') || 'Unknown';
               console.log('Basic connectivity test successful');
               break;
             }
@@ -277,7 +274,6 @@ export default function IKryptShield() {
       // If all proxies fail, use HTTPS-based analysis
       if (!headerData) {
         console.warn('All CORS proxies failed, using HTTPS-based analysis');
-        const isHTTPS = url.startsWith('https://');
         
         return [
           {
