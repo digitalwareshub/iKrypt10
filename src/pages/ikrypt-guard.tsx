@@ -19,7 +19,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 // Import TOTP library
-import { authenticator, totp } from 'otplib';
+import { authenticator } from 'otplib';
 
 // Types
 interface TOTPAccount {
