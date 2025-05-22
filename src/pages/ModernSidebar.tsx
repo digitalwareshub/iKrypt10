@@ -1,6 +1,6 @@
-// src/components/ModernSidebar.tsx
+// src/pages/ModernSidebar.tsx
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faBars, 
@@ -15,9 +15,34 @@ import {
   faInfo
 } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../components/Logo';
+import { FEATURES } from '../config/features';
 
 const ModernSidebar: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Function to handle navigation - if on home page, scroll to section, otherwise navigate to home then scroll
+  const handleNavigation = (sectionId: string) => {
+    if (location.pathname === '/') {
+      // If already on home page, just scroll to section
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // If on different page, navigate to home with hash
+      navigate(`/#${sectionId}`);
+    }
+    // Close mobile menu after navigation
+    setExpanded(false);
+  };
+
+  // Handle home navigation
+  const handleHomeNavigation = () => {
+    navigate('/');
+    setExpanded(false);
+  };
   
   return (
     <>
@@ -53,9 +78,9 @@ const ModernSidebar: React.FC = () => {
           {/* Nav Links */}
           <div className="flex-1 overflow-y-auto py-4">
             <nav className="px-2 space-y-2">
-              <a 
-                href="#"
-                className={`flex items-center p-3 rounded-xl transition-all ${
+              <button 
+                onClick={handleHomeNavigation}
+                className={`flex items-center p-3 rounded-xl transition-all w-full text-left ${
                   expanded ? 'justify-start' : 'justify-center'
                 } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
               >
@@ -66,11 +91,11 @@ const ModernSidebar: React.FC = () => {
                     Home
                   </span>
                 )}
-              </a>
+              </button>
               
-              <a 
-                href="#features"
-                className={`flex items-center p-3 rounded-xl transition-all ${
+              <button 
+                onClick={() => handleNavigation('features')}
+                className={`flex items-center p-3 rounded-xl transition-all w-full text-left ${
                   expanded ? 'justify-start' : 'justify-center'
                 } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
               >
@@ -81,11 +106,11 @@ const ModernSidebar: React.FC = () => {
                     Features
                   </span>
                 )}
-              </a>
+              </button>
               
-              <a 
-                href="#products"
-                className={`flex items-center p-3 rounded-xl transition-all ${
+              <button 
+                onClick={() => handleNavigation('products')}
+                className={`flex items-center p-3 rounded-xl transition-all w-full text-left ${
                   expanded ? 'justify-start' : 'justify-center'
                 } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
               >
@@ -96,13 +121,16 @@ const ModernSidebar: React.FC = () => {
                     Products
                   </span>
                 )}
-              </a>
+              </button>
               
-              <a 
-                href="#tools"
+              <Link
+                to="/tools"
+                onClick={() => setExpanded(false)}
                 className={`flex items-center p-3 rounded-xl transition-all ${
                   expanded ? 'justify-start' : 'justify-center'
-                } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
+                } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'} ${
+                  location.pathname === '/tools' ? 'bg-indigo-600/30 text-white' : ''
+                }`}
               >
                 <FontAwesomeIcon icon={faTools} className="h-5 w-5" />
                 {expanded && <span className="ml-3">Tools</span>}
@@ -111,11 +139,11 @@ const ModernSidebar: React.FC = () => {
                     Tools
                   </span>
                 )}
-              </a>
+              </Link>
               
-              <a 
-                href="#how-it-works"
-                className={`flex items-center p-3 rounded-xl transition-all ${
+              <button 
+                onClick={() => handleNavigation('how-it-works')}
+                className={`flex items-center p-3 rounded-xl transition-all w-full text-left ${
                   expanded ? 'justify-start' : 'justify-center'
                 } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
               >
@@ -126,11 +154,11 @@ const ModernSidebar: React.FC = () => {
                     How It Works
                   </span>
                 )}
-              </a>
+              </button>
               
-              <a 
-                href="#faq"
-                className={`flex items-center p-3 rounded-xl transition-all ${
+              <button 
+                onClick={() => handleNavigation('faq')}
+                className={`flex items-center p-3 rounded-xl transition-all w-full text-left ${
                   expanded ? 'justify-start' : 'justify-center'
                 } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
               >
@@ -141,36 +169,40 @@ const ModernSidebar: React.FC = () => {
                     FAQ
                   </span>
                 )}
-              </a>
+              </button>
             </nav>
           </div>
           
-          {/* Login/Signup */}
-          <div className={`py-4 ${expanded ? 'px-4' : 'px-2'}`}>
-            <Link
-              to="/login"
-              className={`flex items-center p-3 rounded-xl transition-all ${
-                expanded ? 'justify-start' : 'justify-center'
-              } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
-            >
-              <FontAwesomeIcon icon={faSignInAlt} className="h-5 w-5" />
-              {expanded && <span className="ml-3">Login</span>}
-              {!expanded && (
-                <span className="absolute left-full ml-2 p-2 bg-gray-800 rounded-md text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                  Login
-                </span>
-              )}
-            </Link>
-            
-            {expanded && (
+          {/* Login/Signup - Only shown when feature is enabled */}
+          {FEATURES.USER_AUTH_ENABLED && (
+            <div className={`py-4 ${expanded ? 'px-4' : 'px-2'}`}>
               <Link
-                to="/signup"
-                className="mt-2 block text-center px-4 py-2 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors"
+                to="/login"
+                onClick={() => setExpanded(false)}
+                className={`flex items-center p-3 rounded-xl transition-all ${
+                  expanded ? 'justify-start' : 'justify-center'
+                } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
               >
-                Sign Up
+                <FontAwesomeIcon icon={faSignInAlt} className="h-5 w-5" />
+                {expanded && <span className="ml-3">Login</span>}
+                {!expanded && (
+                  <span className="absolute left-full ml-2 p-2 bg-gray-800 rounded-md text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    Login
+                  </span>
+                )}
               </Link>
-            )}
-          </div>
+              
+              {expanded && (
+                <Link
+                  to="/signup"
+                  onClick={() => setExpanded(false)}
+                  className="mt-2 block text-center px-4 py-2 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors"
+                >
+                  Sign Up
+                </Link>
+              )}
+            </div>
+          )}
           
           {/* Toggle Button */}
           <button
