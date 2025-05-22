@@ -21,6 +21,7 @@ import PasswordGenerator from './pages/password-generator';
 import SecureNotes from './pages/secure-notes';
 import NotFound from './pages/404';
 import IKryptCode from './pages/ikrypt-code';
+import Contact from './pages/contact';
 
 export default function App() {
   return (
@@ -47,6 +48,8 @@ export default function App() {
           <Route path="ikrypt-code" element={<IKryptCode />} />
           <Route path="404" element={<NotFound />} /> {/* Add explicit 404 route */}
           <Route path="*" element={<NotFound />} /> {/* Add catch-all route */}
+          <Route path="contact" element={<Contact />} />
+
         </Route>
       </Routes>
     </div>
