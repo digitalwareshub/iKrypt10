@@ -18,12 +18,10 @@ import {
   faRecycle,
   faDice,
   faCheck,
-  faTools,
   faRandom,
   faFileAlt,
   faCog,
-  faDatabase,
-  faShield
+  faDatabase
 } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../components/Logo';
 import EncryptionAnimation from '../components/EncryptionAnimation';
