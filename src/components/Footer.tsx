@@ -79,7 +79,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/one-time" className="text-gray-400 hover:text-indigo-400 transition-colors">
+                <Link to="/tools" className="text-gray-400 hover:text-indigo-400 transition-colors">
                   View All Tools
                 </Link>
               </li>
