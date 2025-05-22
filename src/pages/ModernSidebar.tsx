@@ -22,6 +22,9 @@ const ModernSidebar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
+  // DEBUG: Log the feature flag value
+  console.log('USER_AUTH_ENABLED:', FEATURES.USER_AUTH_ENABLED);
+  
   // Function to handle navigation - if on home page, scroll to section, otherwise navigate to home then scroll
   const handleNavigation = (sectionId: string) => {
     if (location.pathname === '/') {
@@ -172,6 +175,13 @@ const ModernSidebar: React.FC = () => {
               </button>
             </nav>
           </div>
+          
+          {/* DEBUG: Show what the feature flag value is */}
+          {expanded && (
+            <div className="px-4 py-2 text-xs text-yellow-400">
+              DEBUG: USER_AUTH_ENABLED = {FEATURES.USER_AUTH_ENABLED ? 'true' : 'false'}
+            </div>
+          )}
           
           {/* Login/Signup - Only shown when feature is enabled */}
           {FEATURES.USER_AUTH_ENABLED && (
