@@ -38,8 +38,8 @@ const EncryptedChat: React.FC = () => {
   const [isCreatingRoom, setIsCreatingRoom] = useState(false);
   
   // Message expiration states
-  const [expiryEnabled, setExpiryEnabled] = useState(false);
-  const [messageExpiry, setMessageExpiry] = useState(60); // minutes
+  const [expiryEnabled] = useState(false);
+  const [messageExpiry] = useState(60); // minutes
   
   // UI states
   const [loading, setLoading] = useState(false);
