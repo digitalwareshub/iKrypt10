@@ -1,12 +1,7 @@
-/*
-File: src/App.tsx
-Purpose: Main application component that sets up routing, analytics, and global providers
-*/
+// Update App.tsx to include Vercel Analytics
 
 import { Routes, Route } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
-import GoogleAnalytics from './components/GoogleAnalytics';
-import { config } from './lib/config';
 import Chat from './pages/chat';
 import Layout from './components/Layout';
 import ScrollToTop from './components/ScrollToTop';
@@ -31,31 +26,14 @@ import Contact from './pages/contact';
 import IKryptGuard from './pages/ikrypt-guard';
 import IKryptShield from './pages/ikrypt-shield';
 
-/**
- * Main Application Component
- * 
- * This component serves as the root of the application and includes:
- * - React Router setup for navigation
- * - Global styling and theme
- * - Analytics integration (both Google Analytics and Vercel Analytics)
- * - Scroll-to-top functionality for route changes
- * 
- * @returns JSX.Element - The complete application structure
- */
 export default function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900">
-      {/* Component to handle scrolling to top on route changes */}
       <ScrollToTop />
-      
-      {/* Main application routes */}
       <Routes>
         <Route path="/" element={<Layout />}>
-          {/* Home and main pages */}
           <Route index element={<Home />} />
           <Route path="tools" element={<Tools />} />
-          
-          {/* Encryption and security tools */}
           <Route path="one-time" element={<OneTime />} />
           <Route path="one-time/:id" element={<OneTimeRetrieve />} />
           <Route path="sign" element={<Sign />} />
@@ -69,27 +47,17 @@ export default function App() {
           <Route path="keys" element={<Keys />} />
           <Route path="password-generator" element={<PasswordGenerator />} />
           <Route path="secure-notes" element={<SecureNotes />} />
-          
-          {/* Communication tools */}
           <Route path="chat" element={<Chat />} />
-          
-          {/* Professional tools */}
           <Route path="ikrypt-code" element={<IKryptCode />} />
-          <Route path="ikrypt-guard" element={<IKryptGuard />} />
-          <Route path="ikrypt-shield" element={<IKryptShield />} />
-          
-          {/* Utility pages */}
-          <Route path="contact" element={<Contact />} />
           <Route path="404" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="ikrypt-guard" element={<IKryptGuard />} />
+          <Route path="ikrypt-shield" element={<IKryptShield />} />
         </Route>
       </Routes>
       
-      {/* Analytics Integration */}
-      {/* Google Analytics for detailed user behavior tracking */}
-      <GoogleAnalytics trackingId={config.analytics.googleAnalyticsId} />
-      
-      {/* Vercel Analytics for deployment and performance monitoring */}
+      {/* Add Vercel Analytics */}
       <Analytics />
     </div>
   );

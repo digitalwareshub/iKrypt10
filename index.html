@@ -1,3 +1,7 @@
+<!--
+File: index.html
+Purpose: Main HTML template for the iKrypt application with SEO meta tags and analytics setup
+-->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -33,18 +37,11 @@
     <meta name="author" content="iKrypt">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://ikrypt.com/">
-    
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-78JFERH2DN"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-78JFERH2DN');
-    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Google Analytics will be loaded dynamically by the GoogleAnalytics component -->
   </body>
 </html>
