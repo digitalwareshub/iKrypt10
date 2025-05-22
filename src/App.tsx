@@ -19,7 +19,8 @@ import TextEncrypt from './pages/text-encrypt';
 import Keys from './pages/keys';
 import PasswordGenerator from './pages/password-generator';
 import SecureNotes from './pages/secure-notes';
-import NotFound from './pages/404'; // Add this import
+import NotFound from './pages/404';
+import IKryptCode from './pages/ikrypt-code';
 
 export default function App() {
   return (
@@ -43,6 +44,7 @@ export default function App() {
           <Route path="password-generator" element={<PasswordGenerator />} />
           <Route path="secure-notes" element={<SecureNotes />} />
           <Route path="chat" element={<Chat />} />
+          <Route path="ikrypt-code" element={<IKryptCode />} />
           <Route path="404" element={<NotFound />} /> {/* Add explicit 404 route */}
           <Route path="*" element={<NotFound />} /> {/* Add catch-all route */}
         </Route>
