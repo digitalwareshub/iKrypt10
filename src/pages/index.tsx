@@ -622,29 +622,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Footer Section */}
-        <footer className="bg-gray-900 py-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col items-center">
-              <div className="mb-6">
-                <Logo className="h-8 w-auto" />
-              </div>
-              <p className="text-gray-400 text-center max-w-2xl mb-8">
-                Secure your messages, documents, and communications with advanced encryption and blockchain verification.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-8">
-                <a href="#features" className="text-gray-400 hover:text-white transition-colors">Features</a>
-                <a href="#products" className="text-gray-400 hover:text-white transition-colors">Products</a>
-                <a href="#tools" className="text-gray-400 hover:text-white transition-colors">Tools</a>
-                <a href="#faq" className="text-gray-400 hover:text-white transition-colors">FAQ</a>
-                <a href="#contact" className="text-gray-400 hover:text-white transition-colors">Contact</a>
-              </div>
-              <div className="text-gray-500 text-sm">
-                &copy; {new Date().getFullYear()} iKrypt. All rights reserved.
-              </div>
-            </div>
-          </div>
-        </footer>
+
       </div>
     </div>
   );
