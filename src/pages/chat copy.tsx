@@ -1,4 +1,6 @@
-// src/pages/chat.tsx - Fixed version
+// src/pages/chat.tsx
+// Purpose: End-to-end encrypted real-time chat with ephemeral messaging and secure room management
+
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { db } from '../lib/firebase';
 import { 
@@ -9,6 +11,7 @@ import {
   orderBy, 
   limit, 
   getDocs
+  // Removed 'doc' import as it's not being used
 } from 'firebase/firestore';
 import { CryptoUtils } from '../lib/encryption';
 import { 
@@ -44,7 +47,6 @@ const EncryptedChat: React.FC = () => {
   // UI states
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [sending, setSending] = useState(false); // Add sending state
   
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -222,23 +224,11 @@ const EncryptedChat: React.FC = () => {
     }
   };
   
-  // Send a message - FIXED VERSION
-  const sendMessage = async (e?: React.FormEvent) => {
-    if (e) {
-      e.preventDefault();
-    }
-    
-    if (!newMessage.trim() || !isJoined || sending) {
-      console.log('Cannot send message:', { newMessage: newMessage.trim(), isJoined, sending });
-      return;
-    }
+  // Send a message
+  const sendMessage = async () => {
+    if (!newMessage || !isJoined) return;
     
     try {
-      setSending(true);
-      setError(null);
-      
-      console.log('Attempting to send message:', newMessage);
-      
       // Import the encryption key
       const cryptoKey = await CryptoUtils.importKey(key);
       
@@ -251,7 +241,7 @@ const EncryptedChat: React.FC = () => {
         : undefined;
       
       // Add to Firestore
-      const docRef = await addDoc(collection(db, `chat-rooms/${roomId}/messages`), {
+      await addDoc(collection(db, `chat-rooms/${roomId}/messages`), {
         content: encrypted,
         decryptedContent: newMessage, // Temporary field to avoid re-decryption
         sender: username,
@@ -260,29 +250,11 @@ const EncryptedChat: React.FC = () => {
         justAdded: true // Flag for optimization
       });
       
-      console.log('Message sent successfully:', docRef.id);
-      
       // Clear input
       setNewMessage('');
-      
-      // Refocus input
-      setTimeout(() => {
-        messageInputRef.current?.focus();
-      }, 100);
-      
     } catch (error) {
       console.error('Failed to send message:', error);
       setError('Failed to send message. Please try again.');
-    } finally {
-      setSending(false);
-    }
-  };
-  
-  // Handle Enter key press
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
     }
   };
   
@@ -359,7 +331,7 @@ const EncryptedChat: React.FC = () => {
       </div>
 
       {!isJoined ? (
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-indigo-500/20">
+        <div className="backdrop-blur-card rounded-xl overflow-hidden border border-indigo-500/20">
           <div className="bg-indigo-600/10 px-6 py-4 border-b border-indigo-500/20">
             <h2 className="text-lg font-semibold text-indigo-300">{isCreatingRoom ? 'Create New Chat Room' : 'Join Existing Room'}</h2>
           </div>
@@ -491,7 +463,7 @@ const EncryptedChat: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-indigo-500/20">
+        <div className="backdrop-blur-card rounded-xl overflow-hidden border border-indigo-500/20">
           <div className="bg-indigo-600/10 px-6 py-4 border-b border-indigo-500/20 flex justify-between items-center">
             <div className="flex items-center">
               <h2 className="text-lg font-semibold text-indigo-300">Room: {roomId}</h2>
@@ -519,6 +491,39 @@ const EncryptedChat: React.FC = () => {
               >
                 <TrashIcon className="h-5 w-5" />
               </button>
+              
+              <div className="relative">
+                <button
+                  onClick={() => setExpiryEnabled(!expiryEnabled)}
+                  className={`p-1 rounded-full ${
+                    expiryEnabled ? 'text-yellow-400 hover:text-yellow-300' : 'text-gray-400 hover:text-gray-300'
+                  } hover:bg-gray-700/20`}
+                  title="Enable Message Expiration"
+                >
+                  <ClockIcon className="h-5 w-5" />
+                </button>
+                
+                {expiryEnabled && (
+                  <div className="absolute right-0 mt-2 py-2 w-48 bg-gray-800 rounded-lg shadow-xl z-10">
+                    <div className="px-4 py-2">
+                      <label className="block text-xs font-medium text-gray-300 mb-1">
+                        Messages Expire After
+                      </label>
+                      <div className="flex items-center">
+                        <input
+                          type="range"
+                          min="1"
+                          max="60"
+                          value={messageExpiry}
+                          onChange={(e) => setMessageExpiry(parseInt(e.target.value))}
+                          className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                        />
+                        <span className="ml-2 text-white min-w-[40px] text-sm">{messageExpiry}m</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
               
               <button
                 onClick={() => setIsJoined(false)}
@@ -600,7 +605,10 @@ const EncryptedChat: React.FC = () => {
             
             <div className="p-4 border-t border-gray-700 bg-gray-800/30">
               <form 
-                onSubmit={sendMessage}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  sendMessage();
+                }}
                 className="flex items-center space-x-2"
               >
                 <div className="flex-grow relative">
@@ -609,10 +617,8 @@ const EncryptedChat: React.FC = () => {
                     type="text"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    disabled={sending}
-                    className="w-full bg-gray-800/60 border border-gray-700 rounded-lg pl-4 pr-10 py-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:opacity-50"
-                    placeholder={sending ? "Sending..." : "Type a secure message..."}
+                    className="w-full bg-gray-800/60 border border-gray-700 rounded-lg pl-4 pr-10 py-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    placeholder="Type a secure message..."
                   />
                   {expiryEnabled && (
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-yellow-400">
@@ -623,27 +629,14 @@ const EncryptedChat: React.FC = () => {
                 
                 <button
                   type="submit"
-                  disabled={!newMessage.trim() || sending}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[48px]"
+                  disabled={!newMessage}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {sending ? (
-                    <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                  ) : (
-                    <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                    </svg>
-                  )}
+                  <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                  </svg>
                 </button>
               </form>
-              
-              {error && (
-                <div className="mt-2 text-red-400 text-sm">
-                  {error}
-                </div>
-              )}
               
               <div className="mt-2 flex justify-between">
                 <div className="text-xs text-gray-400 flex items-center">
@@ -666,7 +659,7 @@ const EncryptedChat: React.FC = () => {
       <div className="mt-8">
         <h3 className="text-xl font-bold text-white mb-4">Security Features</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 border border-indigo-500/10">
+          <div className="backdrop-blur-card rounded-lg p-4 border border-indigo-500/10">
             <div className="h-10 w-10 rounded-full bg-indigo-600/20 flex items-center justify-center mb-3">
               <LockClosedIcon className="h-6 w-6 text-indigo-400" />
             </div>
@@ -677,7 +670,7 @@ const EncryptedChat: React.FC = () => {
             </p>
           </div>
           
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 border border-indigo-500/10">
+          <div className="backdrop-blur-card rounded-lg p-4 border border-indigo-500/10">
             <div className="h-10 w-10 rounded-full bg-indigo-600/20 flex items-center justify-center mb-3">
               <ClockIcon className="h-6 w-6 text-indigo-400" />
             </div>
@@ -688,7 +681,7 @@ const EncryptedChat: React.FC = () => {
             </p>
           </div>
           
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 border border-indigo-500/10">
+          <div className="backdrop-blur-card rounded-lg p-4 border border-indigo-500/10">
             <div className="h-10 w-10 rounded-full bg-indigo-600/20 flex items-center justify-center mb-3">
               <ShieldCheckIcon className="h-6 w-6 text-indigo-400" />
             </div>
