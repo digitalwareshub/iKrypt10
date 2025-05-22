@@ -10,12 +10,7 @@ import {
   faCopy,
   faCheck,
   faExclamationTriangle,
-  faInfoCircle,
-  faDownload,
-  faUpload,
-  faRefresh,
-  faEye,
-  faEyeSlash
+  faInfoCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 // Tool types
