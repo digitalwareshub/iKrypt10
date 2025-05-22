@@ -632,7 +632,7 @@ export default function IKryptGuard() {
                   <li>• All 2FA data is encrypted with your master password and stored locally</li>
                   <li>• Your secrets never leave your device - complete zero-knowledge architecture</li>
                   <li>• Backup codes are generated cryptographically and should be stored securely</li>
-                  <li>• For production deployment, consider implementing proper TOTP libraries</li>
+                  
                 </ul>
               </div>
             </div>
