@@ -18,6 +18,9 @@ import {
   faLock
 } from '@fortawesome/free-solid-svg-icons';
 
+// Import TOTP library
+import { authenticator, totp } from 'otplib';
+
 // Types
 interface TOTPAccount {
   id: string;
@@ -118,23 +121,27 @@ export default function IKryptGuard() {
     }
   };
 
-  // TOTP generation function
+  // TOTP generation function - REAL implementation
   const generateTOTP = (secret: string, digits: number = 6, period: number = 30): TOTPCode => {
     try {
-      // Simplified TOTP implementation for demo
-      // In production, use a proper TOTP library like 'otplib'
+      // Configure TOTP options
+      authenticator.options = {
+        digits,
+        step: period,
+        window: 1
+      };
+      
+      // Generate real TOTP code
+      const code = authenticator.generate(secret);
+      
+      // Calculate remaining time
       const now = Math.floor(Date.now() / 1000);
-      const timeStep = Math.floor(now / period);
-      
-      // Mock TOTP generation (replace with real implementation)
-      const hash = btoa(secret + timeStep.toString()).slice(0, digits);
-      const code = hash.replace(/[^0-9]/g, '').slice(0, digits).padStart(digits, '0');
-      
       const remainingTime = period - (now % period);
       const progress = ((period - remainingTime) / period) * 100;
       
       return { code, remainingTime, progress };
     } catch (error) {
+      console.error('TOTP generation error:', error);
       return { code: '000000', remainingTime: 0, progress: 0 };
     }
   };
@@ -150,23 +157,47 @@ export default function IKryptGuard() {
     setCodes(newCodes);
   };
 
-  // Generate backup codes
+  // Generate backup codes - REAL implementation
   const generateBackupCodes = (): string[] => {
     const codes = [];
     for (let i = 0; i < 10; i++) {
-      const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+      // Generate cryptographically secure random codes
+      const array = new Uint8Array(4);
+      crypto.getRandomValues(array);
+      const code = Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('').toUpperCase();
       codes.push(`${code.slice(0, 4)}-${code.slice(4)}`);
     }
     return codes;
   };
 
-  // Add new account
+  // Add new account with validation
   const addAccount = () => {
+    // Validate required fields
+    if (!newAccount.name.trim() || !newAccount.secret.trim()) {
+      alert('Name and secret are required');
+      return;
+    }
+
+    // Validate secret format (Base32)
+    if (!/^[A-Z2-7]+=*$/i.test(newAccount.secret)) {
+      alert('Invalid secret format. Must be Base32 encoded.');
+      return;
+    }
+
+    // Test TOTP generation to ensure secret is valid
+    try {
+      authenticator.options = { digits: newAccount.digits, step: newAccount.period };
+      authenticator.generate(newAccount.secret.toUpperCase().replace(/\s/g, ''));
+    } catch (error) {
+      alert('Invalid secret key. Please check and try again.');
+      return;
+    }
+
     const account: TOTPAccount = {
       id: Date.now().toString(),
-      name: newAccount.name,
-      issuer: newAccount.issuer,
-      secret: newAccount.secret,
+      name: newAccount.name.trim(),
+      issuer: newAccount.issuer.trim(),
+      secret: newAccount.secret.toUpperCase().replace(/\s/g, ''), // Normalize secret
       type: newAccount.type,
       algorithm: newAccount.algorithm,
       digits: newAccount.digits,
@@ -210,19 +241,24 @@ export default function IKryptGuard() {
     }
   };
 
-  // Parse QR code URL (simplified)
+  // Parse QR code URL - REAL implementation
   const parseQRCodeURL = (url: string) => {
     try {
       const urlObj = new URL(url);
       if (urlObj.protocol === 'otpauth:') {
         const type = urlObj.host.toUpperCase() as 'TOTP' | 'HOTP';
         const label = decodeURIComponent(urlObj.pathname.slice(1));
-        const [issuer, name] = label.includes(':') ? label.split(':') : ['', label];
+        const [issuer, name] = label.includes(':') ? label.split(':', 2) : ['', label];
         
         const secret = urlObj.searchParams.get('secret') || '';
         const algorithm = (urlObj.searchParams.get('algorithm') || 'SHA1') as 'SHA1' | 'SHA256' | 'SHA512';
         const digits = parseInt(urlObj.searchParams.get('digits') || '6') as 6 | 8;
         const period = parseInt(urlObj.searchParams.get('period') || '30');
+
+        // Validate secret format (Base32)
+        if (!/^[A-Z2-7]+=*$/.test(secret)) {
+          throw new Error('Invalid secret format. Must be Base32.');
+        }
 
         setNewAccount({
           name: name.trim(),
@@ -236,7 +272,8 @@ export default function IKryptGuard() {
         setShowAddModal(true);
       }
     } catch (error) {
-      console.error('Invalid QR code URL');
+      console.error('Invalid QR code URL:', error);
+      alert('Invalid QR code format. Please check the otpauth:// URL.');
     }
   };
 
@@ -631,8 +668,9 @@ export default function IKryptGuard() {
                 <ul className="text-gray-300 space-y-1 text-sm">
                   <li>• All 2FA data is encrypted with your master password and stored locally</li>
                   <li>• Your secrets never leave your device - complete zero-knowledge architecture</li>
+                  <li>• TOTP codes generated using industry-standard algorithms (RFC 6238)</li>
                   <li>• Backup codes are generated cryptographically and should be stored securely</li>
-                  
+                  <li>• Compatible with Google Authenticator, Authy, and other TOTP applications</li>
                 </ul>
               </div>
             </div>
