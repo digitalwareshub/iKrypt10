@@ -15,6 +15,7 @@ import {
   faInfo
 } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../components/Logo';
+import { FEATURES } from '../config/features';
 
 const ModernSidebar: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
@@ -172,34 +173,36 @@ const ModernSidebar: React.FC = () => {
             </nav>
           </div>
           
-          {/* Login/Signup */}
-          <div className={`py-4 ${expanded ? 'px-4' : 'px-2'}`}>
-            <Link
-              to="/login"
-              onClick={() => setExpanded(false)}
-              className={`flex items-center p-3 rounded-xl transition-all ${
-                expanded ? 'justify-start' : 'justify-center'
-              } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
-            >
-              <FontAwesomeIcon icon={faSignInAlt} className="h-5 w-5" />
-              {expanded && <span className="ml-3">Login</span>}
-              {!expanded && (
-                <span className="absolute left-full ml-2 p-2 bg-gray-800 rounded-md text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                  Login
-                </span>
-              )}
-            </Link>
-            
-            {expanded && (
+          {/* Login/Signup - Only shown when feature is enabled */}
+          {FEATURES.USER_AUTH_ENABLED && (
+            <div className={`py-4 ${expanded ? 'px-4' : 'px-2'}`}>
               <Link
-                to="/signup"
+                to="/login"
                 onClick={() => setExpanded(false)}
-                className="mt-2 block text-center px-4 py-2 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors"
+                className={`flex items-center p-3 rounded-xl transition-all ${
+                  expanded ? 'justify-start' : 'justify-center'
+                } hover:bg-indigo-600/20 text-gray-300 hover:text-white group ${!expanded && !expanded ? 'hidden md:flex' : 'flex'}`}
               >
-                Sign Up
+                <FontAwesomeIcon icon={faSignInAlt} className="h-5 w-5" />
+                {expanded && <span className="ml-3">Login</span>}
+                {!expanded && (
+                  <span className="absolute left-full ml-2 p-2 bg-gray-800 rounded-md text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    Login
+                  </span>
+                )}
               </Link>
-            )}
-          </div>
+              
+              {expanded && (
+                <Link
+                  to="/signup"
+                  onClick={() => setExpanded(false)}
+                  className="mt-2 block text-center px-4 py-2 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors"
+                >
+                  Sign Up
+                </Link>
+              )}
+            </div>
+          )}
           
           {/* Toggle Button */}
           <button
