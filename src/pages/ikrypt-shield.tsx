@@ -188,7 +188,7 @@ export default function IKryptShield() {
     }
   };
 
-  const performDNSScan = async (url: string): Promise<DNSResults> => {
+  const performDNSScan = async (_url: string): Promise<DNSResults> => {
     try {
       // Simulate DNS security record checks
       // In production, use DNS over HTTPS or DNS API
