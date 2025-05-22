@@ -2,7 +2,7 @@
 // Purpose: Main landing page with modern design for iKrypt with sidebar navigation
 
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faShieldAlt, 
@@ -62,7 +62,6 @@ const FAQ: React.FC<{ faq: { question: string; answer: string } }> = ({ faq }) =
 // Sidebar Component
 const ModernSidebar: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
-  const location = useLocation();
   
   return (
     <>
@@ -240,26 +239,10 @@ const ModernSidebar: React.FC = () => {
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
-  const location = useLocation();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
-
-  // Handle hash navigation for sidebar links
-  useEffect(() => {
-    if (location.hash) {
-      // Remove the # from the hash
-      const sectionId = location.hash.substring(1);
-      // Wait a bit for the page to render, then scroll to the section
-      setTimeout(() => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    }
-  }, [location.hash]);
 
   // Features data
   const features = [
@@ -413,7 +396,7 @@ export default function Home() {
                           <div className="inline-block h-20 w-20 rounded-full bg-indigo-500/20 flex items-center justify-center mb-6">
                             <FontAwesomeIcon icon={faLock} className="h-10 w-10 text-indigo-400" />
                           </div>
-                          <h3 className="text-xl font-bold text-white mb-2">14 Privacy Tools Available Now</h3>
+                          <h3 className="text-xl font-bold text-white mb-2">10 Privacy Tools Available Now</h3>
                           <p className="text-gray-400 mb-6">Try our suite of encryption and privacy tools while we build our next-generation platform</p>
                           <Link to="/one-time" className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors">
                             Explore Tools
@@ -596,6 +579,7 @@ export default function Home() {
         </section>
 
         {/* Tools Section */}
+        {/* Tools Section */}
         <section id="tools" className="py-20 relative">
           <div className="absolute inset-0 bg-[url('/hex-pattern.svg')] bg-repeat opacity-5"></div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -683,8 +667,6 @@ export default function Home() {
                 <h3 className="text-lg font-semibold text-white">Random Generator</h3>
                 <p className="mt-2 text-gray-300">Generate cryptographically secure random values for keys and passwords</p>
               </Link>
-
-              {/* More tool cards would go here... */}
             </div>
 
             <div className="mt-12 text-center">
