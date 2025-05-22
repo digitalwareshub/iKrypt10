@@ -508,7 +508,7 @@ export default function Home() {
                   <div className="h-12 w-12 bg-orange-500/20 rounded-lg flex items-center justify-center group-hover:bg-orange-500/30 transition-colors">
                     <FontAwesomeIcon icon={faQrcode} className="h-6 w-6 text-orange-400" />
                   </div>
-                  <span className="bg-orange-500/20 text-orange-400 text-xs px-2 py-1 rounded-full">High Priority</span>
+                  <span className="bg-orange-500/20 text-orange-400 text-xs px-2 py-1 rounded-full">Coming Soon</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">iKrypt Guard</h3>
                 <p className="text-gray-400 text-sm mb-3">Two-factor security made simple</p>
@@ -589,7 +589,7 @@ export default function Home() {
                   <div className="h-12 w-12 bg-blue-500/20 rounded-lg flex items-center justify-center group-hover:bg-blue-500/30 transition-colors">
                     <FontAwesomeIcon icon={faCode} className="h-6 w-6 text-blue-400" />
                   </div>
-                  <span className="bg-orange-500/20 text-orange-400 text-xs px-2 py-1 rounded-full">High Priority</span>
+                  <span className="bg-orange-500/20 text-orange-400 text-xs px-2 py-1 rounded-full">Coming Soon</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">iKrypt Code</h3>
                 <p className="text-gray-400 text-sm mb-3">Crypto tools for developers</p>
@@ -616,7 +616,7 @@ export default function Home() {
                   <div className="h-12 w-12 bg-purple-500/20 rounded-lg flex items-center justify-center group-hover:bg-purple-500/30 transition-colors">
                     <FontAwesomeIcon icon={faChain} className="h-6 w-6 text-purple-400" />
                   </div>
-                  <span className="bg-orange-500/20 text-orange-400 text-xs px-2 py-1 rounded-full">Medium Priority</span>
+                  <span className="bg-orange-500/20 text-orange-400 text-xs px-2 py-1 rounded-full">Coming Soon</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">iKrypt Chain</h3>
                 <p className="text-gray-400 text-sm mb-3">Blockchain made accessible</p>
@@ -697,8 +697,8 @@ export default function Home() {
                 <h3 className="text-xl font-semibold text-white mb-3">Professional Tools Roadmap</h3>
                 <p className="text-gray-300 mb-4">These enterprise-grade tools are in development. Priority is given to high-demand features like 2FA and developer tools.</p>
                 <div className="flex flex-wrap justify-center gap-2">
-                  <span className="bg-orange-500/20 text-orange-400 text-xs px-3 py-1 rounded-full">High Priority: Guard, Code</span>
-                  <span className="bg-yellow-500/20 text-yellow-400 text-xs px-3 py-1 rounded-full">Medium Priority: Chain, Lens</span>
+                  <span className="bg-orange-500/20 text-orange-400 text-xs px-3 py-1 rounded-full">Coming Soon: Guard, Code</span>
+                  <span className="bg-yellow-500/20 text-yellow-400 text-xs px-3 py-1 rounded-full">: Chain, Lens</span>
                   <span className="bg-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">Specialized: Hide, Shield, Forge</span>
                 </div>
               </div>
@@ -890,7 +890,7 @@ export default function Home() {
                     <div className="h-12 w-12 bg-gray-600/20 rounded-lg flex items-center justify-center group-hover:bg-gray-500/30 transition-colors">
                       <FontAwesomeIcon icon={faCode} className="h-6 w-6 text-gray-400" />
                     </div>
-                    <span className="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded-full">High Priority</span>
+                    <span className="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded-full">Coming Soon</span>
                   </div>
                   <h4 className="text-lg font-semibold text-white mb-2">Base Encoding Suite</h4>
                   <p className="text-gray-400 text-sm">Base64, Base32, Base58, and URL encoding tools</p>
@@ -902,7 +902,7 @@ export default function Home() {
                     <div className="h-12 w-12 bg-gray-600/20 rounded-lg flex items-center justify-center group-hover:bg-gray-500/30 transition-colors">
                       <FontAwesomeIcon icon={faKey} className="h-6 w-6 text-gray-400" />
                     </div>
-                    <span className="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded-full">High Priority</span>
+                    <span className="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded-full">Coming Soon</span>
                   </div>
                   <h4 className="text-lg font-semibold text-white mb-2">JWT Tools</h4>
                   <p className="text-gray-400 text-sm">Create, decode, and verify JSON Web Tokens</p>
