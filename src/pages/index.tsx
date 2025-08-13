@@ -34,6 +34,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import EncryptionAnimation from '../components/EncryptionAnimation';
+// import { WebsiteStructuredData, OrganizationStructuredData } from '../components/StructuredData';
 import '../styles/landing.css';
 
 // FAQ Component

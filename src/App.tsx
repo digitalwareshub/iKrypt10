@@ -30,6 +30,12 @@ import IKryptCode from './pages/ikrypt-code';
 import Contact from './pages/contact';
 import IKryptGuard from './pages/ikrypt-guard';
 import IKryptShield from './pages/ikrypt-shield';
+import PasswordGeneratorLanding from './pages/password-generator-landing';
+import FileEncryptionLanding from './pages/file-encryption-landing';
+import OneTimeSecretLanding from './pages/one-time-secret-landing';
+import DigitalSignatureLanding from './pages/digital-signature-landing';
+import IKryptGuardLanding from './pages/ikrypt-guard-landing';
+import HashGeneratorLanding from './pages/hash-generator-landing';
 
 export default function App() {
   return (
@@ -58,6 +64,12 @@ export default function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="ikrypt-guard" element={<IKryptGuard />} />
           <Route path="ikrypt-shield" element={<IKryptShield />} />
+          <Route path="tools/password-generator" element={<PasswordGeneratorLanding />} />
+          <Route path="tools/file-encryption" element={<FileEncryptionLanding />} />
+          <Route path="tools/one-time-secret" element={<OneTimeSecretLanding />} />
+          <Route path="tools/digital-signature" element={<DigitalSignatureLanding />} />
+          <Route path="tools/2fa-authenticator" element={<IKryptGuardLanding />} />
+          <Route path="tools/hash-generator" element={<HashGeneratorLanding />} />
           <Route path="404" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
         </Route>

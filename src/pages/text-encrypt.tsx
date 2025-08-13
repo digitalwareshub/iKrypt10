@@ -88,7 +88,7 @@ const TextEncryption: React.FC = () => {
     return window.crypto.subtle.deriveKey(
       {
         name: 'PBKDF2',
-        salt,
+        salt: salt as unknown as ArrayBuffer,
         iterations,
         hash: 'SHA-256'
       },
@@ -127,7 +127,7 @@ const TextEncryption: React.FC = () => {
           iv
         },
         key,
-        textBuffer
+        textBuffer as unknown as ArrayBuffer
       );
       
       // Combine salt + iv + encrypted data

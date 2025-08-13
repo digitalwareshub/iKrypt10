@@ -216,7 +216,7 @@ export class CryptoUtils {
       return await window.crypto.subtle.deriveKey(
         {
           name: 'PBKDF2',
-          salt: saltValue,
+          salt: saltValue as unknown as ArrayBuffer,
           iterations: 100000,
           hash: 'SHA-256'
         },
@@ -237,7 +237,7 @@ export class CryptoUtils {
       
       if (typeof data === 'string') {
         const encoder = new TextEncoder();
-        dataBuffer = encoder.encode(data);
+        dataBuffer = encoder.encode(data).buffer;
       } else {
         dataBuffer = data;
       }

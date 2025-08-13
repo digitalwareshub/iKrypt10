@@ -64,7 +64,7 @@ const FileEncrypt: React.FC = () => {
       // Import the key
       const cryptoKey = await window.crypto.subtle.importKey(
         "raw",
-        keyBytes,
+        keyBytes as unknown as ArrayBuffer,
         { name: "AES-GCM" },
         false,
         ["encrypt"]
@@ -118,7 +118,7 @@ const FileEncrypt: React.FC = () => {
       // Import the key
       const cryptoKey = await window.crypto.subtle.importKey(
         "raw",
-        keyBytes,
+        keyBytes as unknown as ArrayBuffer,
         { name: "AES-GCM" },
         false,
         ["decrypt"]

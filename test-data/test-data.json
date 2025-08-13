@@ -1,0 +1,31 @@
+{
+  "personal_info": {
+    "name": "John Doe",
+    "ssn": "123-45-6789",
+    "email": "john.doe@example.com",
+    "phone": "+1-555-123-4567"
+  },
+  "financial_data": {
+    "bank_account": "1234567890",
+    "routing_number": "021000021",
+    "credit_cards": [
+      {
+        "number": "4111-1111-1111-1111",
+        "expiry": "12/25",
+        "cvv": "123"
+      }
+    ]
+  },
+  "api_keys": {
+    "stripe": "sk_test_1234567890abcdef",
+    "aws": "AKIAIOSFODNN7EXAMPLE",
+    "openai": "sk-1234567890abcdef"
+  },
+  "passwords": {
+    "email": "MyEmailPassword123!",
+    "banking": "SecureBankPass456@",
+    "social_media": "InstagramPass789#"
+  },
+  "notes": "This is test data for encryption tools. Contains sensitive information that should be properly encrypted."
+}
+
