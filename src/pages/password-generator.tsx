@@ -8,6 +8,7 @@ import {
   ArrowPathIcon,
   CheckIcon
 } from '@heroicons/react/24/outline';
+import { trackToolUsage, trackSecurityAction } from '../components/Analytics';
 
 // Password strength colors and labels
 const strengthColors = [
@@ -84,6 +85,9 @@ const PasswordGenerator: React.FC = () => {
     try {
       setError(null);
       
+      // Track tool usage
+      trackToolUsage('Password Generator', 'generate_password', length);
+      
       // Ensure at least one character type is selected
       if (!includeUppercase && !includeLowercase && !includeNumbers && !includeSpecial) {
         setError('Please select at least one character type');
@@ -139,6 +143,9 @@ const PasswordGenerator: React.FC = () => {
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+    
+    // Track clipboard copy action
+    trackSecurityAction('copy_password', 'clipboard');
   };
   
   // Format entropy for display

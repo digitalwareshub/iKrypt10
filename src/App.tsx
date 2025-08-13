@@ -4,8 +4,9 @@ Purpose: Main application component with routing and analytics integration using
 */
 
 import { Routes, Route } from 'react-router-dom';
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics as VercelAnalytics } from '@vercel/analytics/react';
 import GoogleAnalytics from './components/GoogleAnalytics';
+import Analytics from './components/Analytics';
 import { config } from './lib/config';
 import Chat from './pages/chat';
 import Layout from './components/Layout';
@@ -76,7 +77,11 @@ export default function App() {
       </Routes>
       
       <GoogleAnalytics trackingId={config.analytics.googleAnalyticsId} />
-      <Analytics />
+      <Analytics 
+        googleAnalyticsId={config.analytics.googleAnalyticsId}
+        searchConsoleId={import.meta.env.VITE_GOOGLE_SEARCH_CONSOLE_ID}
+      />
+      <VercelAnalytics />
     </div>
   );
 }

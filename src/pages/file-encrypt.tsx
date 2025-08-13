@@ -3,6 +3,7 @@
 
 import { useState, useRef } from 'react';
 import { DocumentIcon, ArrowDownTrayIcon, ClipboardIcon, LockClosedIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
+import { trackFileOperation, trackSecurityAction } from '../components/Analytics';
 
 const FileEncrypt: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -95,6 +96,9 @@ const FileEncrypt: React.FC = () => {
       setEncryptedFile(blob);
       setProgress(100);
       setSuccess('File encrypted successfully! Use the download button to save the encrypted file.');
+      
+      // Track file encryption
+      trackFileOperation('encrypt', file.type || 'unknown', file.size);
     } catch (err) {
       console.error('Encryption failed:', err);
       setError('Failed to encrypt the file. Please try again.');

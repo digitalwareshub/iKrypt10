@@ -66,6 +66,18 @@ const SEO: React.FC<SEOProps> = ({
     updateMetaTag('twitter:description', description);
     updateMetaTag('twitter:image', fullImageUrl);
     
+    // Add Google Search Console verification if available
+    const searchConsoleId = import.meta.env.VITE_GOOGLE_SEARCH_CONSOLE_ID;
+    if (searchConsoleId) {
+      let searchConsoleMeta = document.querySelector('meta[name="google-site-verification"]');
+      if (!searchConsoleMeta) {
+        searchConsoleMeta = document.createElement('meta');
+        searchConsoleMeta.setAttribute('name', 'google-site-verification');
+        document.head.appendChild(searchConsoleMeta);
+      }
+      searchConsoleMeta.setAttribute('content', searchConsoleId);
+    }
+    
     return () => {
       // No cleanup needed, as we're updating existing tags
     };
