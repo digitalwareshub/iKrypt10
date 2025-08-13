@@ -3,7 +3,7 @@
 
 import { useState, useRef } from 'react';
 import { DocumentIcon, ArrowDownTrayIcon, ClipboardIcon, LockClosedIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
-import { trackFileOperation, trackSecurityAction } from '../components/Analytics';
+import { trackFileOperation } from '../components/Analytics';
 
 const FileEncrypt: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
