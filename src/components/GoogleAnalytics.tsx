@@ -5,12 +5,7 @@ Purpose: Production-ready Google Analytics integration component for GA4 trackin
 
 import { useEffect } from 'react';
 
-declare global {
-  interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
-  }
-}
+// Note: Window.gtag and Window.dataLayer are declared in Analytics.tsx
 
 interface GoogleAnalyticsProps {
   trackingId: string;
@@ -28,7 +23,8 @@ const GoogleAnalytics: React.FC<GoogleAnalyticsProps> = ({ trackingId }) => {
     document.head.appendChild(script);
 
     window.dataLayer = window.dataLayer || [];
-    window.gtag = function gtag(...args: any[]) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    window.gtag = function gtag(...args: any[]): void {
       window.dataLayer.push(args);
     };
 
@@ -41,7 +37,9 @@ const GoogleAnalytics: React.FC<GoogleAnalyticsProps> = ({ trackingId }) => {
     });
 
     return () => {
-      const existingScript = document.querySelector(`script[src*="${trackingId}"]`);
+      const existingScript = document.querySelector(
+        `script[src*="${trackingId}"]`
+      );
       if (existingScript) {
         existingScript.remove();
       }

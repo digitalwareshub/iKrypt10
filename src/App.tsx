@@ -7,6 +7,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Analytics as VercelAnalytics } from '@vercel/analytics/react';
 import GoogleAnalytics from './components/GoogleAnalytics';
 import Analytics from './components/Analytics';
+import ErrorBoundary from './components/ErrorBoundary';
 import MicrosoftClarity from './components/MicrosoftClarity';
 import { config } from './lib/config';
 import Chat from './pages/chat';
@@ -41,10 +42,11 @@ import HashGeneratorLanding from './pages/hash-generator-landing';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900">
-      <ScrollToTop />
-      
-      <Routes>
+    <ErrorBoundary>
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900">
+        <ScrollToTop />
+
+        <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="tools" element={<Tools />} />
@@ -75,15 +77,16 @@ export default function App() {
           <Route path="404" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
         </Route>
-      </Routes>
-      
-      <GoogleAnalytics trackingId={config.analytics.googleAnalyticsId} />
-      <Analytics 
-        googleAnalyticsId={config.analytics.googleAnalyticsId}
-        searchConsoleId={import.meta.env.VITE_GOOGLE_SEARCH_CONSOLE_ID}
-      />
-      <VercelAnalytics />
-      <MicrosoftClarity projectId="ugt3vmzw48" />
-    </div>
+        </Routes>
+
+        <GoogleAnalytics trackingId={config.analytics.googleAnalyticsId} />
+        <Analytics
+          googleAnalyticsId={config.analytics.googleAnalyticsId}
+          searchConsoleId={import.meta.env.VITE_GOOGLE_SEARCH_CONSOLE_ID}
+        />
+        <VercelAnalytics />
+        <MicrosoftClarity projectId="ugt3vmzw48" />
+      </div>
+    </ErrorBoundary>
   );
 }

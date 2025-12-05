@@ -1,6 +1,8 @@
 // src/lib/encryption.ts
 // Purpose: Encryption utilities for iKrypt with enhanced functionality
 
+import logger from './logger';
+
 /**
  * Encryption utilities for iKrypt
  */
@@ -23,7 +25,7 @@ export class CryptoUtils {
         ['encrypt', 'decrypt']
       );
     } catch (error) {
-      console.error('Failed to generate key:', error);
+      logger.error('Failed to generate key:', error);
       throw new Error('Failed to generate encryption key');
     }
   }
@@ -39,17 +41,23 @@ export class CryptoUtils {
         ['sign', 'verify']
       );
     } catch (error) {
-      console.error('Failed to generate signing key pair:', error);
+      logger.error('Failed to generate signing key pair:', error);
       throw new Error('Failed to generate signing keys');
     }
   }
 
-  static async signMessage(message: string, privateKey: CryptoKey): Promise<string> {
+  static async signMessage(
+    message: string,
+    privateKey: CryptoKey
+  ): Promise<string> {
     try {
       const encoder = new TextEncoder();
       const data = encoder.encode(message);
-      const messageHash = await window.crypto.subtle.digest(this.SIGN_HASH, data);
-      
+      const messageHash = await window.crypto.subtle.digest(
+        this.SIGN_HASH,
+        data
+      );
+
       const signature = await window.crypto.subtle.sign(
         {
           name: this.SIGN_ALGORITHM,
@@ -61,7 +69,7 @@ export class CryptoUtils {
 
       return btoa(String.fromCharCode(...new Uint8Array(signature)));
     } catch (error) {
-      console.error('Failed to sign message:', error);
+      logger.error('Failed to sign message:', error);
       throw new Error('Failed to sign message');
     }
   }
@@ -70,7 +78,7 @@ export class CryptoUtils {
     try {
       const iv = window.crypto.getRandomValues(new Uint8Array(this.IV_LENGTH));
       const encodedText = new TextEncoder().encode(text);
-      
+
       const encryptedData = await window.crypto.subtle.encrypt(
         {
           name: this.ALGORITHM,
@@ -84,17 +92,22 @@ export class CryptoUtils {
       const combinedArray = new Uint8Array(iv.length + encryptedArray.length);
       combinedArray.set(iv);
       combinedArray.set(encryptedArray, iv.length);
-      
+
       return btoa(String.fromCharCode(...combinedArray));
     } catch (error) {
-      console.error('Failed to encrypt text:', error);
+      logger.error('Failed to encrypt text:', error);
       throw new Error('Failed to encrypt message');
     }
   }
 
-  static async decryptText(encryptedString: string, key: CryptoKey): Promise<string> {
+  static async decryptText(
+    encryptedString: string,
+    key: CryptoKey
+  ): Promise<string> {
     try {
-      const combinedArray = Uint8Array.from(atob(encryptedString), c => c.charCodeAt(0));
+      const combinedArray = Uint8Array.from(atob(encryptedString), (c) =>
+        c.charCodeAt(0)
+      );
       const iv = combinedArray.slice(0, this.IV_LENGTH);
       const encryptedData = combinedArray.slice(this.IV_LENGTH);
 
@@ -109,7 +122,7 @@ export class CryptoUtils {
 
       return new TextDecoder().decode(decryptedData);
     } catch (error) {
-      console.error('Failed to decrypt text:', error);
+      logger.error('Failed to decrypt text:', error);
       throw new Error('Failed to decrypt message');
     }
   }
@@ -119,14 +132,14 @@ export class CryptoUtils {
       const exported = await window.crypto.subtle.exportKey('raw', key);
       return btoa(String.fromCharCode(...new Uint8Array(exported)));
     } catch (error) {
-      console.error('Failed to export key:', error);
+      logger.error('Failed to export key:', error);
       throw new Error('Failed to export encryption key');
     }
   }
 
   static async importKey(keyString: string): Promise<CryptoKey> {
     try {
-      const keyData = Uint8Array.from(atob(keyString), c => c.charCodeAt(0));
+      const keyData = Uint8Array.from(atob(keyString), (c) => c.charCodeAt(0));
       return await window.crypto.subtle.importKey(
         'raw',
         keyData,
@@ -135,16 +148,19 @@ export class CryptoUtils {
         ['encrypt', 'decrypt']
       );
     } catch (error) {
-      console.error('Failed to import key:', error);
+      logger.error('Failed to import key:', error);
       throw new Error('Failed to import encryption key');
     }
   }
 
-  static async encryptFile(file: File, key: CryptoKey): Promise<{ encryptedFile: Blob; iv: Uint8Array }> {
+  static async encryptFile(
+    file: File,
+    key: CryptoKey
+  ): Promise<{ encryptedFile: Blob; iv: Uint8Array }> {
     try {
       const iv = window.crypto.getRandomValues(new Uint8Array(this.IV_LENGTH));
       const fileBuffer = await file.arrayBuffer();
-      
+
       const encryptedData = await window.crypto.subtle.encrypt(
         {
           name: this.ALGORITHM,
@@ -158,13 +174,15 @@ export class CryptoUtils {
       const combined = new Uint8Array(iv.length + encryptedData.byteLength);
       combined.set(iv);
       combined.set(new Uint8Array(encryptedData), iv.length);
-      
+
       // Create a new Blob from the combined data
-      const encryptedFile = new Blob([combined], { type: 'application/octet-stream' });
-      
+      const encryptedFile = new Blob([combined], {
+        type: 'application/octet-stream',
+      });
+
       return { encryptedFile, iv };
     } catch (error) {
-      console.error('Failed to encrypt file:', error);
+      logger.error('Failed to encrypt file:', error);
       throw new Error('Failed to encrypt file');
     }
   }
@@ -173,11 +191,11 @@ export class CryptoUtils {
     try {
       const arrayBuffer = await encryptedBlob.arrayBuffer();
       const encryptedData = new Uint8Array(arrayBuffer);
-      
+
       // Extract IV and encrypted data
       const iv = encryptedData.slice(0, this.IV_LENGTH);
       const data = encryptedData.slice(this.IV_LENGTH);
-      
+
       const decryptedData = await window.crypto.subtle.decrypt(
         {
           name: this.ALGORITHM,
@@ -186,24 +204,28 @@ export class CryptoUtils {
         key,
         data
       );
-      
+
       // Return decrypted data as a Blob
       return new Blob([decryptedData]);
     } catch (error) {
-      console.error('Failed to decrypt file:', error);
+      logger.error('Failed to decrypt file:', error);
       throw new Error('Failed to decrypt file');
     }
   }
 
-  static async generatePasswordKey(password: string, salt?: Uint8Array): Promise<CryptoKey> {
+  static async generatePasswordKey(
+    password: string,
+    salt?: Uint8Array
+  ): Promise<CryptoKey> {
     try {
       // Use provided salt or generate a new one
-      const saltValue = salt || window.crypto.getRandomValues(new Uint8Array(16));
-      
+      const saltValue =
+        salt || window.crypto.getRandomValues(new Uint8Array(16));
+
       // Import password as key material
       const encoder = new TextEncoder();
       const passwordBuffer = encoder.encode(password);
-      
+
       const keyMaterial = await window.crypto.subtle.importKey(
         'raw',
         passwordBuffer,
@@ -211,14 +233,14 @@ export class CryptoUtils {
         false,
         ['deriveBits', 'deriveKey']
       );
-      
+
       // Derive an AES-GCM key using PBKDF2
       return await window.crypto.subtle.deriveKey(
         {
           name: 'PBKDF2',
           salt: saltValue as unknown as ArrayBuffer,
           iterations: 100000,
-          hash: 'SHA-256'
+          hash: 'SHA-256',
         },
         keyMaterial,
         { name: this.ALGORITHM, length: this.KEY_LENGTH },
@@ -226,29 +248,32 @@ export class CryptoUtils {
         ['encrypt', 'decrypt']
       );
     } catch (error) {
-      console.error('Failed to generate key from password:', error);
+      logger.error('Failed to generate key from password:', error);
       throw new Error('Failed to generate key from password');
     }
   }
 
-  static async hashData(data: string | ArrayBuffer, algorithm: string = 'SHA-256'): Promise<string> {
+  static async hashData(
+    data: string | ArrayBuffer,
+    algorithm: string = 'SHA-256'
+  ): Promise<string> {
     try {
       let dataBuffer: ArrayBuffer;
-      
+
       if (typeof data === 'string') {
         const encoder = new TextEncoder();
         dataBuffer = encoder.encode(data).buffer;
       } else {
         dataBuffer = data;
       }
-      
+
       const hashBuffer = await window.crypto.subtle.digest(algorithm, dataBuffer);
       const hashArray = Array.from(new Uint8Array(hashBuffer));
-      
+
       // Convert to hex string
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
     } catch (error) {
-      console.error('Failed to hash data:', error);
+      logger.error('Failed to hash data:', error);
       throw new Error('Failed to hash data');
     }
   }
@@ -261,7 +286,7 @@ export class CryptoUtils {
 
   static bytesToHex(bytes: Uint8Array): string {
     return Array.from(bytes)
-      .map(b => b.toString(16).padStart(2, '0'))
+      .map((b) => b.toString(16).padStart(2, '0'))
       .join('');
   }
 

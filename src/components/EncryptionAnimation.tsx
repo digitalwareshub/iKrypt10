@@ -6,7 +6,6 @@ const EncryptionAnimation: React.FC = () => {
   const [animationStage, setAnimationStage] = useState(0);
   const [encryptedText, setEncryptedText] = useState('');
   const [isMessageSent, setIsMessageSent] = useState(false);
-  // Removed unused 'showBlockchain' variable
   const [currentBlock, setCurrentBlock] = useState(1);
   
   const messageRef = useRef("Hey there! This is a confidential message.");
@@ -27,9 +26,7 @@ const EncryptionAnimation: React.FC = () => {
     
     return result;
   };
-  
-  // Removed unused 'generateHash' function
-  
+
   // Animation sequence
   useEffect(() => {
     // Clear any existing timers when the component unmounts
