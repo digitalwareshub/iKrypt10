@@ -7,6 +7,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Analytics as VercelAnalytics } from '@vercel/analytics/react';
 import GoogleAnalytics from './components/GoogleAnalytics';
 import Analytics from './components/Analytics';
+import MicrosoftClarity from './components/MicrosoftClarity';
 import { config } from './lib/config';
 import Chat from './pages/chat';
 import Layout from './components/Layout';
@@ -82,6 +83,7 @@ export default function App() {
         searchConsoleId={import.meta.env.VITE_GOOGLE_SEARCH_CONSOLE_ID}
       />
       <VercelAnalytics />
+      <MicrosoftClarity projectId="ugt3vmzw48" />
     </div>
   );
 }
