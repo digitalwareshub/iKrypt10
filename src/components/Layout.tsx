@@ -1,7 +1,7 @@
 // src/components/Layout.tsx
 import { Outlet } from 'react-router-dom';
 import Footer from './Footer';
-import ModernSidebar from '../pages/ModernSidebar'; // Add this import
+import ModernSidebar from './ModernSidebar';
 
 export default function Layout() {
   return (

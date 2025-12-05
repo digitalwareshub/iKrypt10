@@ -6,9 +6,12 @@ Purpose: Enhanced analytics setup with Google Analytics 4, Search Console, and c
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
+// Extend the Window interface for gtag
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     gtag: (...args: any[]) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dataLayer: any[];
   }
 }
@@ -18,9 +21,9 @@ interface AnalyticsProps {
   searchConsoleId?: string;
 }
 
-const Analytics: React.FC<AnalyticsProps> = ({ 
-  googleAnalyticsId, 
-  searchConsoleId 
+const Analytics: React.FC<AnalyticsProps> = ({
+  googleAnalyticsId,
+  searchConsoleId,
 }) => {
   const location = useLocation();
 
@@ -59,7 +62,7 @@ const Analytics: React.FC<AnalyticsProps> = ({
 };
 
 // Initialize Google Analytics 4
-const initializeGoogleAnalytics = (trackingId: string) => {
+const initializeGoogleAnalytics = (trackingId: string): void => {
   if (document.querySelector(`script[src*="${trackingId}"]`)) {
     return; // Already initialized
   }
@@ -70,7 +73,8 @@ const initializeGoogleAnalytics = (trackingId: string) => {
   document.head.appendChild(script);
 
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag(...args: any[]) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  window.gtag = function gtag(...args: any[]): void {
     window.dataLayer.push(args);
   };
 
@@ -85,13 +89,13 @@ const initializeGoogleAnalytics = (trackingId: string) => {
   window.gtag('config', trackingId, {
     custom_map: {
       custom_parameter_1: 'tool_name',
-      custom_parameter_2: 'tool_action'
-    }
+      custom_parameter_2: 'tool_action',
+    },
   });
 };
 
 // Initialize Google Search Console verification
-const initializeSearchConsole = (siteVerificationId: string) => {
+const initializeSearchConsole = (siteVerificationId: string): void => {
   if (document.querySelector(`meta[name="google-site-verification"]`)) {
     return; // Already initialized
   }
@@ -103,58 +107,73 @@ const initializeSearchConsole = (siteVerificationId: string) => {
 };
 
 // Custom event tracking functions
-export const trackToolUsage = (toolName: string, action: string, value?: number) => {
+export const trackToolUsage = (
+  toolName: string,
+  action: string,
+  value?: number
+): void => {
   if (window.gtag) {
     window.gtag('event', 'tool_usage', {
       event_category: 'engagement',
       event_label: toolName,
       tool_name: toolName,
       tool_action: action,
-      value: value || 1
+      value: value || 1,
     });
   }
 };
 
-export const trackFileOperation = (operation: string, fileType: string, size?: number) => {
+export const trackFileOperation = (
+  operation: string,
+  fileType: string,
+  size?: number
+): void => {
   if (window.gtag) {
     window.gtag('event', 'file_operation', {
       event_category: 'engagement',
       event_label: operation,
       file_type: fileType,
       file_operation: operation,
-      file_size: size
+      file_size: size,
     });
   }
 };
 
-export const trackSecurityAction = (action: string, method: string) => {
+export const trackSecurityAction = (action: string, method: string): void => {
   if (window.gtag) {
     window.gtag('event', 'security_action', {
       event_category: 'security',
       event_label: action,
       security_method: method,
-      security_action: action
+      security_action: action,
     });
   }
 };
 
-export const trackConversion = (conversionName: string, value?: number) => {
+export const trackConversion = (
+  conversionName: string,
+  value?: number
+): void => {
   if (window.gtag) {
     window.gtag('event', 'conversion', {
       event_category: 'conversion',
       event_label: conversionName,
-      value: value || 1
+      value: value || 1,
     });
   }
 };
 
-export const trackError = (errorType: string, errorMessage: string, errorLocation: string) => {
+export const trackError = (
+  errorType: string,
+  errorMessage: string,
+  errorLocation: string
+): void => {
   if (window.gtag) {
     window.gtag('event', 'exception', {
       description: errorMessage,
       fatal: false,
       error_type: errorType,
-      error_location: errorLocation
+      error_location: errorLocation,
     });
   }
 };

@@ -3,8 +3,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import QRCode from 'qrcode.react';
-// Removed CryptoUtils import as it's not being used directly
-import { 
+import {
   QrCodeIcon, 
   LockClosedIcon, 
   ArrowDownTrayIcon, 
@@ -233,10 +232,7 @@ const QRGenerator: React.FC = () => {
       canvas.height = video.videoHeight;
       canvas.width = video.videoWidth;
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
-      
-      // Removed unused imageData variable to fix error
-      // const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-      
+
       // Here you would typically use a QR code detector library
       // For this example, we'll simulate finding a QR code after a few seconds
       setTimeout(() => {
