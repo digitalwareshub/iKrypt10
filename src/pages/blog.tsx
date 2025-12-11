@@ -106,12 +106,31 @@ export default function Blog() {
                 className="bg-gray-800/50 rounded-xl overflow-hidden hover:bg-gray-800/70 transition-all duration-300 border border-gray-700 hover:border-indigo-500/50 group"
               >
                 <Link to={`/blog/${post.slug}`} className="block">
-                  {/* Category Badge */}
-                  <div className="px-6 pt-6">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-400">
-                      {post.category}
-                    </span>
-                  </div>
+                  {/* Featured Image */}
+                  {post.featuredImage && (
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={post.featuredImage}
+                        alt={post.title}
+                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent" />
+                      {/* Category Badge on Image */}
+                      <span className="absolute bottom-3 left-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/90 text-white">
+                        {post.category}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Category Badge (fallback when no image) */}
+                  {!post.featuredImage && (
+                    <div className="px-6 pt-6">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-400">
+                        {post.category}
+                      </span>
+                    </div>
+                  )}
 
                   {/* Content */}
                   <div className="p-6">

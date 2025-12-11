@@ -30,7 +30,7 @@ export default function BlogPost() {
     "@type": "BlogPosting",
     "headline": post.title,
     "description": post.metaDescription,
-    "image": `https://ikrypt.com/og-image.png`,
+    "image": post.featuredImage || "https://ikrypt.com/og-image.png",
     "datePublished": post.publishDate,
     "dateModified": post.publishDate,
     "author": {
@@ -88,7 +88,7 @@ export default function BlogPost() {
         <meta property="og:description" content={post.metaDescription} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`https://ikrypt.com/blog/${post.slug}`} />
-        <meta property="og:image" content="https://ikrypt.com/og-image.png" />
+        <meta property="og:image" content={post.featuredImage || "https://ikrypt.com/og-image.png"} />
         <meta property="og:site_name" content="iKrypt" />
         <meta property="article:published_time" content={post.publishDate} />
         <meta property="article:section" content={post.category} />
@@ -100,7 +100,7 @@ export default function BlogPost() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={post.metaDescription} />
-        <meta name="twitter:image" content="https://ikrypt.com/og-image.png" />
+        <meta name="twitter:image" content={post.featuredImage || "https://ikrypt.com/og-image.png"} />
 
         {/* JSON-LD Article */}
         <script type="application/ld+json">
@@ -131,6 +131,18 @@ export default function BlogPost() {
             <ArrowLeftIcon className="w-4 h-4 mr-2" />
             Back to Blog
           </Link>
+
+          {/* Featured Image */}
+          {post.featuredImage && (
+            <div className="relative h-64 sm:h-80 lg:h-96 rounded-xl overflow-hidden mb-8">
+              <img
+                src={post.featuredImage}
+                alt={post.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
+            </div>
+          )}
 
           {/* Article Header */}
           <header className="mb-8">

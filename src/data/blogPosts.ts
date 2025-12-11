@@ -28,6 +28,7 @@ export const blogPosts: BlogPost[] = [
     category: "Encryption",
     tags: ["AES-256", "encryption", "security", "data protection", "cryptography"],
     readTime: 8,
+    featuredImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80",
     content: `
 ## What is AES-256 Encryption?
 
@@ -100,6 +101,7 @@ Ready to encrypt your files and messages with AES-256? [Try iKrypt's free encryp
     category: "Password Security",
     tags: ["passwords", "security", "password generator", "cybersecurity", "data protection"],
     readTime: 6,
+    featuredImage: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800&q=80",
     content: `
 ## Why Strong Passwords Matter
 
@@ -209,6 +211,7 @@ Creating strong passwords is your first line of defense against hackers. Use our
     category: "Privacy",
     tags: ["end-to-end encryption", "E2EE", "privacy", "messaging", "security"],
     readTime: 7,
+    featuredImage: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80",
     content: `
 ## What is End-to-End Encryption?
 
@@ -322,6 +325,7 @@ End-to-end encryption is essential for digital privacy. Whether you're sharing s
     category: "Security Tools",
     tags: ["one-time secrets", "self-destructing messages", "password sharing", "secure sharing", "privacy"],
     readTime: 5,
+    featuredImage: "https://images.unsplash.com/photo-1633265486064-086b219458ec?w=800&q=80",
     content: `
 ## The Problem with Sharing Sensitive Information
 
@@ -438,6 +442,7 @@ One-time secrets are the safest way to share sensitive information digitally. In
     category: "Encryption",
     tags: ["file encryption", "document security", "encrypt files", "data protection", "secure storage"],
     readTime: 9,
+    featuredImage: "https://images.unsplash.com/photo-1618060932014-4deda4932554?w=800&q=80",
     content: `
 ## Why Encrypt Your Files?
 
@@ -582,6 +587,7 @@ File encryption is essential for protecting sensitive information. Whether you'r
     category: "Security",
     tags: ["digital signatures", "document verification", "authenticity", "cryptography", "e-signatures"],
     readTime: 7,
+    featuredImage: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80",
     content: `
 ## What is a Digital Signature?
 
@@ -734,6 +740,7 @@ Digital signatures provide the strongest guarantee of document authenticity and 
     category: "Security Tools",
     tags: ["hash functions", "checksums", "data integrity", "SHA-256", "MD5", "file verification"],
     readTime: 6,
+    featuredImage: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80",
     content: `
 ## What is a Hash Function?
 
@@ -868,6 +875,7 @@ Hash functions are fundamental to digital security. They verify file integrity, 
     category: "Security",
     tags: ["2FA", "two-factor authentication", "TOTP", "security", "account protection", "authenticator"],
     readTime: 8,
+    featuredImage: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800&q=80",
     content: `
 ## What is Two-Factor Authentication?
 
@@ -1029,6 +1037,7 @@ Start securing your accounts: [Try iKrypt Guard](/ikrypt-guard) for easy 2FA man
     category: "Privacy",
     tags: ["zero-knowledge", "encryption", "privacy", "security architecture", "data protection"],
     readTime: 7,
+    featuredImage: "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=800&q=80",
     content: `
 ## What is Zero-Knowledge Encryption?
 
@@ -1181,6 +1190,7 @@ Experience zero-knowledge encryption with [iKrypt's tools](/tools).
     category: "Security",
     tags: ["password sharing", "team security", "credentials", "business security", "secure sharing"],
     readTime: 6,
+    featuredImage: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
     content: `
 ## The Password Sharing Problem
 
@@ -1342,6 +1352,7 @@ Secure password sharing isn't difficult – it just requires using the right too
     category: "Security",
     tags: ["QR codes", "security", "phishing", "scams", "mobile security"],
     readTime: 5,
+    featuredImage: "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?w=800&q=80",
     content: `
 ## The Rise of QR Codes
 
@@ -1473,6 +1484,7 @@ Generate secure QR codes with [iKrypt's free tool](/qr).
     category: "Security",
     tags: ["ransomware", "backup", "encryption", "malware", "data protection", "cybersecurity"],
     readTime: 8,
+    featuredImage: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80",
     content: `
 ## The Ransomware Threat
 
@@ -1634,6 +1646,7 @@ Ransomware is preventable, and its impact can be minimized with proper preparati
     category: "Encryption",
     tags: ["browser encryption", "desktop encryption", "security comparison", "web crypto", "data protection"],
     readTime: 7,
+    featuredImage: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
     content: `
 ## The Browser vs Desktop Debate
 
@@ -1820,6 +1833,7 @@ For most everyday encryption needs, browser-based tools like iKrypt provide exce
     category: "Privacy",
     tags: ["GDPR", "CCPA", "privacy laws", "data protection", "compliance", "personal data"],
     readTime: 9,
+    featuredImage: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&q=80",
     content: `
 ## Understanding Data Privacy Laws
 
@@ -2030,6 +2044,7 @@ iKrypt requires no personal data because we believe privacy should be the defaul
     category: "Privacy",
     tags: ["secure communication", "journalists", "activists", "privacy", "operational security", "whistleblowers"],
     readTime: 10,
+    featuredImage: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
     content: `
 ## Why Secure Communication Matters
 
