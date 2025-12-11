@@ -2,14 +2,27 @@
 // Purpose: Implement Shamir's Secret Sharing to split secrets into multiple shares with threshold recovery
 
 import { useState, useEffect } from 'react';
-import { 
-  QueueListIcon, 
-  ClipboardIcon, 
+import { Helmet } from 'react-helmet-async';
+import {
+  QueueListIcon,
+  ClipboardIcon,
   ArrowsPointingOutIcon,
   ArrowsPointingInIcon,
   ShieldCheckIcon,
   ExclamationCircleIcon
 } from '@heroicons/react/24/outline';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Secret Sharing - Shamir's Secret Sharing Scheme",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Split secrets into multiple shares using Shamir's Secret Sharing. Require a threshold of shares to recover the original secret. Perfect for secure key management.",
+  "url": "https://ikrypt.com/split-key",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["Shamir secret sharing", "Threshold recovery", "Secure key splitting", "Client-side processing"]
+};
 
 const SplitKey: React.FC = () => {
   // Split Secret states
@@ -264,6 +277,18 @@ const SplitKey: React.FC = () => {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Secret Sharing - Shamir's Secret Sharing Scheme | iKrypt</title>
+        <meta name="description" content="Split secrets into multiple shares using Shamir's Secret Sharing. Require a threshold of shares to recover the original secret. Perfect for secure key management." />
+        <meta name="keywords" content="secret sharing, Shamir, key splitting, threshold cryptography, secure backup, distributed keys" />
+        <link rel="canonical" href="https://ikrypt.com/split-key" />
+        <meta property="og:title" content="Secret Sharing - Shamir's Secret Sharing Scheme" />
+        <meta property="og:description" content="Split secrets into shares with threshold recovery using Shamir's Secret Sharing." />
+        <meta property="og:url" content="https://ikrypt.com/split-key" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
@@ -661,6 +686,7 @@ const SplitKey: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

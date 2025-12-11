@@ -51,6 +51,21 @@ const FileEncryptionLanding: React.FC = () => {
         <meta name="description" content="Encrypt files online with AES-256 encryption. Secure any file type before sharing or storing. Client-side encryption, no upload required. Free and private." />
         <meta name="keywords" content="file encryption, AES-256, encrypt files online, secure file sharing, file security, encryption tool" />
         <link rel="canonical" href="https://ikrypt.com/tools/file-encryption" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://ikrypt.com/tools/file-encryption" />
+        <meta property="og:title" content="Free File Encryption - AES-256 Online | iKrypt" />
+        <meta property="og:description" content="Encrypt files online with AES-256 encryption. Client-side processing means your files never leave your device." />
+        <meta property="og:image" content="https://ikrypt.com/og-file-encryption.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://ikrypt.com/tools/file-encryption" />
+        <meta name="twitter:title" content="Free File Encryption - AES-256 Online | iKrypt" />
+        <meta name="twitter:description" content="Encrypt files online with AES-256 encryption. Client-side processing means your files never leave your device." />
+        <meta name="twitter:image" content="https://ikrypt.com/og-file-encryption.png" />
+
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>

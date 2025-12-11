@@ -2,11 +2,24 @@
 // Purpose: Create cryptographically secure random values with support for different formats and customization
 
 import { useState } from 'react';
-import { 
-  SparklesIcon, 
+import { Helmet } from 'react-helmet-async';
+import {
+  SparklesIcon,
   ClipboardIcon,
   ArrowPathIcon
 } from '@heroicons/react/24/outline';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Random Generator - Cryptographically Secure Random Values",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Generate cryptographically secure random values in hex, base64, numbers, or custom formats. Uses Web Crypto API for true randomness.",
+  "url": "https://ikrypt.com/random",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["Cryptographically secure", "Multiple output formats", "Custom character sets", "Web Crypto API"]
+};
 
 // Interface for output type options
 interface OutputTypeOption {
@@ -91,7 +104,7 @@ const RandomGenerator: React.FC = () => {
           .join('');
         break;
         
-      case 'custom':
+      case 'custom': {
         // Use custom character set
         let charset = '';
         if (includeUppercase) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -99,7 +112,7 @@ const RandomGenerator: React.FC = () => {
         if (includeNumbers) charset += '0123456789';
         if (includeSpecial) charset += '!@#$%^&*()-_=+[]{}|;:,.<>?/~';
         if (customCharset) charset += customCharset;
-        
+
         if (charset.length === 0) {
           // Default to hex if no charset selected
           result = Array.from(randomBytes)
@@ -111,6 +124,7 @@ const RandomGenerator: React.FC = () => {
             .join('');
         }
         break;
+      }
         
       default:
         // Default to hex
@@ -157,6 +171,18 @@ const RandomGenerator: React.FC = () => {
   const entropy = calculateEntropy();
   
   return (
+    <>
+      <Helmet>
+        <title>Random Generator - Cryptographically Secure Random Values | iKrypt</title>
+        <meta name="description" content="Generate cryptographically secure random values in hex, base64, numbers, or custom formats. Uses Web Crypto API for true randomness. Free online tool." />
+        <meta name="keywords" content="random generator, cryptographic random, secure random, hex generator, base64 generator, random bytes, CSPRNG" />
+        <link rel="canonical" href="https://ikrypt.com/random" />
+        <meta property="og:title" content="Random Generator - Cryptographically Secure Random Values" />
+        <meta property="og:description" content="Generate secure random values in multiple formats using Web Crypto API." />
+        <meta property="og:url" content="https://ikrypt.com/random" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
@@ -402,6 +428,7 @@ const RandomGenerator: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -2,6 +2,7 @@
 // Purpose: iKrypt Guard - Two-Factor Authentication Generator with TOTP/HOTP support
 
 import { useState, useEffect, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faQrcode,
@@ -20,6 +21,18 @@ import {
 
 // Import TOTP library
 import { authenticator } from 'otplib';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "iKrypt Guard - 2FA Authenticator",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Secure two-factor authentication generator with TOTP/HOTP support. Add accounts via QR code or manual entry. Browser-based, no cloud sync.",
+  "url": "https://ikrypt.com/ikrypt-guard",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["TOTP/HOTP support", "QR code scanning", "Local storage only", "No cloud sync", "RFC 6238 compliant"]
+};
 
 // Import jsQR for QR code scanning
 // Note: Install with: npm install jsqr @types/jsqr
@@ -63,6 +76,7 @@ const QRScanner: React.FC<{
     return () => {
       stopCamera();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const startCamera = async () => {
@@ -288,9 +302,18 @@ export default function IKryptGuard() {
   useEffect(() => {
     if (!isUnlocked) return;
 
-    const interval = setInterval(() => {
-      updateTOTPCodes();
-    }, 1000);
+    const updateCodes = () => {
+      const newCodes: {[key: string]: TOTPCode} = {};
+      accounts.forEach(account => {
+        if (account.type === 'TOTP') {
+          newCodes[account.id] = generateTOTP(account.secret, account.digits, account.period);
+        }
+      });
+      setCodes(newCodes);
+    };
+
+    updateCodes();
+    const interval = setInterval(updateCodes, 1000);
 
     return () => clearInterval(interval);
   }, [accounts, isUnlocked]);
@@ -443,17 +466,6 @@ export default function IKryptGuard() {
       console.error('TOTP generation error:', error);
       return { code: '000000', remainingTime: 0, progress: 0 };
     }
-  };
-
-  // Update all TOTP codes
-  const updateTOTPCodes = () => {
-    const newCodes: {[key: string]: TOTPCode} = {};
-    accounts.forEach(account => {
-      if (account.type === 'TOTP') {
-        newCodes[account.id] = generateTOTP(account.secret, account.digits, account.period);
-      }
-    });
-    setCodes(newCodes);
   };
 
   // Generate backup codes
@@ -689,10 +701,22 @@ export default function IKryptGuard() {
   }
 
   return (
+    <>
+      <Helmet>
+        <title>iKrypt Guard - 2FA Authenticator | TOTP/HOTP Generator | iKrypt</title>
+        <meta name="description" content="Secure two-factor authentication generator with TOTP/HOTP support. Add accounts via QR code or manual entry. Browser-based authenticator, no cloud sync required." />
+        <meta name="keywords" content="2FA, TOTP, HOTP, authenticator, two-factor authentication, OTP generator, Google Authenticator alternative" />
+        <link rel="canonical" href="https://ikrypt.com/ikrypt-guard" />
+        <meta property="og:title" content="iKrypt Guard - 2FA Authenticator" />
+        <meta property="og:description" content="Secure TOTP/HOTP generator. Browser-based 2FA authenticator." />
+        <meta property="og:url" content="https://ikrypt.com/ikrypt-guard" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900 text-white">
       <div className="md:ml-20 transition-all duration-300">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          
+
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
             <div>
@@ -1002,5 +1026,6 @@ export default function IKryptGuard() {
         </div>
       </div>
     </div>
+    </>
   );
 }

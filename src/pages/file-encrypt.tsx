@@ -2,8 +2,22 @@
 // Purpose: Encrypt files with AES-GCM before sharing, with support for large file handling
 
 import { useState, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { DocumentIcon, ArrowDownTrayIcon, ClipboardIcon, LockClosedIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import { trackFileOperation } from '../components/Analytics';
+import Breadcrumbs from '../components/Breadcrumbs';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "File Encryption Tool - AES-256 Online Encryption",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Encrypt files online with AES-256-GCM encryption. Secure any file type before sharing or storing. Client-side encryption, no upload required.",
+  "url": "https://ikrypt.com/file-encrypt",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["AES-256-GCM encryption", "Client-side processing", "All file types supported", "Secure key generation", "No file upload required"]
+};
 
 const FileEncrypt: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -206,7 +220,23 @@ const FileEncrypt: React.FC = () => {
   };
   
   return (
+    <>
+      <Helmet>
+        <title>File Encryption Tool - AES-256 Online File Encryption | iKrypt</title>
+        <meta name="description" content="Encrypt files online with AES-256-GCM encryption. Secure any file type before sharing or storing. Client-side encryption ensures files never leave your device unencrypted." />
+        <meta name="keywords" content="file encryption, AES-256, encrypt files online, secure file sharing, file security, encryption tool, AES-GCM" />
+        <link rel="canonical" href="https://ikrypt.com/file-encrypt" />
+        <meta property="og:title" content="File Encryption Tool - AES-256 Online Encryption" />
+        <meta property="og:description" content="Encrypt files with AES-256 encryption. Client-side processing, no upload required." />
+        <meta property="og:url" content="https://ikrypt.com/file-encrypt" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-12">
+      <Breadcrumbs
+        items={[{ name: 'Tools', href: '/tools' }]}
+        currentPage="File Encryption"
+      />
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
           <DocumentIcon className="h-8 w-8 text-indigo-400" />
@@ -447,6 +477,7 @@ const FileEncrypt: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

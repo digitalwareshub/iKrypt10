@@ -1,5 +1,28 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { CryptoUtils } from '../lib/encryption';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "iKrypt Secure Clipboard",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Encrypted clipboard manager that securely stores and retrieves text with AES-256 encryption. All data stored locally.",
+  "url": "https://ikrypt.com/clipboard",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "AES-256 encryption",
+    "Local storage only",
+    "Password protection",
+    "Multiple clipboard items",
+    "One-click decrypt and copy"
+  ]
+};
 
 interface ClipboardItem {
   id: string;
@@ -65,6 +88,18 @@ export default function Clipboard() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Secure Clipboard - Encrypted Clipboard Manager | iKrypt</title>
+        <meta name="description" content="Encrypted clipboard manager with AES-256 encryption. Store and retrieve sensitive text securely with password protection." />
+        <meta name="keywords" content="secure clipboard, encrypted clipboard, password clipboard, private clipboard, AES encryption" />
+        <link rel="canonical" href="https://ikrypt.com/clipboard" />
+        <meta property="og:title" content="Secure Clipboard | iKrypt" />
+        <meta property="og:description" content="Encrypted clipboard manager with AES-256 encryption and password protection." />
+        <meta property="og:url" content="https://ikrypt.com/clipboard" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Secure Clipboard</h1>
 
@@ -123,5 +158,6 @@ export default function Clipboard() {
         </div>
       )}
     </div>
+    </>
   );
 }

@@ -3,8 +3,9 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
+import {
   faHome,
   faTools,
   faArrowLeft,
@@ -56,12 +57,19 @@ export default function NotFound() {
   ];
 
   return (
+    <>
+      <Helmet>
+        <title>Page Not Found - Tool Under Development | iKrypt</title>
+        <meta name="description" content="This page or tool is currently under development. Explore our 25+ available security tools or sign up for early access to new features." />
+        <meta name="robots" content="noindex, nofollow" />
+        <link rel="canonical" href="https://ikrypt.com/404" />
+      </Helmet>
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900 text-white">
       {/* Main content container with margin for sidebar */}
       <div className="md:ml-20 transition-all duration-300">
         <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            
+
             {/* Animated background elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
               <div className="absolute top-20 left-20 w-96 h-96 bg-indigo-600 rounded-full filter blur-3xl opacity-10 animate-pulse"></div>
@@ -206,5 +214,6 @@ export default function NotFound() {
         </div>
       </div>
     </div>
+    </>
   );
 }

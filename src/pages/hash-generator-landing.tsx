@@ -53,6 +53,21 @@ const HashGeneratorLanding: React.FC = () => {
         <meta name="description" content="Generate cryptographic hashes online with SHA-256, SHA-512, MD5 and more. Hash text and files, verify data integrity. Free tool with no data collection." />
         <meta name="keywords" content="hash generator, SHA-256, SHA-512, MD5, cryptographic hash, checksum, data integrity, file hash" />
         <link rel="canonical" href="https://ikrypt.com/tools/hash-generator" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://ikrypt.com/tools/hash-generator" />
+        <meta property="og:title" content="Hash Generator - SHA-256, SHA-512, MD5 | iKrypt" />
+        <meta property="og:description" content="Generate cryptographic hashes with SHA-256, SHA-512, MD5 and more. Verify file integrity and create checksums." />
+        <meta property="og:image" content="https://ikrypt.com/og-hash-generator.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://ikrypt.com/tools/hash-generator" />
+        <meta name="twitter:title" content="Hash Generator - SHA-256, SHA-512, MD5 | iKrypt" />
+        <meta name="twitter:description" content="Generate cryptographic hashes with SHA-256, SHA-512, MD5 and more. Verify file integrity and create checksums." />
+        <meta name="twitter:image" content="https://ikrypt.com/og-hash-generator.png" />
+
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>

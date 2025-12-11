@@ -2,13 +2,27 @@
 // Purpose: Create strong, cryptographically secure passwords with customizable complexity and entropy calculation
 
 import { useState, useEffect } from 'react';
-import { 
-  KeyIcon, 
-  ClipboardIcon, 
+import { Helmet } from 'react-helmet-async';
+import {
+  KeyIcon,
+  ClipboardIcon,
   ArrowPathIcon,
   CheckIcon
 } from '@heroicons/react/24/outline';
 import { trackToolUsage, trackSecurityAction } from '../components/Analytics';
+import Breadcrumbs from '../components/Breadcrumbs';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Secure Password Generator",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Generate strong, cryptographically secure passwords with customizable length and character sets. Entropy calculation and strength analysis included.",
+  "url": "https://ikrypt.com/password-generator",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["Cryptographically secure", "Customizable length", "Entropy calculation", "Strength analysis", "Character set options"]
+};
 
 // Password strength colors and labels
 const strengthColors = [
@@ -177,7 +191,23 @@ const PasswordGenerator: React.FC = () => {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Secure Password Generator - Cryptographically Random Passwords | iKrypt</title>
+        <meta name="description" content="Generate strong, cryptographically secure passwords with customizable length and character sets. Includes entropy calculation and strength analysis. Free online tool." />
+        <meta name="keywords" content="password generator, secure password, random password, strong password, cryptographic password, password strength, entropy" />
+        <link rel="canonical" href="https://ikrypt.com/password-generator" />
+        <meta property="og:title" content="Secure Password Generator - Cryptographically Random" />
+        <meta property="og:description" content="Generate strong passwords with customizable options and entropy analysis." />
+        <meta property="og:url" content="https://ikrypt.com/password-generator" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-12">
+      <Breadcrumbs
+        items={[{ name: 'Tools', href: '/tools' }]}
+        currentPage="Password Generator"
+      />
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
           <KeyIcon className="h-8 w-8 text-indigo-400" />
@@ -514,6 +544,7 @@ const PasswordGenerator: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

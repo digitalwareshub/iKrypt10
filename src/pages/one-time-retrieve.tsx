@@ -2,6 +2,7 @@
 // Purpose: Retrieves and decrypts one-time secrets, then deletes them from the database
 
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { db } from '../lib/firebase';
 import { doc, getDoc, deleteDoc } from 'firebase/firestore';
@@ -78,6 +79,11 @@ const OneTimeRetrieve: React.FC = () => {
 
   if (loading) {
     return (
+      <>
+        <Helmet>
+          <title>Retrieving Secret - One-Time Secret | iKrypt</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
       <div className="max-w-4xl mx-auto px-4 py-12 flex flex-col items-center justify-center">
         <div className="animate-spin h-12 w-12 text-indigo-500 mb-4">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -88,10 +94,17 @@ const OneTimeRetrieve: React.FC = () => {
         <p className="text-white">Decrypting your message...</p>
         <p className="text-gray-400 text-sm mt-2">This message will be deleted from our server after viewing.</p>
       </div>
+      </>
     );
   }
 
   return (
+    <>
+      <Helmet>
+        <title>One-Time Secret Retrieved | iKrypt</title>
+        <meta name="description" content="Your one-time secret has been decrypted. This message has been permanently deleted from our servers." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
@@ -170,6 +183,7 @@ const OneTimeRetrieve: React.FC = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

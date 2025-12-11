@@ -2,13 +2,26 @@
 // Purpose: Create HMAC for data integrity verification with support for different hash algorithms
 
 import { useState } from 'react';
-import { 
-  FingerPrintIcon, 
-  ClipboardIcon, 
-  CheckCircleIcon, 
-  XCircleIcon, 
-  ArrowPathIcon 
+import { Helmet } from 'react-helmet-async';
+import {
+  FingerPrintIcon,
+  ClipboardIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+  ArrowPathIcon
 } from '@heroicons/react/24/outline';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "HMAC Generator - Message Authentication Code",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Generate and verify HMAC (Hash-based Message Authentication Code) for data integrity verification. Supports SHA-256, SHA-384, SHA-512.",
+  "url": "https://ikrypt.com/mac",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["HMAC generation", "Multiple hash algorithms", "Message verification", "Key generation"]
+};
 
 const MAC: React.FC = () => {
   // Generate MAC states
@@ -166,6 +179,18 @@ const MAC: React.FC = () => {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>HMAC Generator - Message Authentication Code | iKrypt</title>
+        <meta name="description" content="Generate and verify HMAC (Hash-based Message Authentication Code) for data integrity verification. Supports SHA-256, SHA-384, SHA-512. Free online tool." />
+        <meta name="keywords" content="HMAC, message authentication code, data integrity, SHA-256, HMAC generator, verify HMAC, hash authentication" />
+        <link rel="canonical" href="https://ikrypt.com/mac" />
+        <meta property="og:title" content="HMAC Generator - Message Authentication Code" />
+        <meta property="og:description" content="Generate and verify HMAC for data integrity verification." />
+        <meta property="og:url" content="https://ikrypt.com/mac" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
@@ -476,6 +501,7 @@ const MAC: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -1,23 +1,47 @@
 // src/pages/chat.tsx - Fixed version
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { db } from '../lib/firebase';
-import { 
-  collection, 
-  addDoc, 
-  onSnapshot, 
-  query, 
-  orderBy, 
-  limit, 
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+  limit,
   getDocs
 } from 'firebase/firestore';
 import { CryptoUtils } from '../lib/encryption';
-import { 
-  ChatBubbleLeftRightIcon, 
+import {
+  ChatBubbleLeftRightIcon,
   LockClosedIcon,
   ClockIcon,
   ShieldCheckIcon,
   TrashIcon
 } from '@heroicons/react/24/outline';
+import Breadcrumbs from '../components/Breadcrumbs';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "iKrypt Encrypted Chat",
+  "applicationCategory": "CommunicationApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Secure end-to-end encrypted chat with ephemeral messaging. All messages are encrypted in your browser before being sent.",
+  "url": "https://ikrypt.com/chat",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "End-to-end AES-256 encryption",
+    "Ephemeral messaging",
+    "Zero knowledge architecture",
+    "Private chat rooms",
+    "No message logging"
+  ]
+};
 
 interface Message {
   id: string;
@@ -346,14 +370,30 @@ const EncryptedChat: React.FC = () => {
   }, []);
   
   return (
+    <>
+      <Helmet>
+        <title>Encrypted Chat - Secure End-to-End Messaging | iKrypt</title>
+        <meta name="description" content="Secure end-to-end encrypted chat with ephemeral messaging. All messages are encrypted in your browser before being sent. Zero knowledge architecture." />
+        <meta name="keywords" content="encrypted chat, secure messaging, end-to-end encryption, private chat, ephemeral messages, zero knowledge chat" />
+        <link rel="canonical" href="https://ikrypt.com/chat" />
+        <meta property="og:title" content="Encrypted Chat - Secure Messaging | iKrypt" />
+        <meta property="og:description" content="End-to-end encrypted chat with ephemeral messaging. Zero knowledge architecture." />
+        <meta property="og:url" content="https://ikrypt.com/chat" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-12">
+      <Breadcrumbs
+        items={[{ name: 'Tools', href: '/tools' }]}
+        currentPage="Encrypted Chat"
+      />
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
           <ChatBubbleLeftRightIcon className="h-8 w-8 text-indigo-400" />
         </div>
         <h1 className="text-3xl font-bold text-white mb-2">Encrypted Chat</h1>
         <p className="text-gray-300 max-w-2xl mx-auto">
-          Secure, end-to-end encrypted chat with ephemeral messaging. 
+          Secure, end-to-end encrypted chat with ephemeral messaging.
           All messages are encrypted in your browser before being sent.
         </p>
       </div>
@@ -701,6 +741,7 @@ const EncryptedChat: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

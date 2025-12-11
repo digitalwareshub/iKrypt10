@@ -1,5 +1,28 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { CryptoUtils } from '../lib/encryption';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "iKrypt Encrypted Notes",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Password-protected encrypted notes stored locally with AES-256 encryption. Create, edit, and manage secure notes.",
+  "url": "https://ikrypt.com/notes",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "AES-256 encryption",
+    "Local storage only",
+    "Password protection",
+    "Multiple notes support",
+    "Auto-save functionality"
+  ]
+};
 
 interface EncryptedNote {
   id: string;
@@ -66,6 +89,18 @@ export default function Notes() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Encrypted Notes - Secure Note Taking | iKrypt</title>
+        <meta name="description" content="Password-protected encrypted notes with AES-256 encryption. Store your sensitive notes securely in your browser." />
+        <meta name="keywords" content="encrypted notes, secure notes, private notes, password notes, AES encryption notes" />
+        <link rel="canonical" href="https://ikrypt.com/notes" />
+        <meta property="og:title" content="Encrypted Notes | iKrypt" />
+        <meta property="og:description" content="Secure note taking with AES-256 encryption. Store and manage encrypted notes locally." />
+        <meta property="og:url" content="https://ikrypt.com/notes" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Encrypted Notes</h1>
 
@@ -137,5 +172,6 @@ export default function Notes() {
         </div>
       )}
     </div>
+    </>
   );
 }

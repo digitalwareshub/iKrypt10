@@ -2,6 +2,7 @@
 // Purpose: iKrypt Code - Developer Tools Suite for cryptographic utilities
 
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCode,
@@ -12,6 +13,18 @@ import {
   faExclamationTriangle,
   faInfoCircle
 } from '@fortawesome/free-solid-svg-icons';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "iKrypt Code - Developer Tools Suite",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Developer-focused cryptographic utilities including JWT encoder/decoder, Base64 converter, hash generator, API key generator, URL encoder, and JSON formatter.",
+  "url": "https://ikrypt.com/ikrypt-code",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["JWT encoder/decoder", "Base64 converter", "Hash generator", "API key generator", "URL encoder", "JSON formatter"]
+};
 
 // Tool types
 type Tool = 'jwt' | 'base64' | 'hash' | 'apikey' | 'url' | 'json';
@@ -33,7 +46,7 @@ export default function IKryptCode() {
   "typ": "JWT"
 }`);
   const [jwtOutput, setJwtOutput] = useState('');
-  const [jwtDecoded, setJwtDecoded] = useState<any>(null);
+  const [jwtDecoded, setJwtDecoded] = useState<{ header: Record<string, unknown>; payload: Record<string, unknown>; signature: string } | null>(null);
   const [jwtError, setJwtError] = useState('');
 
   // Base64 State
@@ -69,7 +82,7 @@ export default function IKryptCode() {
       const payload = JSON.parse(jwtPayload);
       
       // Simple base64url encoding (for demo purposes)
-      const base64UrlEncode = (obj: any) => {
+      const base64UrlEncode = (obj: Record<string, unknown>) => {
         return btoa(JSON.stringify(obj))
           .replace(/\+/g, '-')
           .replace(/\//g, '_')
@@ -134,12 +147,13 @@ export default function IKryptCode() {
           case 'url':
             setBase64Output(decodeURIComponent(base64Input));
             break;
-          case 'hex':
+          case 'hex': {
             const bytes = base64Input.match(/.{1,2}/g);
             if (bytes) {
               setBase64Output(new TextDecoder().decode(new Uint8Array(bytes.map(b => parseInt(b, 16)))));
             }
             break;
+          }
           default:
             setBase64Output(atob(base64Input));
         }
@@ -200,10 +214,22 @@ export default function IKryptCode() {
   ];
 
   return (
+    <>
+      <Helmet>
+        <title>iKrypt Code - Developer Tools | JWT, Base64, Hash, API Keys | iKrypt</title>
+        <meta name="description" content="Developer-focused cryptographic utilities: JWT encoder/decoder, Base64 converter, hash generator, API key generator, URL encoder, and JSON formatter. Free online tools." />
+        <meta name="keywords" content="JWT decoder, Base64 encoder, hash generator, API key generator, developer tools, URL encoder, JSON formatter" />
+        <link rel="canonical" href="https://ikrypt.com/ikrypt-code" />
+        <meta property="og:title" content="iKrypt Code - Developer Tools Suite" />
+        <meta property="og:description" content="JWT, Base64, hash, API key, URL, and JSON tools for developers." />
+        <meta property="og:url" content="https://ikrypt.com/ikrypt-code" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900 text-white">
       <div className="md:ml-20 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          
+
           {/* Header */}
           <div className="text-center mb-12">
             <div className="inline-block px-3 py-1 text-xs font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full mb-4">
@@ -385,7 +411,7 @@ export default function IKryptCode() {
                       <label className="block text-sm font-medium text-gray-300 mb-2">Encoding Type</label>
                       <select
                         value={encodingType}
-                        onChange={(e) => setEncodingType(e.target.value as any)}
+                        onChange={(e) => setEncodingType(e.target.value as 'base64' | 'base32' | 'base58' | 'hex' | 'url')}
                         className="p-2 bg-gray-900 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="base64">Base64</option>
@@ -613,5 +639,6 @@ export default function IKryptCode() {
         </div>
       </div>
     </div>
+    </>
   );
 }

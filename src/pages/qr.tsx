@@ -2,17 +2,41 @@
 // Purpose: Create encrypted QR codes for secure data sharing with visual customization and scanning features
 
 import { useState, useRef, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import QRCode from 'qrcode.react';
 import {
-  QrCodeIcon, 
-  LockClosedIcon, 
-  ArrowDownTrayIcon, 
-  ClipboardIcon, 
+  QrCodeIcon,
+  LockClosedIcon,
+  ArrowDownTrayIcon,
+  ClipboardIcon,
   CameraIcon,
   ArrowPathIcon,
   CheckCircleIcon,
   DocumentDuplicateIcon
 } from '@heroicons/react/24/outline';
+import Breadcrumbs from '../components/Breadcrumbs';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "iKrypt QR Code Generator",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Create encrypted QR codes to securely share text, URLs and data. All encryption happens in your browser with AES-256.",
+  "url": "https://ikrypt.com/qr",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Password-protected QR codes",
+    "AES-256 encryption",
+    "Customizable colors and sizes",
+    "Built-in QR scanner",
+    "Download as PNG"
+  ]
+};
 
 // QR code style options
 interface QRStyleOption {
@@ -44,7 +68,7 @@ const QRGenerator: React.FC = () => {
   // QR code appearance states
   const [qrSize, setQrSize] = useState(256);
   const [qrColor, setQrColor] = useState('#4F46E5');
-  const [qrBgColor, _setQrBgColor] = useState('#FFFFFF'); // Using underscore prefix to indicate intentionally unused
+  const [qrBgColor] = useState('#FFFFFF');
   const [qrIncludeMargin, setQrIncludeMargin] = useState(true);
   const [qrLevel, setQrLevel] = useState<'L' | 'M' | 'Q' | 'H'>('M');
   const [qrLogo, setQrLogo] = useState(true);
@@ -352,7 +376,23 @@ const QRGenerator: React.FC = () => {
   }, []);
   
   return (
+    <>
+      <Helmet>
+        <title>Encrypted QR Code Generator - Secure QR Codes | iKrypt</title>
+        <meta name="description" content="Create encrypted QR codes to securely share text, URLs and data. Password-protected with AES-256 encryption. Built-in scanner included." />
+        <meta name="keywords" content="encrypted QR code, secure QR code, password protected QR, QR code generator, encrypted data sharing" />
+        <link rel="canonical" href="https://ikrypt.com/qr" />
+        <meta property="og:title" content="Encrypted QR Code Generator | iKrypt" />
+        <meta property="og:description" content="Create password-protected QR codes with AES-256 encryption. Scan and decrypt directly in browser." />
+        <meta property="og:url" content="https://ikrypt.com/qr" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-12">
+      <Breadcrumbs
+        items={[{ name: 'Tools', href: '/tools' }]}
+        currentPage="QR Code Generator"
+      />
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
           <QrCodeIcon className="h-8 w-8 text-indigo-400" />
@@ -865,6 +905,7 @@ const QRGenerator: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

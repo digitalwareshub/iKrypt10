@@ -1,7 +1,30 @@
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { CryptoUtils } from '../lib/encryption';
 import { db } from '../lib/firebase';
 import { collection, addDoc } from 'firebase/firestore';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "iKrypt Encrypt & Share",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Encrypt text and generate a shareable link. AES-256 encryption with automatic expiration after 24 hours.",
+  "url": "https://ikrypt.com/encrypt-paste",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "AES-256 encryption",
+    "Shareable encrypted links",
+    "24-hour auto-expiration",
+    "Zero-knowledge architecture",
+    "Client-side encryption"
+  ]
+};
 
 export default function EncryptPaste() {
   const [text, setText] = useState('');
@@ -31,6 +54,18 @@ export default function EncryptPaste() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Encrypt & Share Text - Secure Link Generator | iKrypt</title>
+        <meta name="description" content="Encrypt text and generate a shareable link with AES-256 encryption. Links auto-expire after 24 hours for added security." />
+        <meta name="keywords" content="encrypt text, share encrypted text, secure link, AES encryption, self-destructing link" />
+        <link rel="canonical" href="https://ikrypt.com/encrypt-paste" />
+        <meta property="og:title" content="Encrypt & Share Text | iKrypt" />
+        <meta property="og:description" content="Generate encrypted shareable links with AES-256 encryption and 24-hour auto-expiration." />
+        <meta property="og:url" content="https://ikrypt.com/encrypt-paste" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Encrypt & Share Text</h1>
       <textarea
@@ -67,5 +102,6 @@ export default function EncryptPaste() {
         </div>
       )}
     </div>
+    </>
   );
 }

@@ -2,7 +2,21 @@
 // Purpose: Generate ECDSA keypairs for document signing, allowing message signing and verification
 
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { DocumentTextIcon, ClipboardIcon, CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import Breadcrumbs from '../components/Breadcrumbs';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Digital Signature Tool - ECDSA Document Signing",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Create and verify digital signatures using ECDSA P-384 cryptography. Sign messages, verify authenticity, and ensure document integrity.",
+  "url": "https://ikrypt.com/sign",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["ECDSA P-384 signatures", "Key pair generation", "Message signing", "Signature verification", "Export keys as JWK"]
+};
 
 const Sign: React.FC = () => {
   // State for message signing
@@ -154,7 +168,23 @@ const Sign: React.FC = () => {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Digital Signature Tool - ECDSA P-384 Document Signing | iKrypt</title>
+        <meta name="description" content="Create and verify digital signatures using ECDSA P-384 cryptography. Generate key pairs, sign messages, and verify document authenticity. Free online tool." />
+        <meta name="keywords" content="digital signature, ECDSA, document signing, electronic signature, cryptographic signature, P-384, message signing, signature verification" />
+        <link rel="canonical" href="https://ikrypt.com/sign" />
+        <meta property="og:title" content="Digital Signature Tool - ECDSA Document Signing" />
+        <meta property="og:description" content="Create and verify digital signatures using ECDSA cryptography. Free online tool." />
+        <meta property="og:url" content="https://ikrypt.com/sign" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-12">
+      <Breadcrumbs
+        items={[{ name: 'Tools', href: '/tools' }]}
+        currentPage="Digital Signature"
+      />
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
           <DocumentTextIcon className="h-8 w-8 text-indigo-400" />
@@ -354,6 +384,7 @@ const Sign: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

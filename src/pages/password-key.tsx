@@ -2,7 +2,20 @@
 // Purpose: Generate cryptographic keys from passwords using PBKDF2
 
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { KeyIcon, ClipboardIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "PBKDF2 Key Derivation - Password to Key Generator",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Derive cryptographic keys from passwords using PBKDF2 (Password-Based Key Derivation Function 2). Configurable iterations, key size, and output format.",
+  "url": "https://ikrypt.com/password-key",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["PBKDF2 key derivation", "Configurable iterations", "Multiple key sizes", "Hex/Base64 output"]
+};
 
 // Password strength levels
 interface StrengthLevel {
@@ -138,6 +151,18 @@ const PasswordKey: React.FC = () => {
   };
   
   return (
+    <>
+      <Helmet>
+        <title>PBKDF2 Key Derivation - Password to Encryption Key | iKrypt</title>
+        <meta name="description" content="Derive cryptographic keys from passwords using PBKDF2. Configurable iterations, key size, and output format. Create deterministic encryption keys." />
+        <meta name="keywords" content="PBKDF2, key derivation, password to key, encryption key, password based key, cryptographic key" />
+        <link rel="canonical" href="https://ikrypt.com/password-key" />
+        <meta property="og:title" content="PBKDF2 Key Derivation - Password to Key" />
+        <meta property="og:description" content="Derive cryptographic keys from passwords using PBKDF2." />
+        <meta property="og:url" content="https://ikrypt.com/password-key" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
@@ -380,6 +405,7 @@ const PasswordKey: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

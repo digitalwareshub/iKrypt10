@@ -61,6 +61,21 @@ const IKryptGuardLanding: React.FC = () => {
         <meta name="description" content="Free two-factor authentication tool. Generate TOTP/HOTP codes, scan QR codes, manage multiple accounts. No cloud storage, complete privacy." />
         <meta name="keywords" content="2FA authenticator, TOTP, HOTP, two factor authentication, QR code scanner, authenticator app, secure login" />
         <link rel="canonical" href="https://ikrypt.com/tools/2fa-authenticator" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://ikrypt.com/tools/2fa-authenticator" />
+        <meta property="og:title" content="iKrypt Guard - Free 2FA Authenticator | iKrypt" />
+        <meta property="og:description" content="Free two-factor authentication tool. Generate TOTP/HOTP codes, scan QR codes, manage multiple accounts privately." />
+        <meta property="og:image" content="https://ikrypt.com/og-2fa-authenticator.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://ikrypt.com/tools/2fa-authenticator" />
+        <meta name="twitter:title" content="iKrypt Guard - Free 2FA Authenticator | iKrypt" />
+        <meta name="twitter:description" content="Free two-factor authentication tool. Generate TOTP/HOTP codes, scan QR codes, manage multiple accounts privately." />
+        <meta name="twitter:image" content="https://ikrypt.com/og-2fa-authenticator.png" />
+
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>

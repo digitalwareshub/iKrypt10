@@ -47,6 +47,21 @@ const DigitalSignatureLanding: React.FC = () => {
         <meta name="description" content="Create legally recognized digital signatures using ECDSA cryptography. Sign documents, verify authenticity, and ensure integrity. Free online tool." />
         <meta name="keywords" content="digital signature, ECDSA, document signing, electronic signature, cryptographic signature, document verification" />
         <link rel="canonical" href="https://ikrypt.com/tools/digital-signature" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://ikrypt.com/tools/digital-signature" />
+        <meta property="og:title" content="Digital Signature Tool - ECDSA Document Signing | iKrypt" />
+        <meta property="og:description" content="Create legally recognized digital signatures using ECDSA cryptography. Sign and verify documents securely." />
+        <meta property="og:image" content="https://ikrypt.com/og-digital-signature.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://ikrypt.com/tools/digital-signature" />
+        <meta name="twitter:title" content="Digital Signature Tool - ECDSA Document Signing | iKrypt" />
+        <meta name="twitter:description" content="Create legally recognized digital signatures using ECDSA cryptography. Sign and verify documents securely." />
+        <meta name="twitter:image" content="https://ikrypt.com/og-digital-signature.png" />
+
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>

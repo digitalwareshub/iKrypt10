@@ -3,6 +3,7 @@
 
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { 
   LockClosedIcon, 
   DocumentTextIcon,
@@ -141,7 +142,42 @@ export default function Tools() {
     window.scrollTo(0, 0);
   }, []);
 
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "iKrypt Privacy Tools",
+    "description": "Complete collection of free browser-based encryption and security tools",
+    "numberOfItems": tools.length,
+    "itemListElement": tools.map((tool, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": tool.name,
+      "description": tool.description,
+      "url": `https://ikrypt.com${tool.path}`
+    }))
+  };
+
   return (
+    <>
+      <Helmet>
+        <title>Free Encryption Tools - 14+ Privacy & Security Tools | iKrypt</title>
+        <meta name="description" content="Browse 14+ free encryption tools: password generator, file encryption, one-time secrets, digital signatures, hash generator, secure chat, and more. All browser-based, no registration." />
+        <meta name="keywords" content="encryption tools, privacy tools, security tools, password generator, file encryption, hash generator, digital signature, free online tools" />
+        <link rel="canonical" href="https://ikrypt.com/tools" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://ikrypt.com/tools" />
+        <meta property="og:title" content="Free Encryption Tools - 14+ Privacy & Security Tools" />
+        <meta property="og:description" content="Browse 14+ free encryption tools. All browser-based, no registration required." />
+        <meta property="og:image" content="https://ikrypt.com/preview_image.png" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Free Encryption Tools - 14+ Privacy & Security Tools" />
+        <meta name="twitter:description" content="Browse 14+ free encryption tools. All browser-based, no registration required." />
+
+        <script type="application/ld+json">{JSON.stringify(itemListSchema)}</script>
+      </Helmet>
+
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900 text-white">
       {/* Header */}
       <div className="pt-10 pb-20 relative">
@@ -248,5 +284,6 @@ export default function Tools() {
         </div>
       </div>
     </div>
+    </>
   );
 }

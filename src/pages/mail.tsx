@@ -1,5 +1,28 @@
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { CryptoUtils } from '../lib/encryption';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "iKrypt Encrypted Mail",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Create encrypted email drafts with AES-256 encryption. Share securely by providing the decryption key separately.",
+  "url": "https://ikrypt.com/mail",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "AES-256 email encryption",
+    "Encrypted mail drafts",
+    "Separate key sharing",
+    "Client-side encryption",
+    "Copy to clipboard"
+  ]
+};
 
 export default function Mail() {
   const [recipient, setRecipient] = useState('');
@@ -33,9 +56,21 @@ export default function Mail() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Encrypted Mail Draft - Secure Email Composer | iKrypt</title>
+        <meta name="description" content="Create encrypted email drafts with AES-256 encryption. Compose secure messages and share the decryption key separately." />
+        <meta name="keywords" content="encrypted email, secure email, email encryption, AES email, private email draft" />
+        <link rel="canonical" href="https://ikrypt.com/mail" />
+        <meta property="og:title" content="Encrypted Mail Draft | iKrypt" />
+        <meta property="og:description" content="Create encrypted email drafts with AES-256 encryption for secure communication." />
+        <meta property="og:url" content="https://ikrypt.com/mail" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Encrypted Mail Draft</h1>
-      
+
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1">Recipient</label>
@@ -118,5 +153,6 @@ export default function Mail() {
         )}
       </div>
     </div>
+    </>
   );
 }

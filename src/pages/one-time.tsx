@@ -2,10 +2,24 @@
 // Purpose: Creates AES-256 encrypted messages that self-destruct after being read once
 
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { db } from '../lib/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import { CryptoUtils } from '../lib/encryption';
 import { LockClosedIcon, ClipboardIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import Breadcrumbs from '../components/Breadcrumbs';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "One-Time Secret - Self-Destructing Messages",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Create AES-256 encrypted messages that self-destruct after being read once. Perfect for sharing passwords, API keys, and sensitive information securely.",
+  "url": "https://ikrypt.com/one-time",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["AES-256 encryption", "Self-destructing messages", "Customizable expiry time", "Zero-knowledge architecture", "No registration required"]
+};
 
 const OneTimeSecret: React.FC = () => {
   const [message, setMessage] = useState('');
@@ -57,7 +71,23 @@ const OneTimeSecret: React.FC = () => {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>One-Time Secret - Self-Destructing Encrypted Messages | iKrypt</title>
+        <meta name="description" content="Create AES-256 encrypted messages that self-destruct after being read once. Perfect for sharing passwords, API keys, and sensitive data securely. No registration required." />
+        <meta name="keywords" content="one time secret, self destructing message, encrypted message, secure password sharing, temporary message, AES-256 encryption" />
+        <link rel="canonical" href="https://ikrypt.com/one-time" />
+        <meta property="og:title" content="One-Time Secret - Self-Destructing Encrypted Messages" />
+        <meta property="og:description" content="Create encrypted messages that self-destruct after reading. Share passwords securely." />
+        <meta property="og:url" content="https://ikrypt.com/one-time" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-12">
+      <Breadcrumbs
+        items={[{ name: 'Tools', href: '/tools' }]}
+        currentPage="One-Time Secret"
+      />
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
           <LockClosedIcon className="h-8 w-8 text-indigo-400" />
@@ -230,6 +260,7 @@ const OneTimeSecret: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

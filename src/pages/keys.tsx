@@ -2,14 +2,27 @@
 // Purpose: Generate and manage RSA and ECDSA key pairs for cryptographic operations
 
 import { useState, useEffect } from 'react';
-import { 
-  KeyIcon, 
-  ClipboardIcon, 
-  EyeIcon, 
+import { Helmet } from 'react-helmet-async';
+import {
+  KeyIcon,
+  ClipboardIcon,
+  EyeIcon,
   EyeSlashIcon,
   DocumentDuplicateIcon,
   TrashIcon
 } from '@heroicons/react/24/outline';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Key Generator - RSA & ECDSA Key Pairs",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Generate and manage RSA and ECDSA cryptographic key pairs. Export keys in JWK format. Client-side key generation for maximum security.",
+  "url": "https://ikrypt.com/keys",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["RSA key generation", "ECDSA key generation", "JWK export", "Multiple key sizes", "Client-side processing"]
+};
 
 // Define types for key pairs
 interface KeyPair {
@@ -277,6 +290,18 @@ const KeyManagement: React.FC = () => {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Key Generator - RSA & ECDSA Cryptographic Key Pairs | iKrypt</title>
+        <meta name="description" content="Generate and manage RSA and ECDSA cryptographic key pairs. Export keys in JWK format. Client-side key generation for maximum security. Free online tool." />
+        <meta name="keywords" content="key generator, RSA key pair, ECDSA key pair, cryptographic keys, JWK, public key, private key, key management" />
+        <link rel="canonical" href="https://ikrypt.com/keys" />
+        <meta property="og:title" content="Key Generator - RSA & ECDSA Key Pairs" />
+        <meta property="og:description" content="Generate RSA and ECDSA cryptographic key pairs. Client-side processing." />
+        <meta property="og:url" content="https://ikrypt.com/keys" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-6xl mx-auto px-4 py-12">
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
@@ -284,7 +309,7 @@ const KeyManagement: React.FC = () => {
         </div>
         <h1 className="text-3xl font-bold text-white mb-2">Key Management</h1>
         <p className="text-gray-300 max-w-2xl mx-auto">
-          Generate and manage RSA and ECDSA cryptographic key pairs for encryption, decryption, 
+          Generate and manage RSA and ECDSA cryptographic key pairs for encryption, decryption,
           signing, and verification.
         </p>
       </div>
@@ -636,6 +661,7 @@ const KeyManagement: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

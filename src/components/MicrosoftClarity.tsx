@@ -3,31 +3,42 @@
 
 import { useEffect } from 'react';
 
+interface WindowWithClarity extends Window {
+  clarity?: (...args: unknown[]) => void;
+}
+
 interface MicrosoftClarityProps {
   projectId?: string;
 }
 
-const MicrosoftClarity: React.FC<MicrosoftClarityProps> = ({ 
-  projectId = 'ugt3vmzw48' 
+const MicrosoftClarity: React.FC<MicrosoftClarityProps> = ({
+  projectId = 'ugt3vmzw48'
 }) => {
   useEffect(() => {
     // Only load in production or if explicitly enabled
     if (typeof window === 'undefined') return;
 
+    const win = window as WindowWithClarity;
+
     // Check if Clarity is already loaded
-    if ((window as any).clarity) return;
+    if (win.clarity) return;
 
     // Initialize Clarity
-    (function(c: any, l: Document, a: string, r: string, i: string, t?: any, y?: any) {
-      c[a] = c[a] || function() {
-        (c[a].q = c[a].q || []).push(arguments);
+    (function(c: WindowWithClarity, l: Document, a: 'clarity', r: 'script', i: string) {
+      type ClarityFunction = {
+        (...args: unknown[]): void;
+        q?: unknown[];
       };
-      t = l.createElement(r);
-      t.async = 1;
+
+      (c[a] as ClarityFunction) = (c[a] as ClarityFunction) || function(...args: unknown[]) {
+        ((c[a] as ClarityFunction).q = (c[a] as ClarityFunction).q || []).push(args);
+      };
+      const t = l.createElement(r) as HTMLScriptElement;
+      t.async = true;
       t.src = "https://www.clarity.ms/tag/" + i;
-      y = l.getElementsByTagName(r)[0];
-      y.parentNode.insertBefore(t, y);
-    })(window, document, "clarity", "script", projectId);
+      const y = l.getElementsByTagName(r)[0];
+      y.parentNode?.insertBefore(t, y);
+    })(window as WindowWithClarity, document, "clarity", "script", projectId);
 
   }, [projectId]);
 

@@ -107,6 +107,7 @@ const initializeSearchConsole = (siteVerificationId: string): void => {
 };
 
 // Custom event tracking functions
+// eslint-disable-next-line react-refresh/only-export-components
 export const trackToolUsage = (
   toolName: string,
   action: string,
@@ -123,6 +124,7 @@ export const trackToolUsage = (
   }
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const trackFileOperation = (
   operation: string,
   fileType: string,
@@ -139,6 +141,7 @@ export const trackFileOperation = (
   }
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const trackSecurityAction = (action: string, method: string): void => {
   if (window.gtag) {
     window.gtag('event', 'security_action', {
@@ -150,6 +153,7 @@ export const trackSecurityAction = (action: string, method: string): void => {
   }
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const trackConversion = (
   conversionName: string,
   value?: number
@@ -163,6 +167,7 @@ export const trackConversion = (
   }
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const trackError = (
   errorType: string,
   errorMessage: string,

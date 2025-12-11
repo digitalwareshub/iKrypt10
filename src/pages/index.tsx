@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faShieldAlt, 
@@ -157,7 +158,85 @@ export default function Home() {
     }
   ];
 
+  // Structured data for homepage
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "iKrypt",
+    "url": "https://ikrypt.com",
+    "description": "Complete privacy toolbox with 25+ free encryption and security tools. Password generator, file encryption, one-time secrets, digital signatures, and more.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://ikrypt.com/tools?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "iKrypt",
+    "url": "https://ikrypt.com",
+    "logo": "https://ikrypt.com/favicon.ico",
+    "description": "Privacy-first security tools provider offering free, browser-based encryption utilities",
+    "foundingDate": "2025",
+    "areaServed": "Worldwide",
+    "knowsAbout": ["Cryptography", "Data Security", "Privacy Tools", "Encryption", "Password Security", "Two-Factor Authentication"]
+  };
+
+  const softwareAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "iKrypt Privacy Toolbox",
+    "applicationCategory": "SecurityApplication",
+    "operatingSystem": "Web Browser",
+    "description": "25+ free, browser-based privacy and encryption tools including password generator, file encryption, one-time secrets, digital signatures, 2FA authenticator, and more.",
+    "url": "https://ikrypt.com",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "AES-256 Encryption",
+      "RSA-2048 Key Generation",
+      "Zero-Knowledge Architecture",
+      "Client-Side Processing",
+      "No Registration Required",
+      "25+ Security Tools"
+    ]
+  };
+
   return (
+    <>
+      <Helmet>
+        <title>iKrypt - Free Online Privacy & Encryption Tools | 25+ Security Tools</title>
+        <meta name="description" content="Free browser-based encryption tools. Password generator, file encryption, one-time secrets, digital signatures, hash generator, and 20+ more security tools. No registration, zero-knowledge architecture." />
+        <meta name="keywords" content="encryption tools, privacy tools, password generator, file encryption, one-time secret, digital signature, hash generator, AES-256, zero-knowledge, free security tools" />
+        <link rel="canonical" href="https://ikrypt.com/" />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://ikrypt.com/" />
+        <meta property="og:title" content="iKrypt - Free Online Privacy & Encryption Tools" />
+        <meta property="og:description" content="25+ free browser-based encryption and security tools. Password generator, file encryption, one-time secrets, and more. No registration required." />
+        <meta property="og:image" content="https://ikrypt.com/og-home.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://ikrypt.com/" />
+        <meta name="twitter:title" content="iKrypt - Free Online Privacy & Encryption Tools" />
+        <meta name="twitter:description" content="25+ free browser-based encryption and security tools. No registration required." />
+        <meta name="twitter:image" content="https://ikrypt.com/og-home.png" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(softwareAppSchema)}</script>
+      </Helmet>
+
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900 text-white">
       {/* Main content container with margin for sidebar */}
       <div className="md:ml-20 transition-all duration-300">
@@ -1049,5 +1128,6 @@ export default function Home() {
 
       </div>
     </div>
+    </>
   );
 }

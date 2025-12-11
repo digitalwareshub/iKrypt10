@@ -2,13 +2,36 @@
 // Purpose: Encrypted notepad with client-side AES encryption and auto-clearing functionality
 
 import { useState, useEffect } from 'react';
-import { 
-  DocumentTextIcon, 
-  LockClosedIcon, 
+import { Helmet } from 'react-helmet-async';
+import {
+  DocumentTextIcon,
+  LockClosedIcon,
   ClockIcon,
   ExclamationCircleIcon,
   ShieldCheckIcon
 } from '@heroicons/react/24/outline';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "iKrypt Secure Notes",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Encrypted notepad with client-side AES-256 encryption and automatic deletion. Your notes never leave your browser.",
+  "url": "https://ikrypt.com/secure-notes",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Client-side AES-256 encryption",
+    "Auto-delete timer",
+    "Zero server storage",
+    "Password protection",
+    "Clear on page close"
+  ]
+};
 
 const SecureNotes: React.FC = () => {
   // Note content and encryption states
@@ -101,6 +124,18 @@ const SecureNotes: React.FC = () => {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Secure Notes - Encrypted Notepad with Auto-Delete | iKrypt</title>
+        <meta name="description" content="Encrypted notepad with client-side AES-256 encryption and automatic deletion. Your notes never leave your browser - zero server storage." />
+        <meta name="keywords" content="secure notes, encrypted notepad, private notes, auto-delete notes, AES encryption, zero knowledge notes" />
+        <link rel="canonical" href="https://ikrypt.com/secure-notes" />
+        <meta property="og:title" content="Secure Notes - Encrypted Notepad | iKrypt" />
+        <meta property="og:description" content="Encrypted notepad with auto-delete. Your notes never leave your browser." />
+        <meta property="og:url" content="https://ikrypt.com/secure-notes" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
@@ -246,6 +281,7 @@ const SecureNotes: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

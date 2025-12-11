@@ -2,13 +2,27 @@
 // Purpose: Password-based symmetric encryption of text with AES-GCM
 
 import { useState, useEffect } from 'react';
-import { 
-  LockClosedIcon, 
-  LockOpenIcon, 
-  ClipboardIcon, 
+import { Helmet } from 'react-helmet-async';
+import {
+  LockClosedIcon,
+  LockOpenIcon,
+  ClipboardIcon,
   ShieldCheckIcon,
   ArrowPathIcon
 } from '@heroicons/react/24/outline';
+import Breadcrumbs from '../components/Breadcrumbs';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Text Encryption Tool - AES-GCM Password Encryption",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Encrypt and decrypt text using AES-GCM with password-based key derivation (PBKDF2). Client-side encryption for maximum privacy.",
+  "url": "https://ikrypt.com/text-encrypt",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["AES-GCM encryption", "PBKDF2 key derivation", "Password-based encryption", "Client-side processing"]
+};
 
 const TextEncryption: React.FC = () => {
   // Mode state (encrypt or decrypt)
@@ -249,7 +263,23 @@ const TextEncryption: React.FC = () => {
   ];
   
   return (
+    <>
+      <Helmet>
+        <title>Text Encryption Tool - AES-256 Password Encryption | iKrypt</title>
+        <meta name="description" content="Encrypt and decrypt text using AES-256 with password-based key derivation (PBKDF2). Client-side encryption for maximum privacy. Free online tool." />
+        <meta name="keywords" content="text encryption, AES-256, password encryption, encrypt text online, decrypt text, PBKDF2, secure messaging" />
+        <link rel="canonical" href="https://ikrypt.com/text-encrypt" />
+        <meta property="og:title" content="Text Encryption Tool - AES-256 Password Encryption" />
+        <meta property="og:description" content="Encrypt and decrypt text with password-based AES-256 encryption." />
+        <meta property="og:url" content="https://ikrypt.com/text-encrypt" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-12">
+      <Breadcrumbs
+        items={[{ name: 'Tools', href: '/tools' }]}
+        currentPage="Text Encryption"
+      />
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
           {mode === 'encrypt' ? (
@@ -564,6 +594,7 @@ const TextEncryption: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -60,6 +60,21 @@ const OneTimeSecretLanding: React.FC = () => {
         <meta name="description" content="Send encrypted messages that self-destruct after being read once. Perfect for sharing passwords, API keys, and sensitive data securely. No registration required." />
         <meta name="keywords" content="one time secret, self destructing message, encrypted message, secure sharing, password sharing, temporary message" />
         <link rel="canonical" href="https://ikrypt.com/tools/one-time-secret" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://ikrypt.com/tools/one-time-secret" />
+        <meta property="og:title" content="One-Time Secret - Self-Destructing Messages | iKrypt" />
+        <meta property="og:description" content="Send encrypted messages that self-destruct after being read once. Perfect for sharing passwords securely." />
+        <meta property="og:image" content="https://ikrypt.com/og-one-time-secret.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://ikrypt.com/tools/one-time-secret" />
+        <meta name="twitter:title" content="One-Time Secret - Self-Destructing Messages | iKrypt" />
+        <meta name="twitter:description" content="Send encrypted messages that self-destruct after being read once. Perfect for sharing passwords securely." />
+        <meta name="twitter:image" content="https://ikrypt.com/og-one-time-secret.png" />
+
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>

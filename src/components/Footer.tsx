@@ -86,16 +86,21 @@ export default function Footer() {
             </ul>
           </div>
           
-          {/* Company */}
+          {/* Resources */}
           <div className="col-span-1">
             <h3 className="text-sm font-semibold text-gray-300 tracking-wider uppercase">
-              Company
+              Resources
             </h3>
             <ul className="mt-4 space-y-3">
               <li>
-                <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
-                  About
-                </a>
+                <Link to="/blog" className="text-gray-400 hover:text-indigo-400 transition-colors">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-gray-400 hover:text-indigo-400 transition-colors">
+                  Contact
+                </Link>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
@@ -105,11 +110,6 @@ export default function Footer() {
               <li>
                 <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
                   Terms of Service
-                </a>
-              </li>
-              <li>
-                <a href="/contact" className="text-gray-400 hover:text-indigo-400 transition-colors">
-                  Contact
                 </a>
               </li>
             </ul>

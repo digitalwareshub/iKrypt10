@@ -2,14 +2,28 @@
 // Purpose: Generate cryptographic hashes with support for multiple algorithms and file hashing
 
 import { useState, useRef, useEffect } from 'react';
-import { 
-  HashtagIcon, 
-  DocumentIcon, 
-  ClipboardIcon, 
+import { Helmet } from 'react-helmet-async';
+import {
+  HashtagIcon,
+  DocumentIcon,
+  ClipboardIcon,
   ArrowPathIcon,
   CheckCircleIcon,
   XCircleIcon
 } from '@heroicons/react/24/outline';
+import Breadcrumbs from '../components/Breadcrumbs';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Hash Generator - SHA-256, SHA-512, MD5 Online",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Generate and verify cryptographic hashes online. Support for SHA-1, SHA-256, SHA-384, SHA-512. Hash text or files instantly in your browser.",
+  "url": "https://ikrypt.com/hash",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["SHA-256 hashing", "SHA-512 hashing", "File hashing", "Hash verification", "Multiple algorithms"]
+};
 
 const HashGenerator: React.FC = () => {
   // Input mode states
@@ -258,7 +272,23 @@ const HashGenerator: React.FC = () => {
   }, [verifyMode]);
 
   return (
+    <>
+      <Helmet>
+        <title>Hash Generator - SHA-256, SHA-512, MD5 Online | iKrypt</title>
+        <meta name="description" content="Generate and verify cryptographic hashes online. Support for SHA-1, SHA-256, SHA-384, SHA-512. Hash text or files instantly in your browser. Free tool." />
+        <meta name="keywords" content="hash generator, SHA-256, SHA-512, MD5, SHA-1, file hash, checksum, cryptographic hash, hash verification" />
+        <link rel="canonical" href="https://ikrypt.com/hash" />
+        <meta property="og:title" content="Hash Generator - SHA-256, SHA-512, MD5 Online" />
+        <meta property="og:description" content="Generate cryptographic hashes online. SHA-256, SHA-512, MD5 and more." />
+        <meta property="og:url" content="https://ikrypt.com/hash" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-12">
+      <Breadcrumbs
+        items={[{ name: 'Tools', href: '/tools' }]}
+        currentPage="Hash Generator"
+      />
       <div className="mb-8 text-center">
         <div className="inline-flex mb-4 p-3 rounded-full bg-indigo-600/20">
           <HashtagIcon className="h-8 w-8 text-indigo-400" />
@@ -778,6 +808,7 @@ const HashGenerator: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -75,6 +75,13 @@ const Navbar: React.FC = () => {
               >
                 FAQ
               </a>
+              <Link
+                to="/blog"
+                className="text-gray-300 hover:text-white transition-colors px-3 py-2"
+                role="menuitem"
+              >
+                Blog
+              </Link>
             </div>
           </div>
 
@@ -161,6 +168,14 @@ const Navbar: React.FC = () => {
             >
               FAQ
             </a>
+            <Link
+              to="/blog"
+              className="block text-gray-300 hover:text-white hover:bg-gray-800 px-3 py-2 rounded-md"
+              onClick={() => setMenuOpen(false)}
+              role="menuitem"
+            >
+              Blog
+            </Link>
             <div className="pt-4 flex space-x-3">
               <Link
                 to="/login"

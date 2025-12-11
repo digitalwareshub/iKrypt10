@@ -2,6 +2,7 @@
 // Purpose: iKrypt Shield - Network Security Scanner with SSL/TLS analysis and vulnerability detection
 
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faShieldAlt,
@@ -18,6 +19,18 @@ import {
   faInfoCircle,
   faSpinner
 } from '@fortawesome/free-solid-svg-icons';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "iKrypt Shield - Network Security Scanner",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web Browser",
+  "description": "Comprehensive network security scanner with SSL/TLS analysis, vulnerability detection, and security headers analysis. Scan any domain for security issues.",
+  "url": "https://ikrypt.com/ikrypt-shield",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["SSL/TLS analysis", "Security headers check", "Vulnerability detection", "DNS analysis", "Certificate inspection"]
+};
 
 // Types
 interface SecurityScan {
@@ -137,7 +150,7 @@ export default function IKryptShield() {
       }
 
       // Try SSL Labs API for detailed analysis
-      let sslLabsData: any = null;
+      let sslLabsData: { endpoints?: Array<{ grade?: string; details?: { cert?: { issuerLabel?: string; notBefore?: number; notAfter?: number; sigAlg?: string }; key?: { size?: number }; protocols?: Array<{ name?: string }> } }> } | null = null;
       try {
         console.log('Attempting SSL Labs API...');
         const sslLabsUrl = `https://api.ssllabs.com/api/v3/analyze?host=${domain}&publish=off&all=done&ignoreMismatch=on`;
@@ -197,7 +210,7 @@ export default function IKryptShield() {
         const endpoint = sslLabsData.endpoints[0];
         const details = endpoint.details;
         
-        if (details?.cert) {
+        if (details?.cert && details.cert.notBefore !== undefined && details.cert.notAfter !== undefined) {
           detailedSSLInfo = {
             issuer: details.cert.issuerLabel || 'Unknown CA',
             validFrom: new Date(details.cert.notBefore).toISOString(),
@@ -430,7 +443,7 @@ export default function IKryptShield() {
               recordTypes.push(type);
               
               if (type === 'TXT') {
-                answers.forEach((answer: any) => {
+                answers.forEach((answer: { data?: string }) => {
                   const txtData = answer.data || '';
                   if (txtData.includes('v=spf1')) spf = true;
                   if (txtData.includes('v=DMARC1')) dmarc = true;
@@ -490,16 +503,16 @@ export default function IKryptShield() {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 3000);
             
-            await fetch(testUrl, { 
-              method: 'HEAD', 
+            await fetch(testUrl, {
+              method: 'HEAD',
               mode: 'no-cors',
               signal: controller.signal
             });
-            
+
             clearTimeout(timeoutId);
             return port;
-          } catch (error) {
-            throw error;
+          } catch {
+            throw new Error(`Port ${port} check failed`);
           }
         })
       );
@@ -649,7 +662,7 @@ export default function IKryptShield() {
     console.log(`Starting ${tool} scan for: ${url}`);
 
     try {
-      let results: Partial<SecurityResults> = {};
+      const results: Partial<SecurityResults> = {};
 
       // Perform scans based on selected tool
       if (tool === 'ssl' || tool === 'full') {
@@ -721,7 +734,7 @@ export default function IKryptShield() {
 
       const completedResults: SecurityResults = {
         overallScore: score,
-        grade: grade as any,
+        grade: grade as SecurityResults['grade'],
         ssl: results.ssl || {} as SSLResults,
         headers: results.headers || [],
         dns: results.dns || {} as DNSResults,
@@ -823,10 +836,22 @@ export default function IKryptShield() {
   ];
 
   return (
+    <>
+      <Helmet>
+        <title>iKrypt Shield - Network Security Scanner | SSL/TLS Analysis | iKrypt</title>
+        <meta name="description" content="Comprehensive network security scanner with SSL/TLS analysis, vulnerability detection, and security headers check. Scan any domain for security issues." />
+        <meta name="keywords" content="security scanner, SSL checker, TLS analysis, vulnerability scanner, security headers, website security, domain scanner" />
+        <link rel="canonical" href="https://ikrypt.com/ikrypt-shield" />
+        <meta property="og:title" content="iKrypt Shield - Network Security Scanner" />
+        <meta property="og:description" content="SSL/TLS analysis and vulnerability detection for any domain." />
+        <meta property="og:url" content="https://ikrypt.com/ikrypt-shield" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900 text-white">
       <div className="md:ml-20 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          
+
           {/* Header */}
           <div className="text-center mb-12">
             <div className="inline-block px-3 py-1 text-xs font-semibold bg-gradient-to-r from-red-500 to-orange-500 rounded-full mb-4">
@@ -1161,5 +1186,6 @@ export default function IKryptShield() {
         </div>
       </div>
     </div>
+    </>
   );
 }

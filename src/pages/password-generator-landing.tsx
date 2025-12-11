@@ -72,11 +72,14 @@ const PasswordGeneratorLanding: React.FC = () => {
         <meta property="og:description" content="Generate cryptographically secure passwords with our free online tool. No registration required." />
         <meta property="og:url" content="https://ikrypt.com/tools/password-generator" />
         <meta property="og:type" content="website" />
-        
+        <meta property="og:image" content="https://ikrypt.com/og-password-generator.png" />
+
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Password Generator - Secure, Random Passwords | iKrypt" />
         <meta name="twitter:description" content="Generate cryptographically secure passwords with our free online tool. No registration required." />
+        <meta name="twitter:url" content="https://ikrypt.com/tools/password-generator" />
+        <meta name="twitter:image" content="https://ikrypt.com/og-password-generator.png" />
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900 text-white">

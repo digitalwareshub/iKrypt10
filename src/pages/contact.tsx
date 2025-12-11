@@ -2,6 +2,7 @@
 // Purpose: Contact page with Formspree integration and confirmation handling
 
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEnvelope,
@@ -17,6 +18,14 @@ import {
   faUsers,
   faCode
 } from '@fortawesome/free-solid-svg-icons';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact iKrypt",
+  "description": "Get in touch with the iKrypt team for support, enterprise inquiries, partnership opportunities, or security concerns.",
+  "url": "https://ikrypt.com/contact"
+};
 
 interface FormData {
   name: string;
@@ -170,10 +179,22 @@ export default function Contact() {
   }
 
   return (
+    <>
+      <Helmet>
+        <title>Contact iKrypt - Support, Enterprise & Partnerships | iKrypt</title>
+        <meta name="description" content="Get in touch with the iKrypt team for support, enterprise inquiries, partnership opportunities, or security concerns. We're here to help with your security needs." />
+        <meta name="keywords" content="contact iKrypt, iKrypt support, enterprise security, security consultation, partnership" />
+        <link rel="canonical" href="https://ikrypt.com/contact" />
+        <meta property="og:title" content="Contact iKrypt" />
+        <meta property="og:description" content="Get in touch with the iKrypt team for support and inquiries." />
+        <meta property="og:url" content="https://ikrypt.com/contact" />
+        <meta property="og:type" content="website" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-900 to-gray-900 text-white">
       <div className="md:ml-20 transition-all duration-300">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          
+
           {/* Header */}
           <div className="text-center mb-12">
             <div className="inline-block px-3 py-1 text-xs font-semibold bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mb-4">
@@ -406,5 +427,6 @@ export default function Contact() {
         </div>
       </div>
     </div>
+    </>
   );
 }
