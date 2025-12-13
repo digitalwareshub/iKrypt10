@@ -169,7 +169,7 @@ export default function Tools() {
         <meta property="og:url" content="https://ikrypt.com/tools" />
         <meta property="og:title" content="Free Encryption Tools - 14+ Privacy & Security Tools" />
         <meta property="og:description" content="Browse 14+ free encryption tools. All browser-based, no registration required." />
-        <meta property="og:image" content="https://ikrypt.com/preview_image.png" />
+        <meta property="og:image" content="https://ikrypt.com/og-image.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Encryption Tools - 14+ Privacy & Security Tools" />
