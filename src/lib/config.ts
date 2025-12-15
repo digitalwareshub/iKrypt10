@@ -53,8 +53,8 @@ export const config: Config = {
 
   // Analytics configuration for tracking and monitoring
   analytics: {
-    // Use VITE_GOOGLE_ANALYTICS_ID or fall back to VITE_MEASUREMENT_ID
-    googleAnalyticsId: getEnvVar('VITE_GOOGLE_ANALYTICS_ID') || getEnvVar('VITE_MEASUREMENT_ID')
+    // Use VITE_GOOGLE_ANALYTICS_ID or fall back to VITE_MEASUREMENT_ID, with hardcoded fallback
+    googleAnalyticsId: getEnvVar('VITE_GOOGLE_ANALYTICS_ID') || getEnvVar('VITE_MEASUREMENT_ID') || 'G-78JFERH2DN'
   },
   
   // Application metadata
