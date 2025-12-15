@@ -24,25 +24,23 @@ interface Config {
 }
 
 /**
- * Helper function to get environment variables with error handling
+ * Helper function to get environment variables with optional fallback
  * @param key - The environment variable key
- * @returns The environment variable value
- * @throws Error if the environment variable is not defined
+ * @param fallback - Optional fallback value if not defined
+ * @returns The environment variable value or fallback
  */
-const getEnvVar = (key: string): string => {
+const getEnvVar = (key: string, fallback: string = ''): string => {
   const value = import.meta.env[key];
-  if (value === undefined) {
-    throw new Error(`Environment variable ${key} is not defined`);
-  }
-  return value;
+  return value !== undefined ? value : fallback;
 };
 
 /**
  * Application configuration object
  * Separates Firebase configuration from Google Analytics configuration
+ * All values are optional to prevent app crashes when env vars are missing
  */
 export const config: Config = {
-  // Firebase configuration for backend services
+  // Firebase configuration for backend services (optional)
   firebase: {
     apiKey: getEnvVar('VITE_FIREBASE_API_KEY'),
     authDomain: getEnvVar('VITE_FIREBASE_AUTH_DOMAIN'),
@@ -50,13 +48,13 @@ export const config: Config = {
     storageBucket: getEnvVar('VITE_FIREBASE_STORAGE_BUCKET'),
     messagingSenderId: getEnvVar('VITE_FIREBASE_MESSAGING_SENDER_ID'),
     appId: getEnvVar('VITE_FIREBASE_APP_ID'),
-    measurementId: getEnvVar('VITE_MEASUREMENT_ID') // Keep existing if you have it
+    measurementId: getEnvVar('VITE_MEASUREMENT_ID')
   },
-  
+
   // Analytics configuration for tracking and monitoring
   analytics: {
-    // Use existing measurement ID as fallback, or new Google Analytics ID if available
-    googleAnalyticsId: import.meta.env.VITE_GOOGLE_ANALYTICS_ID || getEnvVar('VITE_MEASUREMENT_ID')
+    // Use VITE_GOOGLE_ANALYTICS_ID or fall back to VITE_MEASUREMENT_ID
+    googleAnalyticsId: getEnvVar('VITE_GOOGLE_ANALYTICS_ID') || getEnvVar('VITE_MEASUREMENT_ID')
   },
   
   // Application metadata
