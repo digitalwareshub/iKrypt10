@@ -60,7 +60,7 @@ export default function Blog() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Security Blog | Encryption, Privacy & Cybersecurity Guides" />
         <meta name="twitter:description" content="Expert guides on encryption, password security, data privacy, and online security." />
-        <meta name="twitter:image" content="https://ikrypt.com/og-image.png" />
+        <meta name="twitter:image" content="https://ikrypt.com/twitter-image.png" />
 
         {/* JSON-LD */}
         <script type="application/ld+json">

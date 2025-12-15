@@ -100,7 +100,7 @@ export default function BlogPost() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={post.metaDescription} />
-        <meta name="twitter:image" content={post.featuredImage || "https://ikrypt.com/og-image.png"} />
+        <meta name="twitter:image" content={post.featuredImage || "https://ikrypt.com/twitter-image.png"} />
 
         {/* JSON-LD Article */}
         <script type="application/ld+json">
