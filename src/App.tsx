@@ -5,7 +5,6 @@ Purpose: Main application component with routing and analytics integration using
 
 import { Routes, Route } from 'react-router-dom';
 import { Analytics as VercelAnalytics } from '@vercel/analytics/react';
-import GoogleAnalytics from './components/GoogleAnalytics';
 import Analytics from './components/Analytics';
 import ErrorBoundary from './components/ErrorBoundary';
 import MicrosoftClarity from './components/MicrosoftClarity';
@@ -83,7 +82,6 @@ export default function App() {
         </Route>
         </Routes>
 
-        <GoogleAnalytics trackingId={config.analytics.googleAnalyticsId} />
         <Analytics
           googleAnalyticsId={config.analytics.googleAnalyticsId}
           searchConsoleId={import.meta.env.VITE_GOOGLE_SEARCH_CONSOLE_ID}

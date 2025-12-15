@@ -81,7 +81,7 @@ const initializeGoogleAnalytics = (trackingId: string): void => {
   window.gtag('js', new Date());
   window.gtag('config', trackingId, {
     anonymize_ip: true,
-    send_page_view: false, // We'll handle this manually
+    send_page_view: true,
     cookie_flags: 'SameSite=None;Secure',
   });
 
