@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { enforceRateLimit, RateLimits, RateLimitError } from '../lib/rateLimit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEnvelope,
@@ -74,6 +75,9 @@ export default function Contact() {
     setErrorMessage('');
 
     try {
+      // Check rate limit before proceeding
+      enforceRateLimit(RateLimits.CONTACT_FORM);
+
       const response = await fetch('https://formspree.io/f/mqapjgza', {
         method: 'POST',
         headers: {
@@ -106,7 +110,11 @@ export default function Contact() {
       }
     } catch (error) {
       setSubmitStatus('error');
-      setErrorMessage('Failed to send message. Please try again or contact us directly.');
+      if (error instanceof RateLimitError) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage('Failed to send message. Please try again or contact us directly.');
+      }
     } finally {
       setIsSubmitting(false);
     }

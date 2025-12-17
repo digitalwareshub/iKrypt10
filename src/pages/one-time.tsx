@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet-async';
 import { db } from '../lib/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import { CryptoUtils } from '../lib/encryption';
+import { enforceRateLimit, RateLimits, RateLimitError } from '../lib/rateLimit';
 import { LockClosedIcon, ClipboardIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import Breadcrumbs from '../components/Breadcrumbs';
 
@@ -33,8 +34,11 @@ const OneTimeSecret: React.FC = () => {
     if (!message) return;
 
     try {
+      // Check rate limit before proceeding
+      enforceRateLimit(RateLimits.CREATE_SECRET);
+
       setLoading(true);
-      
+
       // Generate encryption key
       const cryptoKey = await CryptoUtils.generateKey();
       const exportedKey = await CryptoUtils.exportKey(cryptoKey);
@@ -58,7 +62,11 @@ const OneTimeSecret: React.FC = () => {
       setMessage('');
     } catch (error) {
       console.error('Error creating secret:', error);
-      alert('Failed to create one-time secret. Please try again.');
+      if (error instanceof RateLimitError) {
+        alert(error.message);
+      } else {
+        alert('Failed to create one-time secret. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

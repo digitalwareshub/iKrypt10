@@ -2,6 +2,7 @@
 // Purpose: Email notification form with Formspree integration and custom confirmation
 
 import { useState } from 'react';
+import { enforceRateLimit, RateLimits, RateLimitError } from '../lib/rateLimit';
 
 interface NotifyFormProps {
   formspreeUrl: string;
@@ -23,8 +24,11 @@ const NotifyForm: React.FC<NotifyFormProps> = ({ formspreeUrl }) => {
     
     setIsSubmitting(true);
     setError(null);
-    
+
     try {
+      // Check rate limit before proceeding
+      enforceRateLimit(RateLimits.NOTIFY_FORM);
+
       const response = await fetch(formspreeUrl, {
         method: 'POST',
         headers: {
@@ -40,7 +44,11 @@ const NotifyForm: React.FC<NotifyFormProps> = ({ formspreeUrl }) => {
         throw new Error('Form submission failed');
       }
     } catch (err) {
-      setError('There was an error submitting the form. Please try again.');
+      if (err instanceof RateLimitError) {
+        setError(err.message);
+      } else {
+        setError('There was an error submitting the form. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }

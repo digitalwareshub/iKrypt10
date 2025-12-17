@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { CryptoUtils } from '../lib/encryption';
 import { storage } from '../lib/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { enforceRateLimit, RateLimits, RateLimitError } from '../lib/rateLimit';
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -43,6 +44,9 @@ export default function FileDrop() {
     if (!file) return;
 
     try {
+      // Check rate limit before proceeding
+      enforceRateLimit(RateLimits.UPLOAD_FILE);
+
       setLoading(true);
       const key = await CryptoUtils.generateKey();
       const keyString = await CryptoUtils.exportKey(key);
@@ -74,6 +78,9 @@ export default function FileDrop() {
       setDownloadUrl(url);
     } catch (error) {
       console.error('File encryption failed:', error);
+      if (error instanceof RateLimitError) {
+        alert(error.message);
+      }
     } finally {
       setLoading(false);
     }

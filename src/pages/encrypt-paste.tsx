@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { CryptoUtils } from '../lib/encryption';
 import { db } from '../lib/firebase';
 import { collection, addDoc } from 'firebase/firestore';
+import { enforceRateLimit, RateLimits, RateLimitError } from '../lib/rateLimit';
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -33,6 +34,9 @@ export default function EncryptPaste() {
 
   const handleEncrypt = async () => {
     try {
+      // Check rate limit before proceeding
+      enforceRateLimit(RateLimits.CREATE_PASTE);
+
       setLoading(true);
       const key = await CryptoUtils.generateKey();
       const exportedKey = await CryptoUtils.exportKey(key);
@@ -48,6 +52,9 @@ export default function EncryptPaste() {
       setShareableLink(link);
     } catch (error) {
       console.error('Encryption failed:', error);
+      if (error instanceof RateLimitError) {
+        alert(error.message);
+      }
     } finally {
       setLoading(false);
     }
