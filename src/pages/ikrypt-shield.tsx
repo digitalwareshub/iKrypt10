@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { enforceRateLimit, RateLimits, RateLimitError } from '../lib/rateLimit';
 import {
   faShieldAlt,
   faGlobe,
@@ -650,6 +651,17 @@ export default function IKryptShield() {
 
   // Main security scanning function
   const performSecurityScan = async (url: string, tool: ScanTool) => {
+    // Check rate limit before scanning
+    try {
+      enforceRateLimit(RateLimits.SECURITY_SCAN);
+    } catch (error) {
+      if (error instanceof RateLimitError) {
+        alert(error.message);
+        return;
+      }
+      throw error;
+    }
+
     const scanId = Date.now().toString();
     const newScan: SecurityScan = {
       id: scanId,

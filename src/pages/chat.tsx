@@ -12,6 +12,7 @@ import {
   getDocs
 } from 'firebase/firestore';
 import { CryptoUtils } from '../lib/encryption';
+import { enforceRateLimit, RateLimits, RateLimitError } from '../lib/rateLimit';
 import {
   ChatBubbleLeftRightIcon,
   LockClosedIcon,
@@ -108,8 +109,11 @@ const EncryptedChat: React.FC = () => {
       setError('Please enter a username');
       return;
     }
-    
+
     try {
+      // Check rate limit before creating room
+      enforceRateLimit(RateLimits.CHAT_CREATE_ROOM);
+
       setIsCreatingRoom(true);
       setError(null);
       
@@ -138,25 +142,32 @@ const EncryptedChat: React.FC = () => {
       joinRoom(newRoomId, exportedKey);
     } catch (error) {
       console.error('Failed to create room:', error);
-      setError('Failed to create chat room. Please try again.');
+      if (error instanceof RateLimitError) {
+        setError(error.message);
+      } else {
+        setError('Failed to create chat room. Please try again.');
+      }
     } finally {
       setIsCreatingRoom(false);
     }
   };
-  
+
   // Join an existing room
   const joinRoom = async (roomIdToJoin = roomId, keyToUse = key) => {
     if (!roomIdToJoin || !username) {
       setError('Both room ID and username are required');
       return;
     }
-    
+
     if (!keyToUse) {
       setError('Encryption key is required to join the room');
       return;
     }
-    
+
     try {
+      // Check rate limit before joining room
+      enforceRateLimit(RateLimits.CHAT_JOIN_ROOM);
+
       setLoading(true);
       setError(null);
       
@@ -251,13 +262,16 @@ const EncryptedChat: React.FC = () => {
     if (e) {
       e.preventDefault();
     }
-    
+
     if (!newMessage.trim() || !isJoined || sending) {
       console.log('Cannot send message:', { newMessage: newMessage.trim(), isJoined, sending });
       return;
     }
-    
+
     try {
+      // Check rate limit before sending message
+      enforceRateLimit(RateLimits.CHAT_MESSAGE);
+
       setSending(true);
       setError(null);
       
@@ -296,12 +310,16 @@ const EncryptedChat: React.FC = () => {
       
     } catch (error) {
       console.error('Failed to send message:', error);
-      setError('Failed to send message. Please try again.');
+      if (error instanceof RateLimitError) {
+        setError(error.message);
+      } else {
+        setError('Failed to send message. Please try again.');
+      }
     } finally {
       setSending(false);
     }
   };
-  
+
   // Handle Enter key press
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {

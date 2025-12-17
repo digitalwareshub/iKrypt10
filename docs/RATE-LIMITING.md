@@ -67,6 +67,10 @@ In-memory rate limiter that runs in the browser as a secondary defense.
 | `CREATE_PASTE` | 10 | 1 minute | Encrypted paste creation |
 | `CONTACT_FORM` | 2 | 5 minutes | Contact form submissions |
 | `NOTIFY_FORM` | 3 | 1 hour | Email notification signups |
+| `CHAT_MESSAGE` | 20 | 1 minute | Chat message sending |
+| `CHAT_CREATE_ROOM` | 5 | 1 hour | Chat room creation |
+| `CHAT_JOIN_ROOM` | 10 | 1 minute | Chat room joining |
+| `SECURITY_SCAN` | 5 | 1 minute | iKrypt Shield security scans |
 
 ### Usage in Components
 

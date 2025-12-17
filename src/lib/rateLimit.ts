@@ -117,6 +117,14 @@ export const RateLimits = {
 
   // Notify form: 3 per hour
   NOTIFY_FORM: { action: 'notifyForm', limit: 3, windowMs: 60 * 60 * 1000 },
+
+  // Chat: 20 messages per minute, 5 room creations per hour
+  CHAT_MESSAGE: { action: 'chatMessage', limit: 20, windowMs: 60 * 1000 },
+  CHAT_CREATE_ROOM: { action: 'chatCreateRoom', limit: 5, windowMs: 60 * 60 * 1000 },
+  CHAT_JOIN_ROOM: { action: 'chatJoinRoom', limit: 10, windowMs: 60 * 1000 },
+
+  // Security Scanner: 5 scans per minute
+  SECURITY_SCAN: { action: 'securityScan', limit: 5, windowMs: 60 * 1000 },
 } as const;
 
 /**
