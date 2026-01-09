@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     template: '%s | iKrypt',
   },
   description:
-    'Stop sharing passwords over Slack and email. iKrypt lets you send secrets with self-destructing encrypted links. Zero-knowledge encryption means even we can\'t read your data. Free, secure, instant.',
+    'iKrypt lets you send secrets with one-time encrypted links that self-destruct after use. The decryption key never reaches our servers.',
   keywords: [
     // Primary keywords
     'share password securely',
