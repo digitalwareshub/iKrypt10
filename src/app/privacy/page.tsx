@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata = {
-  title: 'Privacy Policy',
+  title: 'iKrypt - Privacy Policy',
   description: 'Privacy Policy for iKrypt - how we handle your data with zero-knowledge encryption.',
   alternates: {
     canonical: 'https://ikrypt.com/privacy',
@@ -68,14 +68,15 @@ export default function PrivacyPage() {
             <h1 className="text-3xl font-bold mb-8 text-foreground">Privacy Policy</h1>
 
             <div className="space-y-6 text-muted-foreground">
-              <p className="text-sm">Last updated: January 2025</p>
+              <p className="text-sm">Last updated: January 2026</p>
 
               <section>
                 <h2 className="text-xl font-semibold mb-3 text-foreground">Our Commitment to Privacy</h2>
                 <p>
-                  iKrypt is built on a zero-knowledge architecture. This means we literally cannot
-                  read your secrets, even if we wanted to. Your privacy is protected by mathematics,
-                  not just policy.
+                  iKrypt is built on a zero-knowledge architecture. We do not have access to the
+                  plaintext contents of your secrets. Encryption happens in your browser, and the
+                  decryption key is never sent to our servers. Your privacy is protected by
+                  mathematics, not just policy.
                 </p>
               </section>
 
@@ -101,7 +102,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-xl font-semibold mb-3 text-foreground">Data Deletion</h2>
                 <p>
-                  Encrypted secrets are permanently deleted when:
+                  Encrypted secrets become inaccessible when:
                 </p>
                 <ul className="list-disc list-inside space-y-1 ml-4 mt-2">
                   <li>The maximum view count is reached</li>
@@ -109,14 +110,16 @@ export default function PrivacyPage() {
                   <li>Whichever comes first</li>
                 </ul>
                 <p className="mt-2">
-                  Once deleted, the data cannot be recovered by anyone, including us.
+                  Expired secrets are deleted on a rolling basis. Once deleted, the data is no
+                  longer retrievable through the Service.
                 </p>
               </section>
 
               <section>
                 <h2 className="text-xl font-semibold mb-3 text-foreground">Analytics</h2>
                 <p>
-                  We use privacy-respecting analytics to understand how people use iKrypt. We track:
+                  We use lightweight, privacy-focused analytics (Vercel Analytics, Google Analytics,
+                  and Microsoft Clarity) to understand aggregate usage. We track:
                 </p>
                 <ul className="list-disc list-inside space-y-1 ml-4 mt-2">
                   <li>Page views (anonymized)</li>
@@ -140,7 +143,8 @@ export default function PrivacyPage() {
                 <h2 className="text-xl font-semibold mb-3 text-foreground">Rate Limiting</h2>
                 <p>
                   To prevent abuse, we may temporarily store hashed IP addresses for rate limiting.
-                  This data is automatically deleted and is never linked to your secrets.
+                  This data is retained only as long as necessary for abuse prevention and is never
+                  linked to your secrets.
                 </p>
               </section>
 

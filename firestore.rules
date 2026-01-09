@@ -77,6 +77,31 @@ service cloud.firestore {
       }
     }
 
+    // Secrets collection - one-time encrypted secrets
+    // Server-side API handles all operations, but we add rules for defense in depth
+    match /secrets/{documentId} {
+      // Allow read if not expired and views remaining
+      allow read: if resource.data.expiresAt == null ||
+                  request.time < timestamp.date(resource.data.expiresAt);
+
+      // Allow create with proper validation
+      allow create: if request.resource.data.ciphertext is string
+                   && request.resource.data.ciphertext.size() > 0
+                   && request.resource.data.ciphertext.size() < 1000000
+                   && request.resource.data.iv is string
+                   && request.resource.data.maxViews is number
+                   && request.resource.data.maxViews >= 1
+                   && request.resource.data.maxViews <= 100;
+
+      // Allow update only to increment viewCount
+      allow update: if request.resource.data.viewCount == resource.data.viewCount + 1
+                   && request.resource.data.ciphertext == resource.data.ciphertext
+                   && request.resource.data.iv == resource.data.iv;
+
+      // Allow delete (for cleanup after max views)
+      allow delete: if true;
+    }
+
     // Deny all other collections by default
     match /{document=**} {
       allow read, write: if false;

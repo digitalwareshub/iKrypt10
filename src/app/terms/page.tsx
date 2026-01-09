@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata = {
-  title: 'Terms of Service',
+  title: 'iKrypt - Terms of Service',
   description: 'Terms of Service for iKrypt - secure secret sharing with zero-knowledge encryption.',
   alternates: {
     canonical: 'https://ikrypt.com/terms',
@@ -68,7 +68,7 @@ export default function TermsPage() {
             <h1 className="text-3xl font-bold mb-8 text-foreground">Terms of Service</h1>
 
             <div className="space-y-6 text-muted-foreground">
-              <p className="text-sm">Last updated: January 2025</p>
+              <p className="text-sm">Last updated: January 2026</p>
 
               <section>
                 <h2 className="text-xl font-semibold mb-3 text-foreground">1. Acceptance of Terms</h2>
@@ -81,8 +81,11 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-xl font-semibold mb-3 text-foreground">2. Description of Service</h2>
                 <p>
-                  iKrypt provides a zero-knowledge encrypted secret sharing service. Users can create
-                  encrypted messages that self-destruct after being viewed or after a set expiration time.
+                  iKrypt generates encrypted, one-time links for sharing sensitive text. You choose how
+                  to send the link (email, chat, etc.). We do not send messages on your behalf.
+                </p>
+                <p className="mt-2">
+                  Secrets become inaccessible after reaching their view limit or expiration time.
                 </p>
               </section>
 
@@ -102,22 +105,35 @@ export default function TermsPage() {
                 <h2 className="text-xl font-semibold mb-3 text-foreground">4. Zero-Knowledge Architecture</h2>
                 <p>
                   iKrypt uses client-side encryption. The encryption key is stored only in the URL
-                  fragment and is never transmitted to our servers. We cannot read, access, or recover
-                  your secrets. You are solely responsible for securely sharing and managing your secret links.
+                  fragment and is never transmitted to our servers. We do not have access to the
+                  plaintext content of your secrets because encryption happens in your browser.
+                </p>
+                <p className="mt-2">
+                  You are solely responsible for securely sharing and managing your secret links.
+                  iKrypt does not control how you share links and is not responsible for delivery
+                  or interception of links outside the Service.
                 </p>
               </section>
 
               <section>
                 <h2 className="text-xl font-semibold mb-3 text-foreground">5. Data Retention</h2>
                 <p>
-                  Encrypted secrets are automatically deleted after they reach their view limit or
-                  expiration time. We do not retain copies of deleted data. Metadata such as creation
-                  timestamps may be retained for abuse prevention purposes.
+                  After a secret reaches its view limit or expiration time, it becomes inaccessible.
+                  Expired secrets are deleted on a rolling basis. Limited metadata may be retained
+                  for security and abuse prevention.
                 </p>
               </section>
 
               <section>
-                <h2 className="text-xl font-semibold mb-3 text-foreground">6. Service Availability</h2>
+                <h2 className="text-xl font-semibold mb-3 text-foreground">6. Termination and Abuse</h2>
+                <p>
+                  We may apply rate limits or restrict access to the Service to prevent abuse, fraud,
+                  spam, or attempts to circumvent security measures.
+                </p>
+              </section>
+
+              <section>
+                <h2 className="text-xl font-semibold mb-3 text-foreground">7. Service Availability</h2>
                 <p>
                   We strive to maintain high availability but do not guarantee uninterrupted service.
                   The Service is provided &quot;as is&quot; without warranties of any kind, express or implied.
@@ -125,7 +141,7 @@ export default function TermsPage() {
               </section>
 
               <section>
-                <h2 className="text-xl font-semibold mb-3 text-foreground">7. Limitation of Liability</h2>
+                <h2 className="text-xl font-semibold mb-3 text-foreground">8. Limitation of Liability</h2>
                 <p>
                   To the maximum extent permitted by law, iKrypt and its operators shall not be liable
                   for any indirect, incidental, special, consequential, or punitive damages arising
@@ -134,7 +150,7 @@ export default function TermsPage() {
               </section>
 
               <section>
-                <h2 className="text-xl font-semibold mb-3 text-foreground">8. Changes to Terms</h2>
+                <h2 className="text-xl font-semibold mb-3 text-foreground">9. Changes to Terms</h2>
                 <p>
                   We may update these Terms at any time. Continued use of the Service after changes
                   constitutes acceptance of the new Terms.
@@ -142,7 +158,7 @@ export default function TermsPage() {
               </section>
 
               <section>
-                <h2 className="text-xl font-semibold mb-3 text-foreground">9. Contact</h2>
+                <h2 className="text-xl font-semibold mb-3 text-foreground">10. Contact</h2>
                 <p>
                   For questions about these Terms, contact us at{' '}
                   <a href="mailto:hello@ikrypt.com" className="text-primary hover:text-primary/80">
