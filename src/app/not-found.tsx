@@ -79,7 +79,7 @@ export default function NotFound() {
               Privacy
             </Link>
             <a
-              href="https://twitter.com/ikaboroshan"
+              href="https://x.com/ikrypt_"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"

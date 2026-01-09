@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     description:
       'Stop DM\'ing passwords. Send a secret once with a self-destructing link. Zero-knowledge encryption.',
     images: ['/og-image.png'],
-    creator: '@ikaboroshan',
+    creator: '@ikrypt_',
   },
   robots: {
     index: true,
@@ -136,7 +136,7 @@ const jsonLd = {
         url: 'https://ikrypt.com/logo.svg',
       },
       sameAs: [
-        'https://twitter.com/ikaboroshan',
+        'https://x.com/ikrypt_',
         'https://github.com/digitalwareshub/iKrypt10',
       ],
     },
