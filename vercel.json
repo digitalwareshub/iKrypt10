@@ -1,4 +1,5 @@
 {
+  "framework": "nextjs",
   "redirects": [
     { "source": "/password", "destination": "/", "permanent": true },
     { "source": "/passwords", "destination": "/", "permanent": true },
