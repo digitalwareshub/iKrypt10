@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import SecretForm from '@/components/SecretForm';
 
 export default function Home() {
@@ -89,7 +90,7 @@ export default function Home() {
               {
                 step: '4',
                 title: 'Get notified',
-                desc: 'Know when it\'s accessed',
+                desc: 'Optionally know when it\'s opened',
               },
             ].map((item) => (
               <div key={item.step} className="text-center">
@@ -176,7 +177,7 @@ export default function Home() {
               { icon: '🗝️', label: 'SSH Keys' },
               { icon: '📝', label: '.env values' },
               { icon: '🏦', label: 'Bank details' },
-              { icon: '📜', label: 'Certificates' },
+              { icon: '📜', label: 'TLS/SSL Certs' },
               { icon: '🤫', label: 'Anything secret' },
             ].map((item) => (
               <div
@@ -236,18 +237,18 @@ export default function Home() {
             © {new Date().getFullYear()} iKrypt. Send secrets safely.
           </div>
           <div className="flex items-center gap-6">
-            <a
+            <Link
               href="/terms"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               Terms
-            </a>
-            <a
+            </Link>
+            <Link
               href="/privacy"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               Privacy
-            </a>
+            </Link>
             <a
               href="https://x.com/ikrypt_"
               target="_blank"
