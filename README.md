@@ -1,34 +1,40 @@
-# iKrypt - Privacy Toolbox
+# iKrypt - One-Time Secret Sharing
 
-A suite of 10 simple, secure, browser-based privacy tools that allow users to encrypt text, messages, files, and more — without login or server-side data processing.
+Share passwords, API keys, and sensitive data securely with self-destructing encrypted links. Zero-knowledge encryption means even we can't read your secrets.
 
 ## Features
 
-- 🔐 Client-side encryption using Web Crypto API
-- 📱 Responsive design with dark mode support
-- 🚫 No login required
-- 💾 Secure file storage with Firebase
-- 🔄 Real-time encrypted chat
+- **Zero-Knowledge Encryption** - AES-256-GCM encryption happens in your browser. The key only exists in the URL fragment (never sent to servers)
+- **Self-Destructing Links** - Secrets expire after a set time or number of views
+- **View Notifications** - Get notified when your secret is accessed
+- **No Account Required** - Just paste, encrypt, and share
+- **Rate Limited** - Protection against abuse with Upstash Redis
 
-## Tools Available
+## How It Works
 
-1. Encrypt Paste - Share encrypted text via links
-2. File Drop - Secure file sharing
-3. Notes - Local encrypted notepad
-4. Mail - Encrypt email drafts
-5. One-Time Messages - Self-destructing messages
-6. QR - Encrypted QR code generator
-7. Chat - P2P encrypted chat
-8. Clipboard - Secure clipboard manager
-9. Encrypt Copy - Quick text encryption
-10. Sign - Digital signatures
+1. You paste a secret in the form
+2. Your browser encrypts it with AES-256-GCM
+3. Only the encrypted ciphertext is sent to our server
+4. The decryption key stays in the URL fragment (`#k=...`)
+5. URL fragments are never sent to servers in HTTP requests
+6. Recipient opens the link, browser decrypts locally
 
-## Setup Instructions
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Styling**: Tailwind CSS
+- **Database**: Firebase Firestore
+- **Rate Limiting**: Upstash Redis
+- **Email**: Resend
+- **Analytics**: Vercel Analytics, Google Analytics, Microsoft Clarity
+- **Hosting**: Vercel
+
+## Local Development
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/digitalwareshub/ikrypt.git
-cd ikrypt
+git clone https://github.com/digitalwareshub/iKrypt10.git
+cd iKrypt10
 ```
 
 2. Install dependencies:
@@ -36,55 +42,51 @@ cd ikrypt
 npm install
 ```
 
-3. Configure Firebase:
-   - Create a new Firebase project
-   - Enable Firestore and Storage
-   - Copy your Firebase configuration to `src/lib/firebase.ts`
+3. Create `.env.local` with the following variables:
+```env
+# Upstash Redis - Rate Limiting
+UPSTASH_REDIS_REST_URL=your_upstash_url
+UPSTASH_REDIS_REST_TOKEN=your_upstash_token
+
+# Firebase Configuration
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+
+# Resend Email API
+RESEND_API_KEY=your_resend_api_key
+
+# Site URL
+NEXT_PUBLIC_SITE_URL=https://ikrypt.com
+
+# Analytics (optional)
+NEXT_PUBLIC_GA_ID=your_ga_id
+NEXT_PUBLIC_CLARITY_ID=your_clarity_id
+```
 
 4. Start the development server:
 ```bash
 npm run dev
 ```
 
-## Environment Variables
+## Deployment
 
-Create a `.env` file in the root directory:
+The app is configured for Vercel deployment. Push to `main` branch to auto-deploy.
 
-```env
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-VITE_MEASUREMENT_ID=G-ESTNHQTMYM
-```
+Make sure to add all environment variables in Vercel project settings.
 
-## Build for Production
+## Security
 
-```bash
-npm run build
-```
+- All encryption happens client-side using the Web Crypto API
+- AES-256-GCM provides authenticated encryption
+- Decryption keys are never sent to or stored on servers
+- Secrets are stored as encrypted ciphertext only
+- IP addresses are hashed before storage
+- Rate limiting prevents abuse
 
-## Technology Stack
+## License
 
-- Vite + React + TypeScript
-- Tailwind CSS
-- Web Crypto API
-- Firebase (Firestore & Storage)
-- React Router DOM
-
-## Security Features
-
-- All encryption is performed client-side
-- Uses AES-GCM for symmetric encryption
-- ECDSA for digital signatures
-- No raw data stored on servers
-- Encrypted data auto-expires
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/
+MIT
