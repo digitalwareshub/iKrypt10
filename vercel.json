@@ -1,44 +1,54 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "framework": "vite",
   "redirects": [
-    { "source": "/password", "destination": "/password-generator", "permanent": true },
-    { "source": "/passwords", "destination": "/password-generator", "permanent": true },
-    { "source": "/encrypt", "destination": "/text-encrypt", "permanent": true },
-    { "source": "/encryption", "destination": "/file-encrypt", "permanent": true },
-    { "source": "/files", "destination": "/file-encrypt", "permanent": true },
-    { "source": "/secret", "destination": "/one-time", "permanent": true },
-    { "source": "/secrets", "destination": "/one-time", "permanent": true },
-    { "source": "/otp", "destination": "/one-time", "permanent": true },
-    { "source": "/2fa", "destination": "/ikrypt-guard", "permanent": true },
-    { "source": "/authenticator", "destination": "/ikrypt-guard", "permanent": true },
-    { "source": "/totp", "destination": "/ikrypt-guard", "permanent": true },
-    { "source": "/notes", "destination": "/secure-notes", "permanent": true },
-    { "source": "/signature", "destination": "/sign", "permanent": true },
-    { "source": "/digital-signature", "destination": "/sign", "permanent": true },
-    { "source": "/generate", "destination": "/password-generator", "permanent": true },
-    { "source": "/key", "destination": "/keys", "permanent": true },
-    { "source": "/keypair", "destination": "/keys", "permanent": true },
-    { "source": "/hashing", "destination": "/hash", "permanent": true },
-    { "source": "/shield", "destination": "/ikrypt-shield", "permanent": true },
-    { "source": "/guard", "destination": "/ikrypt-guard", "permanent": true },
-    { "source": "/code", "destination": "/ikrypt-code", "permanent": true }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/password", "destination": "/", "permanent": true },
+    { "source": "/passwords", "destination": "/", "permanent": true },
+    { "source": "/password-generator", "destination": "/", "permanent": true },
+    { "source": "/encrypt", "destination": "/", "permanent": true },
+    { "source": "/encryption", "destination": "/", "permanent": true },
+    { "source": "/text-encrypt", "destination": "/", "permanent": true },
+    { "source": "/file-encrypt", "destination": "/", "permanent": true },
+    { "source": "/files", "destination": "/", "permanent": true },
+    { "source": "/secret", "destination": "/", "permanent": true },
+    { "source": "/secrets", "destination": "/", "permanent": true },
+    { "source": "/one-time", "destination": "/", "permanent": true },
+    { "source": "/otp", "destination": "/", "permanent": true },
+    { "source": "/2fa", "destination": "/", "permanent": true },
+    { "source": "/authenticator", "destination": "/", "permanent": true },
+    { "source": "/totp", "destination": "/", "permanent": true },
+    { "source": "/ikrypt-guard", "destination": "/", "permanent": true },
+    { "source": "/notes", "destination": "/", "permanent": true },
+    { "source": "/secure-notes", "destination": "/", "permanent": true },
+    { "source": "/signature", "destination": "/", "permanent": true },
+    { "source": "/digital-signature", "destination": "/", "permanent": true },
+    { "source": "/sign", "destination": "/", "permanent": true },
+    { "source": "/generate", "destination": "/", "permanent": true },
+    { "source": "/key", "destination": "/", "permanent": true },
+    { "source": "/keys", "destination": "/", "permanent": true },
+    { "source": "/keypair", "destination": "/", "permanent": true },
+    { "source": "/hashing", "destination": "/", "permanent": true },
+    { "source": "/hash", "destination": "/", "permanent": true },
+    { "source": "/shield", "destination": "/", "permanent": true },
+    { "source": "/ikrypt-shield", "destination": "/", "permanent": true },
+    { "source": "/guard", "destination": "/", "permanent": true },
+    { "source": "/code", "destination": "/", "permanent": true },
+    { "source": "/ikrypt-code", "destination": "/", "permanent": true },
+    { "source": "/qr", "destination": "/", "permanent": true },
+    { "source": "/random", "destination": "/", "permanent": true },
+    { "source": "/mac", "destination": "/", "permanent": true },
+    { "source": "/mail", "destination": "/", "permanent": true },
+    { "source": "/chat", "destination": "/", "permanent": true },
+    { "source": "/clipboard", "destination": "/", "permanent": true },
+    { "source": "/file-drop", "destination": "/", "permanent": true },
+    { "source": "/encrypt-paste", "destination": "/", "permanent": true },
+    { "source": "/split-key", "destination": "/", "permanent": true },
+    { "source": "/tools", "destination": "/", "permanent": true },
+    { "source": "/blog", "destination": "/", "permanent": true },
+    { "source": "/contact", "destination": "/", "permanent": true }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com https://*.clarity.ms; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://www.google-analytics.com https://analytics.google.com https://firestore.googleapis.com wss://*.firebaseio.com https://va.vercel-scripts.com https://*.clarity.ms; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
-        },
         {
           "key": "Strict-Transport-Security",
           "value": "max-age=31536000; includeSubDomains; preload"
@@ -52,20 +62,12 @@
           "value": "nosniff"
         },
         {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        },
-        {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
         },
         {
           "key": "Permissions-Policy",
-          "value": "accelerometer=(), autoplay=(), camera=(self), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=()"
-        },
-        {
-          "key": "X-Permitted-Cross-Domain-Policies",
-          "value": "none"
+          "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
         }
       ]
     }

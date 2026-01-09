@@ -1,18 +1,27 @@
 <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#111827"/>
-      <stop offset="50%" style="stop-color:#312e81"/>
-      <stop offset="100%" style="stop-color:#111827"/>
+      <stop offset="0%" style="stop-color:#0a0a0a"/>
+      <stop offset="50%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#0a0a0a"/>
     </linearGradient>
     <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#818cf8"/>
-      <stop offset="100%" style="stop-color:#6366f1"/>
+      <stop offset="50%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="50%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
     </linearGradient>
     <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.3"/>
-      <stop offset="100%" style="stop-color:#818cf8;stop-opacity:0"/>
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:0"/>
     </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="20" flood-color="#6366f1" flood-opacity="0.5"/>
+    </filter>
   </defs>
 
   <!-- Background -->
@@ -20,82 +29,32 @@
 
   <!-- Grid pattern overlay -->
   <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#374151" stroke-width="0.5" opacity="0.3"/>
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#27272a" stroke-width="0.5" opacity="0.4"/>
   </pattern>
   <rect width="1200" height="630" fill="url(#grid)"/>
 
-  <!-- Glow effects -->
-  <ellipse cx="600" cy="315" rx="400" ry="250" fill="url(#glowGradient)"/>
+  <!-- Glow effect behind shield -->
+  <ellipse cx="270" cy="315" rx="200" ry="200" fill="url(#glowGradient)"/>
 
-  <!-- FontAwesome Shield-Alt Icon (faShieldAlt) - scaled and centered -->
-  <g transform="translate(525, 70) scale(0.35)">
+  <!-- FontAwesome Shield Icon - the nice one from old codebase -->
+  <g transform="translate(120, 115) scale(0.6)" filter="url(#glow)">
     <path fill="url(#shieldGradient)" d="M466.5 83.7l-192-80a48.15 48.15 0 0 0-36.9 0l-192 80C27.7 91.1 16 108.6 16 128c0 198.5 114.5 335.7 221.5 380.3 11.8 4.9 25.1 4.9 36.9 0C360.1 472.6 496 349.3 496 128c0-19.4-11.7-36.9-29.5-44.3zM256.1 446.3l-.1-381 175.9 73.3c-3.3 151.4-82.1 261.1-175.8 307.7z"/>
   </g>
 
-  <!-- Brand name -->
-  <text x="600" y="340" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle">iKrypt</text>
+  <!-- Brand name with gradient -->
+  <text x="520" y="250" font-family="Inter, system-ui, sans-serif" font-size="80" font-weight="700" fill="url(#textGradient)">iKrypt</text>
 
   <!-- Tagline -->
-  <text x="600" y="390" font-family="Arial, sans-serif" font-size="28" fill="#a5b4fc" text-anchor="middle">Privacy Toolbox</text>
+  <text x="520" y="320" font-family="Inter, system-ui, sans-serif" font-size="36" font-weight="500" fill="#fafafa">Send secrets safely. Once.</text>
 
-  <!-- Divider line -->
-  <line x1="350" y1="420" x2="850" y2="420" stroke="#6366f1" stroke-width="2" opacity="0.5"/>
+  <!-- Description -->
+  <text x="520" y="400" font-family="Inter, system-ui, sans-serif" font-size="24" fill="#a1a1aa">Zero-knowledge encryption with</text>
+  <text x="520" y="440" font-family="Inter, system-ui, sans-serif" font-size="24" fill="#a1a1aa">self-destructing links.</text>
 
-  <!-- Tool categories in a row -->
-  <g transform="translate(100, 460)">
-    <!-- Tool 1: Password Generator -->
-    <g transform="translate(0, 0)">
-      <rect x="0" y="0" width="150" height="80" rx="10" fill="#1e1b4b" opacity="0.6"/>
-      <text x="75" y="35" font-family="Arial, sans-serif" font-size="24" fill="#818cf8" text-anchor="middle">&#128274;</text>
-      <text x="75" y="60" font-family="Arial, sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">Password</text>
-      <text x="75" y="74" font-family="Arial, sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">Generator</text>
-    </g>
-
-    <!-- Tool 2: File Encryption -->
-    <g transform="translate(170, 0)">
-      <rect x="0" y="0" width="150" height="80" rx="10" fill="#1e1b4b" opacity="0.6"/>
-      <text x="75" y="35" font-family="Arial, sans-serif" font-size="24" fill="#818cf8" text-anchor="middle">&#128196;</text>
-      <text x="75" y="60" font-family="Arial, sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">File</text>
-      <text x="75" y="74" font-family="Arial, sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">Encryption</text>
-    </g>
-
-    <!-- Tool 3: One-Time Secrets -->
-    <g transform="translate(340, 0)">
-      <rect x="0" y="0" width="150" height="80" rx="10" fill="#1e1b4b" opacity="0.6"/>
-      <text x="75" y="35" font-family="Arial, sans-serif" font-size="24" fill="#818cf8" text-anchor="middle">&#128172;</text>
-      <text x="75" y="60" font-family="Arial, sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">One-Time</text>
-      <text x="75" y="74" font-family="Arial, sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">Secrets</text>
-    </g>
-
-    <!-- Tool 4: 2FA Authenticator -->
-    <g transform="translate(510, 0)">
-      <rect x="0" y="0" width="150" height="80" rx="10" fill="#1e1b4b" opacity="0.6"/>
-      <text x="75" y="35" font-family="Arial, sans-serif" font-size="24" fill="#818cf8" text-anchor="middle">&#128241;</text>
-      <text x="75" y="60" font-family="Arial, sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">2FA</text>
-      <text x="75" y="74" font-family="Arial, sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">Authenticator</text>
-    </g>
-
-    <!-- Tool 5: Hash Generator -->
-    <g transform="translate(680, 0)">
-      <rect x="0" y="0" width="150" height="80" rx="10" fill="#1e1b4b" opacity="0.6"/>
-      <text x="75" y="35" font-family="Arial, sans-serif" font-size="24" fill="#818cf8" text-anchor="middle">#</text>
-      <text x="75" y="60" font-family="Arial, sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">Hash</text>
-      <text x="75" y="74" font-family="Arial, sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">Generator</text>
-    </g>
-
-    <!-- Tool 6: Digital Signature -->
-    <g transform="translate(850, 0)">
-      <rect x="0" y="0" width="150" height="80" rx="10" fill="#1e1b4b" opacity="0.6"/>
-      <text x="75" y="35" font-family="Arial, sans-serif" font-size="24" fill="#818cf8" text-anchor="middle">&#9998;</text>
-      <text x="75" y="60" font-family="Arial, sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">Digital</text>
-      <text x="75" y="74" font-family="Arial, sans-serif" font-size="12" fill="#d1d5db" text-anchor="middle">Signature</text>
-    </g>
-  </g>
-
-  <!-- Bottom text -->
-  <text x="600" y="590" font-family="Arial, sans-serif" font-size="18" fill="#9ca3af" text-anchor="middle">14+ Free Privacy &amp; Security Tools | ikrypt.com</text>
+  <!-- URL -->
+  <text x="520" y="520" font-family="Inter, system-ui, sans-serif" font-size="22" fill="#6366f1">ikrypt.com</text>
 
   <!-- Corner accents -->
-  <path d="M0 0 L80 0 L80 4 L4 4 L4 80 L0 80 Z" fill="#6366f1" opacity="0.5"/>
-  <path d="M1200 630 L1120 630 L1120 626 L1196 626 L1196 550 L1200 550 Z" fill="#6366f1" opacity="0.5"/>
+  <path d="M0 0 L80 0 L80 3 L3 3 L3 80 L0 80 Z" fill="#6366f1" opacity="0.4"/>
+  <path d="M1200 630 L1120 630 L1120 627 L1197 627 L1197 550 L1200 550 Z" fill="#a855f7" opacity="0.4"/>
 </svg>

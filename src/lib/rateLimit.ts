@@ -1,137 +1,89 @@
-// src/lib/rateLimit.ts
-// Purpose: Client-side rate limiting utility for Firebase operations
-// This is a secondary defense - the primary rate limiting happens at Vercel Edge
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
 
-interface RateLimitEntry {
-  count: number;
-  resetTime: number;
+// Initialize Redis client (only if env vars are set)
+const redis =
+  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+    ? new Redis({
+        url: process.env.UPSTASH_REDIS_REST_URL,
+        token: process.env.UPSTASH_REDIS_REST_TOKEN,
+      })
+    : null;
+
+// Rate limiter for secret creation: 10 secrets per hour per IP
+export const createSecretLimiter = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(10, '1 h'),
+      prefix: 'ikrypt:create',
+    })
+  : null;
+
+// Rate limiter for email notifications: 5 emails per hour per IP
+export const emailNotifyLimiter = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(5, '1 h'),
+      prefix: 'ikrypt:email',
+    })
+  : null;
+
+// Rate limiter for viewing secrets: 30 views per minute per IP (generous)
+export const viewSecretLimiter = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(30, '1 m'),
+      prefix: 'ikrypt:view',
+    })
+  : null;
+
+// Helper to check rate limit
+export async function checkRateLimit(
+  limiter: Ratelimit | null,
+  identifier: string
+): Promise<{ success: boolean; remaining?: number; reset?: number }> {
+  if (!limiter) {
+    // If no rate limiter configured, allow all requests (dev mode)
+    return { success: true };
+  }
+
+  const result = await limiter.limit(identifier);
+  return {
+    success: result.success,
+    remaining: result.remaining,
+    reset: result.reset,
+  };
 }
 
-class ClientRateLimiter {
-  private limits: Map<string, RateLimitEntry> = new Map();
-
-  // Default: 10 operations per minute per action type
-  private readonly defaultLimit = 10;
-  private readonly defaultWindowMs = 60 * 1000; // 1 minute
-
-  /**
-   * Check if an action is rate limited
-   * @param action - The action identifier (e.g., 'createSecret', 'uploadFile')
-   * @param limit - Max operations allowed in the window
-   * @param windowMs - Time window in milliseconds
-   * @returns Object with allowed status and remaining count
-   */
-  check(
-    action: string,
-    limit: number = this.defaultLimit,
-    windowMs: number = this.defaultWindowMs
-  ): { allowed: boolean; remaining: number; resetIn: number } {
-    const now = Date.now();
-    const entry = this.limits.get(action);
-
-    // If no entry or window has passed, reset
-    if (!entry || now >= entry.resetTime) {
-      this.limits.set(action, {
-        count: 1,
-        resetTime: now + windowMs,
-      });
-      return { allowed: true, remaining: limit - 1, resetIn: windowMs };
-    }
-
-    // Check if under limit
-    if (entry.count < limit) {
-      entry.count++;
-      return {
-        allowed: true,
-        remaining: limit - entry.count,
-        resetIn: entry.resetTime - now,
-      };
-    }
-
-    // Rate limited
-    return {
-      allowed: false,
-      remaining: 0,
-      resetIn: entry.resetTime - now,
-    };
+// Get IP from request headers
+export function getClientIp(headers: Headers): string {
+  // Try various headers that might contain the real IP
+  const forwardedFor = headers.get('x-forwarded-for');
+  if (forwardedFor) {
+    return forwardedFor.split(',')[0].trim();
   }
 
-  /**
-   * Wrapper function that throws if rate limited
-   * @param action - The action identifier
-   * @param limit - Max operations allowed
-   * @param windowMs - Time window in milliseconds
-   */
-  enforce(action: string, limit?: number, windowMs?: number): void {
-    const result = this.check(action, limit, windowMs);
-    if (!result.allowed) {
-      const seconds = Math.ceil(result.resetIn / 1000);
-      throw new RateLimitError(
-        `Too many requests. Please wait ${seconds} seconds before trying again.`,
-        result.resetIn
-      );
-    }
+  const realIp = headers.get('x-real-ip');
+  if (realIp) {
+    return realIp;
   }
 
-  /**
-   * Reset rate limit for a specific action
-   */
-  reset(action: string): void {
-    this.limits.delete(action);
+  // Vercel specific
+  const vercelIp = headers.get('x-vercel-forwarded-for');
+  if (vercelIp) {
+    return vercelIp.split(',')[0].trim();
   }
 
-  /**
-   * Clear all rate limits
-   */
-  clearAll(): void {
-    this.limits.clear();
-  }
+  // Fallback
+  return 'unknown';
 }
 
-export class RateLimitError extends Error {
-  public readonly retryAfter: number;
-
-  constructor(message: string, retryAfter: number) {
-    super(message);
-    this.name = 'RateLimitError';
-    this.retryAfter = retryAfter;
-  }
-}
-
-// Export singleton instance
-export const rateLimiter = new ClientRateLimiter();
-
-// Specific rate limit configurations for different actions
-export const RateLimits = {
-  // One-Time Secret: 5 per minute
-  CREATE_SECRET: { action: 'createSecret', limit: 5, windowMs: 60 * 1000 },
-
-  // File operations: 3 per minute
-  UPLOAD_FILE: { action: 'uploadFile', limit: 3, windowMs: 60 * 1000 },
-
-  // Encrypt Paste: 10 per minute
-  CREATE_PASTE: { action: 'createPaste', limit: 10, windowMs: 60 * 1000 },
-
-  // Contact form: 2 per 5 minutes
-  CONTACT_FORM: { action: 'contactForm', limit: 2, windowMs: 5 * 60 * 1000 },
-
-  // Notify form: 3 per hour
-  NOTIFY_FORM: { action: 'notifyForm', limit: 3, windowMs: 60 * 60 * 1000 },
-
-  // Chat: 20 messages per minute, 5 room creations per hour
-  CHAT_MESSAGE: { action: 'chatMessage', limit: 20, windowMs: 60 * 1000 },
-  CHAT_CREATE_ROOM: { action: 'chatCreateRoom', limit: 5, windowMs: 60 * 60 * 1000 },
-  CHAT_JOIN_ROOM: { action: 'chatJoinRoom', limit: 10, windowMs: 60 * 1000 },
-
-  // Security Scanner: 5 scans per minute
-  SECURITY_SCAN: { action: 'securityScan', limit: 5, windowMs: 60 * 1000 },
-} as const;
-
-/**
- * Helper function to enforce rate limit for a specific action type
- */
-export function enforceRateLimit(
-  limitConfig: typeof RateLimits[keyof typeof RateLimits]
-): void {
-  rateLimiter.enforce(limitConfig.action, limitConfig.limit, limitConfig.windowMs);
+// Hash IP for storage (privacy)
+export async function hashIp(ip: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const salt = process.env.UPSTASH_REDIS_REST_TOKEN || 'ikrypt-default-salt';
+  const data = encoder.encode(ip + salt);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 }

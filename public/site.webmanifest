@@ -1,7 +1,7 @@
 {
-  "name": "iKrypt - Privacy Toolbox",
+  "name": "iKrypt - Send secrets safely",
   "short_name": "iKrypt",
-  "description": "14+ free, browser-based privacy and encryption tools",
+  "description": "Share passwords and secrets securely with self-destructing encrypted links.",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -14,8 +14,8 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#312e81",
-  "background_color": "#111827",
+  "theme_color": "#6366f1",
+  "background_color": "#0a0a0a",
   "display": "standalone",
   "start_url": "/",
   "scope": "/"
