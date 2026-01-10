@@ -1,0 +1,124 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0a"/>
+      <stop offset="50%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#0a0a0a"/>
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="50%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
+    </linearGradient>
+    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#818cf8"/>
+      <stop offset="50%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
+    </linearGradient>
+    <linearGradient id="dangerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2a1a1a"/>
+      <stop offset="100%" style="stop-color:#1a1010"/>
+    </linearGradient>
+    <linearGradient id="safeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a2a1a"/>
+      <stop offset="100%" style="stop-color:#101a10"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+
+  <!-- Grid pattern overlay -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#27272a" stroke-width="0.5" opacity="0.4"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Header with logo -->
+  <g transform="translate(50, 40) scale(0.15)">
+    <path fill="url(#shieldGradient)" d="M466.5 83.7l-192-80a48.15 48.15 0 0 0-36.9 0l-192 80C27.7 91.1 16 108.6 16 128c0 198.5 114.5 335.7 221.5 380.3 11.8 4.9 25.1 4.9 36.9 0C360.1 472.6 496 349.3 496 128c0-19.4-11.7-36.9-29.5-44.3zM256.1 446.3l-.1-381 175.9 73.3c-3.3 151.4-82.1 261.1-175.8 307.7z"/>
+  </g>
+  <text x="140" y="100" font-family="Inter, system-ui, sans-serif" font-size="36" font-weight="700" fill="url(#textGradient)">iKrypt</text>
+
+  <!-- Divider line -->
+  <line x1="600" y1="140" x2="600" y2="580" stroke="#27272a" stroke-width="2"/>
+
+  <!-- LEFT SIDE: Before / Insecure -->
+  <text x="300" y="155" font-family="Inter, system-ui, sans-serif" font-size="30" font-weight="700" fill="#ef4444" text-anchor="middle">Without iKrypt</text>
+
+  <!-- Insecure message box -->
+  <rect x="60" y="175" width="480" height="180" rx="12" fill="url(#dangerGradient)" stroke="#ef4444" stroke-width="1" opacity="0.8"/>
+
+  <!-- Email header simulation -->
+  <text x="90" y="210" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#71717a">To: colleague@company.com</text>
+  <text x="90" y="235" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#71717a">Subject: API Key</text>
+  <line x1="80" y1="250" x2="520" y2="250" stroke="#3f3f46" stroke-width="1"/>
+
+  <!-- Exposed password -->
+  <text x="90" y="285" font-family="monospace" font-size="18" fill="#fafafa">API_KEY=sk_live_abc123xyz789</text>
+  <text x="90" y="315" font-family="monospace" font-size="18" fill="#fafafa">DB_PASSWORD=SuperSecret!23</text>
+  <text x="90" y="345" font-family="monospace" font-size="18" fill="#fafafa">AWS_SECRET=AKIAIOSFODNN7...</text>
+
+  <!-- Warning indicators -->
+  <g transform="translate(80, 380)">
+    <circle cx="15" cy="15" r="15" fill="#ef4444" opacity="0.2"/>
+    <text x="15" y="21" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#ef4444" text-anchor="middle">!</text>
+    <text x="45" y="21" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#a1a1aa">Stored in email forever</text>
+  </g>
+  <g transform="translate(80, 420)">
+    <circle cx="15" cy="15" r="15" fill="#ef4444" opacity="0.2"/>
+    <text x="15" y="21" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#ef4444" text-anchor="middle">!</text>
+    <text x="45" y="21" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#a1a1aa">Searchable in plaintext</text>
+  </g>
+  <g transform="translate(80, 460)">
+    <circle cx="15" cy="15" r="15" fill="#ef4444" opacity="0.2"/>
+    <text x="15" y="21" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#ef4444" text-anchor="middle">!</text>
+    <text x="45" y="21" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#a1a1aa">Forwarded without control</text>
+  </g>
+
+  <!-- Big X -->
+  <circle cx="300" cy="540" r="30" fill="#ef4444" opacity="0.2"/>
+  <text x="300" y="550" font-family="Inter, system-ui, sans-serif" font-size="36" font-weight="700" fill="#ef4444" text-anchor="middle">&#10005;</text>
+
+  <!-- RIGHT SIDE: After / Secure -->
+  <text x="900" y="155" font-family="Inter, system-ui, sans-serif" font-size="30" font-weight="700" fill="#22c55e" text-anchor="middle">With iKrypt</text>
+
+  <!-- Secure message box -->
+  <rect x="660" y="175" width="480" height="180" rx="12" fill="url(#safeGradient)" stroke="#22c55e" stroke-width="1" opacity="0.8"/>
+
+  <!-- Email header simulation -->
+  <text x="690" y="210" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#71717a">To: colleague@company.com</text>
+  <text x="690" y="235" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#71717a">Subject: Secure credentials</text>
+  <line x1="680" y1="250" x2="1120" y2="250" stroke="#3f3f46" stroke-width="1"/>
+
+  <!-- Secure link -->
+  <text x="690" y="285" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#fafafa">Here are the credentials:</text>
+  <rect x="690" y="300" width="430" height="50" rx="8" fill="#18181b" stroke="#6366f1" stroke-width="1"/>
+  <text x="710" y="330" font-family="monospace" font-size="14" fill="#6366f1">ikrypt.com/s/x7Kj9...</text>
+  <text x="940" y="330" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#71717a">(expires in 1 hour, 1 view)</text>
+
+  <!-- Success indicators -->
+  <g transform="translate(680, 380)">
+    <circle cx="15" cy="15" r="15" fill="#22c55e" opacity="0.2"/>
+    <text x="15" y="21" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#22c55e" text-anchor="middle">&#10003;</text>
+    <text x="45" y="21" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#a1a1aa">Auto-deletes after viewing</text>
+  </g>
+  <g transform="translate(680, 420)">
+    <circle cx="15" cy="15" r="15" fill="#22c55e" opacity="0.2"/>
+    <text x="15" y="21" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#22c55e" text-anchor="middle">&#10003;</text>
+    <text x="45" y="21" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#a1a1aa">End-to-end encrypted</text>
+  </g>
+  <g transform="translate(680, 460)">
+    <circle cx="15" cy="15" r="15" fill="#22c55e" opacity="0.2"/>
+    <text x="15" y="21" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#22c55e" text-anchor="middle">&#10003;</text>
+    <text x="45" y="21" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#a1a1aa">We can't read your secrets</text>
+  </g>
+
+  <!-- Big checkmark -->
+  <circle cx="900" cy="540" r="30" fill="#22c55e" opacity="0.2"/>
+  <text x="900" y="550" font-family="Inter, system-ui, sans-serif" font-size="36" font-weight="700" fill="#22c55e" text-anchor="middle">&#10003;</text>
+
+  <!-- Corner accents -->
+  <path d="M0 0 L80 0 L80 3 L3 3 L3 80 L0 80 Z" fill="#6366f1" opacity="0.4"/>
+  <path d="M1200 630 L1120 630 L1120 627 L1197 627 L1197 550 L1200 550 Z" fill="#a855f7" opacity="0.4"/>
+</svg>

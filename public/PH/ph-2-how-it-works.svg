@@ -1,0 +1,94 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0a"/>
+      <stop offset="50%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#0a0a0a"/>
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="50%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
+    </linearGradient>
+    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#818cf8"/>
+      <stop offset="50%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
+    </linearGradient>
+    <linearGradient id="stepGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+
+  <!-- Grid pattern overlay -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#27272a" stroke-width="0.5" opacity="0.4"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Header with logo -->
+  <g transform="translate(50, 40) scale(0.15)">
+    <path fill="url(#shieldGradient)" d="M466.5 83.7l-192-80a48.15 48.15 0 0 0-36.9 0l-192 80C27.7 91.1 16 108.6 16 128c0 198.5 114.5 335.7 221.5 380.3 11.8 4.9 25.1 4.9 36.9 0C360.1 472.6 496 349.3 496 128c0-19.4-11.7-36.9-29.5-44.3zM256.1 446.3l-.1-381 175.9 73.3c-3.3 151.4-82.1 261.1-175.8 307.7z"/>
+  </g>
+  <text x="140" y="100" font-family="Inter, system-ui, sans-serif" font-size="36" font-weight="700" fill="url(#textGradient)">iKrypt</text>
+
+  <!-- Title -->
+  <text x="600" y="100" font-family="Inter, system-ui, sans-serif" font-size="48" font-weight="700" fill="#fafafa" text-anchor="middle">How It Works</text>
+
+  <!-- Step 1 -->
+  <circle cx="180" cy="320" r="50" fill="url(#stepGradient)" opacity="0.2"/>
+  <circle cx="180" cy="320" r="40" fill="url(#stepGradient)"/>
+  <text x="180" y="335" font-family="Inter, system-ui, sans-serif" font-size="36" font-weight="700" fill="#fafafa" text-anchor="middle">1</text>
+  <text x="180" y="420" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="600" fill="#fafafa" text-anchor="middle">Write</text>
+  <text x="180" y="455" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#a1a1aa" text-anchor="middle">Enter your secret</text>
+
+  <!-- Arrow 1 -->
+  <path d="M260 320 L340 320" stroke="#6366f1" stroke-width="2" stroke-dasharray="6,4" opacity="0.6"/>
+  <path d="M335 315 L345 320 L335 325" fill="#6366f1" opacity="0.6"/>
+
+  <!-- Step 2 -->
+  <circle cx="420" cy="320" r="50" fill="url(#stepGradient)" opacity="0.2"/>
+  <circle cx="420" cy="320" r="40" fill="url(#stepGradient)"/>
+  <text x="420" y="335" font-family="Inter, system-ui, sans-serif" font-size="36" font-weight="700" fill="#fafafa" text-anchor="middle">2</text>
+  <text x="420" y="420" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="600" fill="#fafafa" text-anchor="middle">Encrypt</text>
+  <text x="420" y="455" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#a1a1aa" text-anchor="middle">AES-256-GCM</text>
+
+  <!-- Arrow 2 -->
+  <path d="M500 320 L580 320" stroke="#6366f1" stroke-width="2" stroke-dasharray="6,4" opacity="0.6"/>
+  <path d="M575 315 L585 320 L575 325" fill="#6366f1" opacity="0.6"/>
+
+  <!-- Step 3 -->
+  <circle cx="660" cy="320" r="50" fill="url(#stepGradient)" opacity="0.2"/>
+  <circle cx="660" cy="320" r="40" fill="url(#stepGradient)"/>
+  <text x="660" y="335" font-family="Inter, system-ui, sans-serif" font-size="36" font-weight="700" fill="#fafafa" text-anchor="middle">3</text>
+  <text x="660" y="420" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="600" fill="#fafafa" text-anchor="middle">Share</text>
+  <text x="660" y="455" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#a1a1aa" text-anchor="middle">Send the link</text>
+
+  <!-- Arrow 3 -->
+  <path d="M740 320 L820 320" stroke="#6366f1" stroke-width="2" stroke-dasharray="6,4" opacity="0.6"/>
+  <path d="M815 315 L825 320 L815 325" fill="#6366f1" opacity="0.6"/>
+
+  <!-- Step 4 -->
+  <circle cx="900" cy="320" r="50" fill="url(#stepGradient)" opacity="0.2"/>
+  <circle cx="900" cy="320" r="40" fill="url(#stepGradient)"/>
+  <text x="900" y="335" font-family="Inter, system-ui, sans-serif" font-size="36" font-weight="700" fill="#fafafa" text-anchor="middle">4</text>
+  <text x="900" y="420" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="600" fill="#fafafa" text-anchor="middle">Self-Destruct</text>
+  <text x="900" y="455" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#a1a1aa" text-anchor="middle">Gone after viewing</text>
+
+  <!-- Checkmark/done indicator -->
+  <circle cx="1080" cy="320" r="50" fill="url(#stepGradient)" opacity="0.2"/>
+  <circle cx="1080" cy="320" r="40" fill="#22c55e"/>
+  <path d="M1055 320 L1072 337 L1105 304" stroke="#fafafa" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <text x="1080" y="420" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="600" fill="#22c55e" text-anchor="middle">Done!</text>
+
+  <!-- Bottom tagline -->
+  <text x="600" y="560" font-family="Inter, system-ui, sans-serif" font-size="22" fill="#71717a" text-anchor="middle">Zero-knowledge encryption. Your key never leaves your browser.</text>
+
+  <!-- Corner accents -->
+  <path d="M0 0 L80 0 L80 3 L3 3 L3 80 L0 80 Z" fill="#6366f1" opacity="0.4"/>
+  <path d="M1200 630 L1120 630 L1120 627 L1197 627 L1197 550 L1200 550 Z" fill="#a855f7" opacity="0.4"/>
+</svg>
