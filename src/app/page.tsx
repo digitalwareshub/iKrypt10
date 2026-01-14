@@ -8,10 +8,10 @@ export default function Home() {
       {/* Header */}
       <header className="sticky top-0 py-4 px-4 bg-background/80 backdrop-blur-md border-b border-zinc-800/50 z-50">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <Image src="/favicon-32x32.png" alt="iKrypt" width={24} height={24} />
             <span className="text-xl font-bold gradient-text">iKrypt</span>
-          </a>
+          </Link>
           <nav className="flex items-center gap-6">
             <a
               href="#how-it-works"

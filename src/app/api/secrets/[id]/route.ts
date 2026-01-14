@@ -27,11 +27,11 @@ interface SecretData {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const ip = getClientIp(request.headers);
-    const secretId = params.id;
+    const { id: secretId } = await params;
 
     // Rate limit check
     const viewLimit = await checkRateLimit(viewSecretLimiter, ip);

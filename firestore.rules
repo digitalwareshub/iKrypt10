@@ -80,9 +80,9 @@ service cloud.firestore {
     // Secrets collection - one-time encrypted secrets
     // Server-side API handles all operations, but we add rules for defense in depth
     match /secrets/{documentId} {
-      // Allow read if not expired and views remaining
+      // Allow read if not expired (expiresAt is a Firestore Timestamp)
       allow read: if resource.data.expiresAt == null ||
-                  request.time < timestamp.date(resource.data.expiresAt);
+                  request.time < resource.data.expiresAt;
 
       // Allow create with proper validation
       allow create: if request.resource.data.ciphertext is string
