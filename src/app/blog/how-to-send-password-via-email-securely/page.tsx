@@ -70,15 +70,15 @@ export default function BlogPost() {
 
           {/* Article Content */}
           <div className="prose prose-invert prose-zinc max-w-none">
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed mb-4">
               You need to send a password to a client. You open your email, type their address, paste the password, and hit send.
             </p>
 
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed mb-4">
               <strong className="text-foreground">Congratulations. You just sent that password in plain text across the internet, where it will live forever in:</strong>
             </p>
 
-            <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
+            <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4 mb-4">
               <li>Your sent folder</li>
               <li>Their inbox</li>
               <li>Both email servers</li>

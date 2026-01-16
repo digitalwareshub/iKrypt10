@@ -70,11 +70,11 @@ export default function BlogPost() {
 
           {/* Article Content */}
           <div className="prose prose-invert prose-zinc max-w-none">
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed mb-4">
               That WiFi password you just sent to your new hire in Slack? It&apos;s now searchable forever. By anyone in your workspace. Including that intern who starts next week.
             </p>
 
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed mb-6">
               In 2024 alone, thousands of companies had their Slack credentials exposed in data breaches. But here&apos;s what most people don&apos;t realize: <strong className="text-foreground">the password leak didn&apos;t come from hackers.</strong> It came from their own Slack search history.
             </p>
 

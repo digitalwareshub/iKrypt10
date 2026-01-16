@@ -70,19 +70,19 @@ export default function BlogPost() {
 
           {/* Article Content */}
           <div className="prose prose-invert prose-zinc max-w-none">
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed mb-4">
               Your employee just wrote the WiFi password on a sticky note and handed it to a contractor. Another team member just typed database credentials into Slack. Your developer emailed API keys to a client.
             </p>
 
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed mb-4">
               <strong className="text-foreground">Welcome to every security professional&apos;s nightmare.</strong>
             </p>
 
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed mb-4">
               In 2024, Verizon&apos;s Data Breach Report found that <strong className="text-foreground">81% of hacking-related breaches</strong> used either stolen or weak passwords. But here&apos;s the kicker: most of those passwords weren&apos;t &quot;hacked&quot; in the traditional sense. They were <strong className="text-foreground">handed over through insecure sharing practices.</strong>
             </p>
 
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed mb-6">
               Let&apos;s break down the 7 biggest password sharing mistakes&mdash;and the simple fixes that take the same amount of time but eliminate 90% of the risk.
             </p>
 
