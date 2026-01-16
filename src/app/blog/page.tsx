@@ -18,13 +18,27 @@ interface BlogPost {
 
 // Blog posts data - add new posts here
 const posts: BlogPost[] = [
-  // {
-  //   slug: 'why-you-should-stop-sharing-passwords-in-slack',
-  //   title: 'Why You Should Stop Sharing Passwords in Slack',
-  //   excerpt: 'Slack messages are searchable forever. Here\'s why that\'s a security risk and what to do instead.',
-  //   date: '2026-01-20',
-  //   readTime: '3 min read',
-  // },
+  {
+    slug: 'password-sharing-mistakes',
+    title: 'The 7 Biggest Password Sharing Mistakes',
+    excerpt: 'From sticky notes to Slack messages, these 7 password sharing mistakes cause 80% of credential breaches. Learn the simple fixes that take the same time.',
+    date: '2026-01-16',
+    readTime: '7 min read',
+  },
+  {
+    slug: 'how-to-send-password-via-email-securely',
+    title: 'How to Send a Password via Email Securely (2026 Guide)',
+    excerpt: 'That password you emailed will live forever in sent folders and backups. Learn the secure alternative that takes the same amount of time.',
+    date: '2026-01-16',
+    readTime: '6 min read',
+  },
+  {
+    slug: 'why-you-should-never-share-passwords-in-slack',
+    title: 'Why You Should NEVER Share Passwords in Slack',
+    excerpt: 'That WiFi password you sent in Slack is now searchable forever. Learn why Slack is terrible for sharing credentials and what security teams actually use instead.',
+    date: '2026-01-16',
+    readTime: '5 min read',
+  },
 ];
 
 export default function BlogPage() {
