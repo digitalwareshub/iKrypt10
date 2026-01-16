@@ -71,17 +71,17 @@ export default function BlogPage() {
 
       {/* Main Content */}
       <main className="flex-1 py-12 px-4">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <h1 className="text-3xl font-bold mb-4 text-foreground">Blog</h1>
           <p className="text-muted-foreground mb-12">
             Security tips, product updates, and insights on protecting sensitive data.
           </p>
 
           {posts.length > 0 ? (
-            <div className="space-y-8">
+            <div className="grid md:grid-cols-2 gap-6">
               {posts.map((post) => (
-                <article key={post.slug} className="card-glow p-6 rounded-xl">
-                  <Link href={`/blog/${post.slug}`} className="block group">
+                <article key={post.slug} className="card-glow p-6 rounded-xl flex flex-col">
+                  <Link href={`/blog/${post.slug}`} className="block group flex-1">
                     <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
                       <time dateTime={post.date}>
                         {new Date(post.date).toLocaleDateString('en-US', {
