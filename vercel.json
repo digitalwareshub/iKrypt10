@@ -42,9 +42,7 @@
     { "source": "/file-drop", "destination": "/", "permanent": true },
     { "source": "/encrypt-paste", "destination": "/", "permanent": true },
     { "source": "/split-key", "destination": "/", "permanent": true },
-    { "source": "/tools", "destination": "/", "permanent": true },
-    { "source": "/blog", "destination": "/", "permanent": true },
-    { "source": "/contact", "destination": "/", "permanent": true }
+    { "source": "/tools", "destination": "/", "permanent": true }
   ],
   "headers": [
     {
