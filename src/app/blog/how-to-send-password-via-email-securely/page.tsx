@@ -56,6 +56,17 @@ export default function BlogPost() {
       {/* Article */}
       <main className="flex-1 py-12 px-4">
         <article className="max-w-2xl mx-auto">
+          {/* Hero Image */}
+          <div className="relative aspect-[1200/630] w-full rounded-xl overflow-hidden mb-8">
+            <Image
+              src="/blog/how-to-send-password-via-email-securely.svg"
+              alt="How to Send Password via Email Securely"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+
           {/* Article Header */}
           <header className="mb-8">
             <h1 className="text-3xl md:text-4xl font-bold mb-4 text-foreground leading-tight">

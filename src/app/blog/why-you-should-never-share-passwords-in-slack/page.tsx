@@ -56,6 +56,17 @@ export default function BlogPost() {
       {/* Article */}
       <main className="flex-1 py-12 px-4">
         <article className="max-w-2xl mx-auto">
+          {/* Hero Image */}
+          <div className="relative aspect-[1200/630] w-full rounded-xl overflow-hidden mb-8">
+            <Image
+              src="/blog/why-you-should-never-share-passwords-in-slack.svg"
+              alt="Why You Should Never Share Passwords in Slack"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+
           {/* Article Header */}
           <header className="mb-8">
             <h1 className="text-3xl md:text-4xl font-bold mb-4 text-foreground leading-tight">

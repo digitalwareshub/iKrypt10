@@ -14,6 +14,7 @@ interface BlogPost {
   excerpt: string;
   date: string;
   readTime: string;
+  image: string;
 }
 
 // Blog posts data - add new posts here
@@ -24,6 +25,7 @@ const posts: BlogPost[] = [
     excerpt: 'From sticky notes to Slack messages, these 7 password sharing mistakes cause 80% of credential breaches. Learn the simple fixes that take the same time.',
     date: '2026-01-16',
     readTime: '7 min read',
+    image: '/blog/password-sharing-mistakes.svg',
   },
   {
     slug: 'how-to-send-password-via-email-securely',
@@ -31,6 +33,7 @@ const posts: BlogPost[] = [
     excerpt: 'That password you emailed will live forever in sent folders and backups. Learn the secure alternative that takes the same amount of time.',
     date: '2026-01-16',
     readTime: '6 min read',
+    image: '/blog/how-to-send-password-via-email-securely.svg',
   },
   {
     slug: 'why-you-should-never-share-passwords-in-slack',
@@ -38,6 +41,7 @@ const posts: BlogPost[] = [
     excerpt: 'That WiFi password you sent in Slack is now searchable forever. Learn why Slack is terrible for sharing credentials and what security teams actually use instead.',
     date: '2026-01-16',
     readTime: '5 min read',
+    image: '/blog/why-you-should-never-share-passwords-in-slack.svg',
   },
 ];
 
@@ -80,23 +84,33 @@ export default function BlogPage() {
           {posts.length > 0 ? (
             <div className="grid md:grid-cols-2 gap-6">
               {posts.map((post) => (
-                <article key={post.slug} className="card-glow p-6 rounded-xl flex flex-col">
+                <article key={post.slug} className="card-glow rounded-xl flex flex-col overflow-hidden">
                   <Link href={`/blog/${post.slug}`} className="block group flex-1">
-                    <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
-                      <time dateTime={post.date}>
-                        {new Date(post.date).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
-                      </time>
-                      <span>&middot;</span>
-                      <span>{post.readTime}</span>
+                    <div className="relative aspect-[1200/630] w-full overflow-hidden">
+                      <Image
+                        src={post.image}
+                        alt={post.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
                     </div>
-                    <h2 className="text-xl font-semibold mb-2 text-foreground group-hover:text-primary transition-colors">
-                      {post.title}
-                    </h2>
-                    <p className="text-muted-foreground">{post.excerpt}</p>
+                    <div className="p-6">
+                      <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
+                        <time dateTime={post.date}>
+                          {new Date(post.date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                          })}
+                        </time>
+                        <span>&middot;</span>
+                        <span>{post.readTime}</span>
+                      </div>
+                      <h2 className="text-xl font-semibold mb-2 text-foreground group-hover:text-primary transition-colors">
+                        {post.title}
+                      </h2>
+                      <p className="text-muted-foreground">{post.excerpt}</p>
+                    </div>
                   </Link>
                 </article>
               ))}
