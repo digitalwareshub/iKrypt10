@@ -13,45 +13,32 @@ export default function Home() {
             <Image src="/favicon-32x32.png" alt="iKrypt" width={24} height={24} />
             <span className="text-xl font-bold gradient-text">iKrypt</span>
           </Link>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-6">
-            <a
-              href="#how-it-works"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              How it works
-            </a>
+          <nav className="flex items-center gap-6">
             <Link
               href="/healthcare"
               className="text-sm font-medium text-primary hover:text-primary-hover transition-colors"
             >
               For Healthcare
             </Link>
+            <a
+              href="#how-it-works"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              How it works
+            </a>
+            <a
+              href="#security"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Security
+            </a>
+            <Link
+              href="/blog"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Blog
+            </Link>
           </nav>
-
-          {/* Mobile Hamburger Menu */}
-          <div className="md:hidden relative group">
-            <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-            <div className="absolute right-0 top-full mt-2 w-48 bg-background border border-zinc-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-              <a
-                href="#how-it-works"
-                className="block px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
-              >
-                How it works
-              </a>
-              <Link
-                href="/healthcare"
-                className="block px-4 py-3 text-sm font-medium text-primary hover:text-primary-hover hover:bg-secondary/50 transition-colors"
-              >
-                For Healthcare
-              </Link>
-            </div>
-          </div>
         </div>
       </header>
 
