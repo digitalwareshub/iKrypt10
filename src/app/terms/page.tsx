@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import Footer from '@/components/Footer';
 
 export const metadata = {
   title: 'iKrypt - Terms of Service',
@@ -171,36 +172,7 @@ export default function TermsPage() {
           </div>
         </main>
 
-        {/* Footer */}
-        <footer className="py-8 px-4 border-t border-zinc-800">
-          <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} iKrypt. Send secrets safely.
-            </div>
-            <div className="flex items-center gap-6">
-              <Link
-                href="/terms"
-                className="text-sm text-foreground"
-              >
-                Terms
-              </Link>
-              <Link
-                href="/privacy"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Privacy
-              </Link>
-              <a
-                href="https://x.com/ikrypt_"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Twitter
-              </a>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   );

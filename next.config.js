@@ -25,9 +25,6 @@ const nextConfig = {
       { source: '/chat', destination: '/', permanent: true },
       { source: '/encrypt-paste', destination: '/', permanent: true },
       { source: '/file-drop', destination: '/', permanent: true },
-      { source: '/contact', destination: '/', permanent: true },
-      { source: '/blog', destination: '/', permanent: true },
-      { source: '/blog/:slug', destination: '/', permanent: true },
 
       // Old one-time secret pages → homepage (this IS the new product)
       { source: '/one-time', destination: '/', permanent: true },
