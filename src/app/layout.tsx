@@ -202,6 +202,12 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* Ahrefs Analytics */}
+        <script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="+HJ2T2+y1UpoBeQmnNNm2Q"
+          async
+        />
       </head>
       <body className={inter.className}>
         <main className="min-h-screen">{children}</main>
