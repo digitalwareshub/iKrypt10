@@ -119,8 +119,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-xl font-semibold mb-3 text-foreground">Analytics</h2>
                 <p>
-                  We use lightweight, privacy-focused analytics (Vercel Analytics, Google Analytics,
-                  and Microsoft Clarity) to understand aggregate usage. We track:
+                  We use lightweight, privacy-focused analytics (Vercel Analytics and Google Analytics) to understand aggregate usage. We track:
                 </p>
                 <ul className="list-disc list-inside space-y-1 ml-4 mt-2">
                   <li>Page views (anonymized)</li>
