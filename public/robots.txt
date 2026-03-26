@@ -1,4 +1,7 @@
 User-agent: *
+Disallow: /_next/static/
+Disallow: /api/
+Disallow: /s/
 Allow: /
 
 Sitemap: https://ikrypt.com/sitemap.xml
