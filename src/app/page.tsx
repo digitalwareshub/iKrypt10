@@ -3,7 +3,7 @@ import Link from 'next/link';
 import SecretForm from '@/components/SecretForm';
 import Footer from '@/components/Footer';
 
-const GITHUB_REPO_URL = 'https://github.com/kamscruise/iKrypt10';
+const GITHUB_REPO_URL = 'https://github.com/digitalwareshub/iKrypt10';
 
 export default function Home() {
   return (
