@@ -192,8 +192,8 @@ export default function PrivacyPage() {
                 <h2 className="text-xl font-semibold mb-3 text-foreground">Contact</h2>
                 <p>
                   For privacy-related questions, contact us at{' '}
-                  <a href="mailto:hello@ikrypt.com" className="text-primary hover:text-primary/80">
-                    hello@ikrypt.com
+                  <a href="mailto:write@digiwares.xyz" className="text-primary hover:text-primary/80">
+                    write@digiwares.xyz
                   </a>
                 </p>
               </section>
