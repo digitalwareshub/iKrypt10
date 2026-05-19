@@ -32,7 +32,6 @@ export default function ViewSecretPage() {
 
   useEffect(() => {
     const fetchAndDecrypt = async () => {
-      // 1. Extract key from URL fragment
       const keyString = extractKeyFromHash();
 
       if (!keyString) {
@@ -47,15 +46,15 @@ export default function ViewSecretPage() {
       }
 
       try {
-        // 2. Fetch ciphertext from server
         const response = await fetch(`/api/secrets/${secretId}`);
         const data = await response.json();
 
         if (!response.ok) {
           setState({
-            status: data.reason === 'expired' || data.reason === 'max_views_reached'
-              ? 'expired'
-              : 'error',
+            status:
+              data.reason === 'expired' || data.reason === 'max_views_reached'
+                ? 'expired'
+                : 'error',
             secret: null,
             error: data.error || 'Failed to retrieve secret',
             viewCount: null,
@@ -64,7 +63,6 @@ export default function ViewSecretPage() {
           return;
         }
 
-        // 3. Import key and decrypt
         const key = await importKey(keyString);
         const plaintext = await decrypt(data.ciphertext, data.iv, key);
 
@@ -102,7 +100,6 @@ export default function ViewSecretPage() {
     }
   };
 
-  // Loading state
   if (state.status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
@@ -114,7 +111,6 @@ export default function ViewSecretPage() {
     );
   }
 
-  // Missing key state
   if (state.status === 'missing_key') {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
@@ -134,13 +130,16 @@ export default function ViewSecretPage() {
               />
             </svg>
           </div>
+
           <h1 className="text-2xl font-bold mb-2 text-foreground">
             Missing encryption key
           </h1>
+
           <p className="text-muted-foreground mb-6">
             The URL appears to be incomplete. Make sure you copied the entire
             link, including the part after the # symbol.
           </p>
+
           <Link
             href="/"
             className="text-primary hover:text-primary-hover transition-colors"
@@ -152,7 +151,6 @@ export default function ViewSecretPage() {
     );
   }
 
-  // Expired/viewed state
   if (state.status === 'expired') {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
@@ -172,13 +170,16 @@ export default function ViewSecretPage() {
               />
             </svg>
           </div>
+
           <h1 className="text-2xl font-bold mb-2 text-foreground">
             Secret no longer available
           </h1>
+
           <p className="text-muted-foreground mb-6">
             This secret has either expired or reached its maximum view count.
             The encrypted data has been permanently deleted.
           </p>
+
           <Link
             href="/"
             className="inline-block py-2 px-6 bg-primary hover:bg-primary-hover rounded-lg text-white font-medium transition-colors"
@@ -190,7 +191,6 @@ export default function ViewSecretPage() {
     );
   }
 
-  // Error state
   if (state.status === 'error') {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
@@ -210,10 +210,13 @@ export default function ViewSecretPage() {
               />
             </svg>
           </div>
+
           <h1 className="text-2xl font-bold mb-2 text-foreground">
             Something went wrong
           </h1>
+
           <p className="text-muted-foreground mb-6">{state.error}</p>
+
           <Link
             href="/"
             className="text-primary hover:text-primary-hover transition-colors"
@@ -225,10 +228,13 @@ export default function ViewSecretPage() {
     );
   }
 
-  // Success state - show the secret
+  const viewsRemaining =
+    state.viewCount !== null && state.maxViews !== null
+      ? state.maxViews - state.viewCount
+      : null;
+
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
       <header className="py-6 px-4">
         <div className="max-w-4xl mx-auto">
           <Link href="/" className="text-xl font-bold text-foreground">
@@ -237,10 +243,8 @@ export default function ViewSecretPage() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="flex-1 flex items-center justify-center px-4">
         <div className="max-w-xl w-full">
-          {/* Header */}
           <div className="text-center mb-8">
             <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-6">
               <svg
@@ -257,18 +261,21 @@ export default function ViewSecretPage() {
                 />
               </svg>
             </div>
+
             <h1 className="text-2xl font-bold mb-2 text-foreground">
               Secret revealed
             </h1>
-            <p className="text-sm text-muted-foreground">
-              View {state.viewCount} of {state.maxViews} •{' '}
-              {state.viewCount === state.maxViews
-                ? 'This was the final view'
-                : `${state.maxViews! - state.viewCount!} view${state.maxViews! - state.viewCount! === 1 ? '' : 's'} remaining`}
-            </p>
+
+            {state.viewCount !== null && state.maxViews !== null && (
+              <p className="text-sm text-muted-foreground">
+                View {state.viewCount} of {state.maxViews} •{' '}
+                {viewsRemaining === 0
+                  ? 'This was the final view'
+                  : `${viewsRemaining} view${viewsRemaining === 1 ? '' : 's'} remaining`}
+              </p>
+            )}
           </div>
 
-          {/* Secret Content */}
           <div className="bg-secondary border border-zinc-800 rounded-lg overflow-hidden mb-4">
             {revealed ? (
               <pre className="p-4 text-sm text-foreground font-mono whitespace-pre-wrap break-all max-h-96 overflow-y-auto">
@@ -289,7 +296,6 @@ export default function ViewSecretPage() {
             )}
           </div>
 
-          {/* Actions */}
           {revealed && (
             <div className="flex gap-3">
               <button
@@ -303,17 +309,15 @@ export default function ViewSecretPage() {
             </div>
           )}
 
-          {/* Warning */}
           <div className="mt-6 bg-accent-warning/10 border border-accent-warning/20 rounded-lg p-4">
             <p className="text-sm text-accent-warning">
               <strong>Note:</strong> This secret was decrypted in your browser.
               The encryption key was never sent to our servers.
-              {state.viewCount === state.maxViews &&
+              {viewsRemaining === 0 &&
                 ' The encrypted data has now been permanently deleted.'}
             </p>
           </div>
 
-          {/* Create Another */}
           <div className="mt-8 text-center">
             <Link
               href="/"

@@ -1,0 +1,39 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Secrets collection — one-time encrypted secrets
+    // The server-side API handles all operations via the Firebase client SDK.
+    // These rules are a defence-in-depth layer: even if the API is bypassed,
+    // the rules enforce the same constraints.
+    match /secrets/{documentId} {
+
+      // Allow read if the document has not yet expired
+      allow read: if resource.data.expiresAt == null ||
+                  request.time < resource.data.expiresAt;
+
+      // Allow create with field validation
+      allow create: if request.resource.data.ciphertext is string
+                   && request.resource.data.ciphertext.size() > 0
+                   && request.resource.data.ciphertext.size() < 1000000  // 1MB limit
+                   && request.resource.data.iv is string
+                   && request.resource.data.maxViews is number
+                   && request.resource.data.maxViews >= 1
+                   && request.resource.data.maxViews <= 5;
+
+      // Allow update only to increment viewCount — ciphertext and IV must be unchanged
+      allow update: if request.resource.data.viewCount == resource.data.viewCount + 1
+                   && request.resource.data.ciphertext == resource.data.ciphertext
+                   && request.resource.data.iv == resource.data.iv;
+
+      // Allow delete — needed for cleanup after max views or expiry
+      allow delete: if true;
+    }
+
+    // Deny all other collections by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

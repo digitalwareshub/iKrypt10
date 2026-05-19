@@ -9,6 +9,9 @@ import {
   buildSecretUrl,
 } from '@/lib/crypto';
 
+// Must match the key used in sent/page.tsx
+const SESSION_KEY = 'ikrypt_secret_url';
+
 type ExpiryOption = '10m' | '1h' | '24h';
 type ViewsOption = 1 | 3 | 5;
 
@@ -68,8 +71,12 @@ export default function SecretForm() {
       // 4. Build URL with key in fragment (key never sent to server)
       const secretUrl = buildSecretUrl(data.secretId, keyString);
 
-      // 5. Navigate to confirmation page with URL in state
-      router.push(`/sent?url=${encodeURIComponent(secretUrl)}`);
+      // 5. Store URL in sessionStorage — NOT in the navigation URL
+      // This prevents the encryption key from appearing in server-side request logs
+      sessionStorage.setItem(SESSION_KEY, secretUrl);
+
+      // 6. Navigate to confirmation page (no sensitive data in the URL)
+      router.push('/sent');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {

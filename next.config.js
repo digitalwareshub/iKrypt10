@@ -2,10 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  // Redirects for old iKrypt URLs
+  // All redirects live here — vercel.json redirects block has been removed
+  // to avoid duplication and potential conflicts
   async redirects() {
     return [
-      // Old tool pages → homepage (the new focused product)
+      // ─── Old tool pages → homepage ───────────────────────────────────
       { source: '/tools', destination: '/', permanent: true },
       { source: '/password-generator', destination: '/', permanent: true },
       { source: '/hash', destination: '/', permanent: true },
@@ -26,10 +27,11 @@ const nextConfig = {
       { source: '/encrypt-paste', destination: '/', permanent: true },
       { source: '/file-drop', destination: '/', permanent: true },
 
-      // Old one-time secret pages → homepage (this IS the new product)
+      // ─── Old one-time secret paths (wildcard catches /one-time/xyz etc) ─
       { source: '/one-time', destination: '/', permanent: true },
+      { source: '/one-time/:path*', destination: '/', permanent: true },
 
-      // Old landing pages
+      // ─── Old /tools/* sub-pages ──────────────────────────────────────
       { source: '/tools/password-generator', destination: '/', permanent: true },
       { source: '/tools/file-encryption', destination: '/', permanent: true },
       { source: '/tools/one-time-secret', destination: '/', permanent: true },
@@ -37,14 +39,39 @@ const nextConfig = {
       { source: '/tools/2fa-authenticator', destination: '/', permanent: true },
       { source: '/tools/hash-generator', destination: '/', permanent: true },
 
-      // Old misc pages
+      // ─── Old misc pages ───────────────────────────────────────────────
       { source: '/login', destination: '/', permanent: true },
       { source: '/docs', destination: '/', permanent: true },
       { source: '/message', destination: '/', permanent: true },
       { source: '/message/:path*', destination: '/', permanent: true },
       { source: '/forgot-password', destination: '/', permanent: true },
 
-      // Old blog posts that no longer exist → blog index
+      // ─── Additional keyword paths (from vercel.json) ──────────────────
+      { source: '/password', destination: '/', permanent: true },
+      { source: '/passwords', destination: '/', permanent: true },
+      { source: '/encrypt', destination: '/', permanent: true },
+      { source: '/encryption', destination: '/', permanent: true },
+      { source: '/files', destination: '/', permanent: true },
+      { source: '/secret', destination: '/', permanent: true },
+      { source: '/secrets', destination: '/', permanent: true },
+      { source: '/otp', destination: '/', permanent: true },
+      { source: '/2fa', destination: '/', permanent: true },
+      { source: '/authenticator', destination: '/', permanent: true },
+      { source: '/totp', destination: '/', permanent: true },
+      { source: '/notes', destination: '/', permanent: true },
+      { source: '/signature', destination: '/', permanent: true },
+      { source: '/digital-signature', destination: '/', permanent: true },
+      { source: '/generate', destination: '/', permanent: true },
+      { source: '/key', destination: '/', permanent: true },
+      { source: '/keypair', destination: '/', permanent: true },
+      { source: '/hashing', destination: '/', permanent: true },
+      { source: '/shield', destination: '/', permanent: true },
+      { source: '/guard', destination: '/', permanent: true },
+      { source: '/code', destination: '/', permanent: true },
+      { source: '/clipboard', destination: '/', permanent: true },
+      { source: '/mail', destination: '/', permanent: true },
+
+      // ─── Old blog posts → blog index ─────────────────────────────────
       { source: '/blog/secure-password-sharing-teams', destination: '/blog', permanent: true },
       { source: '/blog/two-factor-authentication-2fa-guide', destination: '/blog', permanent: true },
       { source: '/blog/hash-functions-checksums-data-integrity', destination: '/blog', permanent: true },

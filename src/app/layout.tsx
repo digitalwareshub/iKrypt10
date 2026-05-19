@@ -8,6 +8,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+const AHREFS_KEY = process.env.NEXT_PUBLIC_AHREFS_KEY;
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ikrypt.com'),
@@ -18,13 +19,11 @@ export const metadata: Metadata = {
   description:
     'iKrypt lets you send secrets with one-time encrypted links that self-destruct after use. The decryption key never reaches our servers.',
   keywords: [
-    // Primary keywords
     'share password securely',
     'send secret link',
     'self destructing message',
     'one time secret',
     'encrypted link sharing',
-    // Long-tail keywords
     'how to share passwords securely with team',
     'send API key securely',
     'share credentials without slack',
@@ -201,12 +200,14 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {/* Ahrefs Analytics */}
-        <script
-          src="https://analytics.ahrefs.com/analytics.js"
-          data-key="+HJ2T2+y1UpoBeQmnNNm2Q"
-          async
-        />
+        {/* Ahrefs Analytics — only loads when env var is set */}
+        {AHREFS_KEY && (
+          <script
+            src="https://analytics.ahrefs.com/analytics.js"
+            data-key={AHREFS_KEY}
+            async
+          />
+        )}
       </head>
       <body className={inter.className}>
         <main className="min-h-screen">{children}</main>
@@ -215,7 +216,7 @@ export default function RootLayout({
         <Analytics />
         <SpeedInsights />
 
-        {/* Google Analytics */}
+        {/* Google Analytics — only loads when env var is set */}
         {GA_ID && (
           <>
             <Script
