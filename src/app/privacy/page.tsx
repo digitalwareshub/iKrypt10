@@ -111,8 +111,11 @@ export default function PrivacyPage() {
                   <li>Whichever comes first</li>
                 </ul>
                 <p className="mt-2">
-                  Expired secrets are deleted on a rolling basis. Once deleted, the data is no
-                  longer retrievable through the Service.
+                  Once a secret becomes inaccessible, the Service will never return its contents
+                  again — access is blocked immediately, regardless of when the underlying
+                  encrypted record is physically removed. The encrypted record itself is deleted
+                  automatically by a Firestore TTL (time-to-live) policy, typically within 24
+                  hours of becoming inaccessible.
                 </p>
               </section>
 

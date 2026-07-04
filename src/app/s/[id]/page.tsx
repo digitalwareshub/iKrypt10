@@ -176,8 +176,8 @@ export default function ViewSecretPage() {
           </h1>
 
           <p className="text-muted-foreground mb-6">
-            This secret has either expired or reached its maximum view count.
-            The encrypted data has been permanently deleted.
+            This secret has either expired or reached its maximum view count, and is no longer
+            accessible. The encrypted data is automatically deleted shortly after.
           </p>
 
           <Link
@@ -314,7 +314,7 @@ export default function ViewSecretPage() {
               <strong>Note:</strong> This secret was decrypted in your browser.
               The encryption key was never sent to our servers.
               {viewsRemaining === 0 &&
-                ' The encrypted data has now been permanently deleted.'}
+                ' This was the final view, so the encrypted data has now been deleted.'}
             </p>
           </div>
 

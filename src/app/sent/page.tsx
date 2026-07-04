@@ -130,8 +130,16 @@ function SentContent() {
               <li className="flex items-start gap-2">
                 <span className="text-accent mt-1">•</span>
                 <span>
-                  After the view limit is reached, the encrypted data is
-                  permanently deleted
+                  After the view limit is reached, the link becomes inaccessible immediately
+                  and the encrypted data is deleted
+                </span>
+              </li>
+
+              <li className="flex items-start gap-2">
+                <span className="text-accent mt-1">•</span>
+                <span>
+                  If the link is never opened, it becomes inaccessible after it expires and
+                  the encrypted data is automatically deleted shortly after
                 </span>
               </li>
 
