@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
@@ -22,19 +23,11 @@ export const metadata: Metadata = {
 export default function BlogPost() {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="sticky top-0 py-4 px-4 bg-background/80 backdrop-blur-md border-b border-zinc-800/50 z-50">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Image src="/favicon-32x32.png" alt="iKrypt" width={24} height={24} />
-            <span className="text-xl font-bold gradient-text">iKrypt</span>
-          </Link>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Breadcrumbs */}
-      <nav className="px-4 py-3 border-b border-zinc-800/30">
-        <div className="max-w-2xl mx-auto">
+      <nav className="px-4 py-3 border-b border-zinc-200/60">
+        <div className="max-w-4xl mx-auto">
           <ol className="flex items-center gap-2 text-sm text-muted-foreground">
             <li>
               <Link href="/" className="hover:text-foreground transition-colors">
@@ -55,7 +48,7 @@ export default function BlogPost() {
 
       {/* Article */}
       <main className="flex-1 py-12 px-4">
-        <article className="max-w-2xl mx-auto">
+        <article className="max-w-4xl mx-auto">
           {/* Hero Image */}
           <div className="relative aspect-[1200/630] w-full rounded-xl overflow-hidden mb-8">
             <Image
@@ -80,7 +73,7 @@ export default function BlogPost() {
           </header>
 
           {/* Article Content */}
-          <div className="prose prose-invert prose-zinc max-w-none">
+          <div className="prose prose-zinc max-w-none">
             <p className="text-lg text-muted-foreground leading-relaxed mb-4">
               You need to send a password to a client. You open your email, type their address, paste the password, and hit send.
             </p>
@@ -160,7 +153,7 @@ export default function BlogPost() {
 
             <h3 className="text-xl font-semibold mt-8 mb-3 text-foreground">Mistake #1: Sending Username AND Password in the Same Email</h3>
 
-            <div className="bg-secondary/50 border border-zinc-700 rounded-lg p-4 my-4">
+            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4">
               <p className="text-sm text-muted-foreground font-mono">
                 Subject: Login credentials<br /><br />
                 Username: admin@company.com<br />
@@ -208,7 +201,7 @@ export default function BlogPost() {
               <li>Email ONLY the link (not the password)</li>
             </ol>
 
-            <div className="bg-secondary/50 border border-zinc-700 rounded-lg p-4 my-4">
+            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4">
               <p className="text-sm text-muted-foreground font-mono">
                 Subject: Re: Access needed<br /><br />
                 Here&apos;s the link to the credentials:<br />
@@ -238,7 +231,7 @@ export default function BlogPost() {
             <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">Quick Comparison</h2>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-sm text-muted-foreground border border-zinc-700 rounded-lg">
+              <table className="w-full text-sm text-muted-foreground border border-zinc-300 rounded-lg">
                 <thead className="bg-secondary/50">
                   <tr>
                     <th className="px-4 py-2 text-left text-foreground">Method</th>
@@ -247,24 +240,24 @@ export default function BlogPost() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-t border-zinc-700">
+                  <tr className="border-t border-zinc-300">
                     <td className="px-4 py-2">Regular Email</td>
-                    <td className="px-4 py-2 text-red-400">10/100</td>
+                    <td className="px-4 py-2 text-red-600">10/100</td>
                     <td className="px-4 py-2">Never use</td>
                   </tr>
-                  <tr className="border-t border-zinc-700">
+                  <tr className="border-t border-zinc-300">
                     <td className="px-4 py-2">One-Time Secret Link</td>
-                    <td className="px-4 py-2 text-green-400">95/100</td>
+                    <td className="px-4 py-2 text-green-600">95/100</td>
                     <td className="px-4 py-2 font-semibold text-foreground">Most cases</td>
                   </tr>
-                  <tr className="border-t border-zinc-700">
+                  <tr className="border-t border-zinc-300">
                     <td className="px-4 py-2">Two-Channel Split</td>
-                    <td className="px-4 py-2 text-green-400">85/100</td>
+                    <td className="px-4 py-2 text-green-600">85/100</td>
                     <td className="px-4 py-2">High security</td>
                   </tr>
-                  <tr className="border-t border-zinc-700">
+                  <tr className="border-t border-zinc-300">
                     <td className="px-4 py-2">Temp Account</td>
-                    <td className="px-4 py-2 text-green-400">95/100</td>
+                    <td className="px-4 py-2 text-green-600">95/100</td>
                     <td className="px-4 py-2">System access</td>
                   </tr>
                 </tbody>
@@ -273,13 +266,13 @@ export default function BlogPost() {
 
             <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The 30-Second Secure Workflow</h2>
 
-            <div className="bg-secondary/50 border border-zinc-700 rounded-lg p-4 my-4">
+            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4">
               <p className="text-muted-foreground mb-4">
-                <strong className="text-red-400">Instead of this:</strong><br />
+                <strong className="text-red-600">Instead of this:</strong><br />
                 Type password in email &rarr; Send &rarr; Exposed forever
               </p>
               <p className="text-muted-foreground">
-                <strong className="text-green-400">Do this:</strong><br />
+                <strong className="text-green-600">Do this:</strong><br />
                 Create one-time link &rarr; Email link &rarr; Auto-deletes after viewing
               </p>
             </div>
@@ -342,7 +335,7 @@ export default function BlogPost() {
           </div>
 
           {/* Related Articles */}
-          <div className="mt-12 pt-8 border-t border-zinc-800">
+          <div className="mt-12 pt-8 border-t border-zinc-200">
             <h3 className="text-lg font-semibold mb-4 text-foreground">Related Articles</h3>
             <ul className="space-y-2 text-muted-foreground">
               <li>
@@ -359,7 +352,7 @@ export default function BlogPost() {
           </div>
 
           {/* Article Footer */}
-          <footer className="mt-8 pt-8 border-t border-zinc-800">
+          <footer className="mt-8 pt-8 border-t border-zinc-200">
             <p className="text-sm text-muted-foreground mb-4">
               Last updated: January 16, 2026
             </p>

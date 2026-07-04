@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import SiteHeader from '@/components/SiteHeader';
 
 export default function NotFound() {
   const router = useRouter();
@@ -26,15 +26,7 @@ export default function NotFound() {
 
   return (
     <div className="min-h-screen flex flex-col pattern-bg">
-      {/* Header */}
-      <header className="sticky top-0 py-4 px-4 bg-background/80 backdrop-blur-md border-b border-zinc-800/50 z-50">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Image src="/favicon-32x32.png" alt="iKrypt" width={24} height={24} />
-            <span className="text-xl font-bold gradient-text">iKrypt</span>
-          </Link>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Content */}
       <main className="flex-1 flex items-center justify-center px-4">
@@ -60,7 +52,7 @@ export default function NotFound() {
       </main>
 
       {/* Footer */}
-      <footer className="py-8 px-4 border-t border-zinc-800">
+      <footer className="py-8 px-4 border-t border-zinc-200">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} iKrypt. Send secrets safely.

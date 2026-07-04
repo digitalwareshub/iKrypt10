@@ -15,10 +15,10 @@ export const metadata: Metadata = {
 
 export default function HealthcarePage() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col pattern-bg">
       {/* Header */}
-      <header className="sticky top-0 py-4 px-4 bg-background/80 backdrop-blur-md border-b border-zinc-800/50 z-50">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+      <header className="sticky top-0 py-4 px-4 bg-background/80 backdrop-blur-md border-b border-zinc-200/60 z-50">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <Image src="/favicon-32x32.png" alt="iKrypt" width={24} height={24} />
             <span className="text-xl font-bold gradient-text">iKrypt</span>
@@ -153,7 +153,7 @@ export default function HealthcarePage() {
 
       {/* Interest form CTA */}
       <section className="py-16 px-4">
-        <div className="max-w-3xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4 text-foreground">
             Want a healthcare-ready version?
           </h2>

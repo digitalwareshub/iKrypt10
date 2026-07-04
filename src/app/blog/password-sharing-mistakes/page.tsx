@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
@@ -22,19 +23,11 @@ export const metadata: Metadata = {
 export default function BlogPost() {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="sticky top-0 py-4 px-4 bg-background/80 backdrop-blur-md border-b border-zinc-800/50 z-50">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Image src="/favicon-32x32.png" alt="iKrypt" width={24} height={24} />
-            <span className="text-xl font-bold gradient-text">iKrypt</span>
-          </Link>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Breadcrumbs */}
-      <nav className="px-4 py-3 border-b border-zinc-800/30">
-        <div className="max-w-2xl mx-auto">
+      <nav className="px-4 py-3 border-b border-zinc-200/60">
+        <div className="max-w-4xl mx-auto">
           <ol className="flex items-center gap-2 text-sm text-muted-foreground">
             <li>
               <Link href="/" className="hover:text-foreground transition-colors">
@@ -55,7 +48,7 @@ export default function BlogPost() {
 
       {/* Article */}
       <main className="flex-1 py-12 px-4">
-        <article className="max-w-2xl mx-auto">
+        <article className="max-w-4xl mx-auto">
           {/* Hero Image */}
           <div className="relative aspect-[1200/630] w-full rounded-xl overflow-hidden mb-8">
             <Image
@@ -80,7 +73,7 @@ export default function BlogPost() {
           </header>
 
           {/* Article Content */}
-          <div className="prose prose-invert prose-zinc max-w-none">
+          <div className="prose prose-zinc max-w-none">
             <p className="text-lg text-muted-foreground leading-relaxed mb-4">
               Your employee just wrote the WiFi password on a sticky note and handed it to a contractor. Another team member just typed database credentials into Slack. Your developer emailed API keys to a client.
             </p>
@@ -115,7 +108,7 @@ export default function BlogPost() {
 
             <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">Why It&apos;s Dangerous:</h3>
 
-            <ul className="list-disc list-inside space-y-1 text-red-400 ml-4">
+            <ul className="list-disc list-inside space-y-1 text-red-600 ml-4">
               <li>Anyone walking by can see it</li>
               <li>No way to track who has access</li>
               <li>Never expires (sticky notes last forever)</li>
@@ -141,7 +134,7 @@ export default function BlogPost() {
 
             <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">What People Do:</h3>
 
-            <div className="bg-secondary/50 border border-zinc-700 rounded-lg p-4 my-4">
+            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4">
               <p className="text-sm text-muted-foreground font-mono">
                 @new_hire Welcome! Here are your credentials:<br />
                 Password: SuperSecret2024!
@@ -150,7 +143,7 @@ export default function BlogPost() {
 
             <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">Why It&apos;s Dangerous:</h3>
 
-            <ul className="list-disc list-inside space-y-1 text-red-400 ml-4">
+            <ul className="list-disc list-inside space-y-1 text-red-600 ml-4">
               <li>Searchable forever by anyone in workspace</li>
               <li>New members see entire channel history</li>
               <li>Bots and integrations can read messages</li>
@@ -163,7 +156,7 @@ export default function BlogPost() {
 
             <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 my-4">
               <p className="text-foreground font-semibold mb-2">The Fix:</p>
-              <div className="bg-secondary/50 border border-zinc-700 rounded-lg p-3 my-2">
+              <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-3 my-2">
                 <p className="text-sm text-muted-foreground font-mono">
                   @new_hire Here&apos;s access:<br />
                   Link: [one-time secret link]<br />
@@ -180,7 +173,7 @@ export default function BlogPost() {
 
             <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">Why It&apos;s Dangerous:</h3>
 
-            <ul className="list-disc list-inside space-y-1 text-red-400 ml-4">
+            <ul className="list-disc list-inside space-y-1 text-red-600 ml-4">
               <li>SMS is <strong>completely unencrypted</strong></li>
               <li>Visible in phone notifications (lock screen)</li>
               <li>Backed up to iCloud/Google automatically</li>
@@ -205,7 +198,7 @@ export default function BlogPost() {
 
             <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">What People Do:</h3>
 
-            <div className="bg-secondary/50 border border-zinc-700 rounded-lg p-4 my-4">
+            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4">
               <p className="text-sm text-muted-foreground font-mono">
                 Subject: AWS Password<br />
                 Body: Password is: AdminPass2024
@@ -218,7 +211,7 @@ export default function BlogPost() {
 
             <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 my-4">
               <p className="text-foreground font-semibold mb-2">The Fix:</p>
-              <div className="bg-secondary/50 border border-zinc-700 rounded-lg p-3 my-2">
+              <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-3 my-2">
                 <p className="text-sm text-muted-foreground font-mono">
                   Subject: Re: Project access<br />
                   Body: Link: [one-time secret]
@@ -310,9 +303,9 @@ export default function BlogPost() {
               <strong className="text-foreground">Stop sharing permanent credentials. Share temporary access instead.</strong>
             </p>
 
-            <div className="bg-secondary/50 border border-zinc-700 rounded-lg p-4 my-4">
+            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4">
               <p className="text-muted-foreground mb-4">
-                <strong className="text-red-400">Old way:</strong><br />
+                <strong className="text-red-600">Old way:</strong><br />
                 Types password &rarr; Sends &rarr; Password lives forever &rarr; Breach waiting to happen
               </p>
               <p className="text-muted-foreground">
@@ -368,7 +361,7 @@ export default function BlogPost() {
           </div>
 
           {/* Related Articles */}
-          <div className="mt-12 pt-8 border-t border-zinc-800">
+          <div className="mt-12 pt-8 border-t border-zinc-200">
             <h3 className="text-lg font-semibold mb-4 text-foreground">Related Articles</h3>
             <ul className="space-y-2 text-muted-foreground">
               <li>
@@ -385,7 +378,7 @@ export default function BlogPost() {
           </div>
 
           {/* Article Footer */}
-          <footer className="mt-8 pt-8 border-t border-zinc-800">
+          <footer className="mt-8 pt-8 border-t border-zinc-200">
             <p className="text-sm text-muted-foreground mb-4">
               Last updated: January 16, 2026
             </p>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
@@ -22,19 +23,11 @@ export const metadata: Metadata = {
 export default function BlogPost() {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="sticky top-0 py-4 px-4 bg-background/80 backdrop-blur-md border-b border-zinc-800/50 z-50">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Image src="/favicon-32x32.png" alt="iKrypt" width={24} height={24} />
-            <span className="text-xl font-bold gradient-text">iKrypt</span>
-          </Link>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Breadcrumbs */}
-      <nav className="px-4 py-3 border-b border-zinc-800/30">
-        <div className="max-w-2xl mx-auto">
+      <nav className="px-4 py-3 border-b border-zinc-200/60">
+        <div className="max-w-4xl mx-auto">
           <ol className="flex items-center gap-2 text-sm text-muted-foreground">
             <li>
               <Link href="/" className="hover:text-foreground transition-colors">
@@ -55,7 +48,7 @@ export default function BlogPost() {
 
       {/* Article */}
       <main className="flex-1 py-12 px-4">
-        <article className="max-w-2xl mx-auto">
+        <article className="max-w-4xl mx-auto">
           {/* Hero Image */}
           <div className="relative aspect-[1200/630] w-full rounded-xl overflow-hidden mb-8">
             <Image
@@ -80,7 +73,7 @@ export default function BlogPost() {
           </header>
 
           {/* Article Content */}
-          <div className="prose prose-invert prose-zinc max-w-none">
+          <div className="prose prose-zinc max-w-none">
             <p className="text-lg text-muted-foreground leading-relaxed mb-4">
               That WiFi password you just sent to your new hire in Slack? It&apos;s now searchable forever. By anyone in your workspace. Including that intern who starts next week.
             </p>
@@ -118,7 +111,7 @@ export default function BlogPost() {
               Here&apos;s a scenario that happens every day:
             </p>
 
-            <div className="bg-secondary/50 border border-zinc-700 rounded-lg p-4 my-4 text-muted-foreground">
+            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4 text-muted-foreground">
               <p><strong className="text-foreground">Monday:</strong> Sarah shares the company WiFi password in #general</p>
               <p><strong className="text-foreground">Friday:</strong> New employee Jake joins the team</p>
               <p><strong className="text-foreground">Also Friday:</strong> Jake now has access to EVERY message in #general, including that WiFi password from Monday</p>
@@ -169,9 +162,9 @@ export default function BlogPost() {
             <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The WRONG Alternatives (Almost as Bad)</h2>
 
             <div className="space-y-4 text-muted-foreground">
-              <p><strong className="text-red-400">Email:</strong> Slightly better than Slack, but emails get forwarded, have no expiration, are stored in email servers forever, and are searchable in inboxes.</p>
-              <p><strong className="text-red-400">SMS/Text Message:</strong> Even worse. Stored on phone carriers&apos; servers, visible in notifications, backed up to cloud (iCloud, Google), no encryption by default.</p>
-              <p><strong className="text-red-400">Google Docs/Spreadsheets:</strong> Common but risky. Access controls often misconfigured, shareable links can leak, revision history shows everything.</p>
+              <p><strong className="text-red-600">Email:</strong> Slightly better than Slack, but emails get forwarded, have no expiration, are stored in email servers forever, and are searchable in inboxes.</p>
+              <p><strong className="text-red-600">SMS/Text Message:</strong> Even worse. Stored on phone carriers&apos; servers, visible in notifications, backed up to cloud (iCloud, Google), no encryption by default.</p>
+              <p><strong className="text-red-600">Google Docs/Spreadsheets:</strong> Common but risky. Access controls often misconfigured, shareable links can leak, revision history shows everything.</p>
             </div>
 
             <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The RIGHT Way: One-Time Secret Links</h2>
@@ -215,7 +208,7 @@ export default function BlogPost() {
 
             <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The 30-Second Security Upgrade</h2>
 
-            <div className="bg-secondary/50 border border-zinc-700 rounded-lg p-4 my-4">
+            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4">
               <p className="text-muted-foreground mb-4">
                 <strong className="text-foreground">Old way (30 seconds):</strong><br />
                 You: types password in Slack<br />
@@ -312,7 +305,7 @@ export default function BlogPost() {
           </div>
 
           {/* Article Footer */}
-          <footer className="mt-12 pt-8 border-t border-zinc-800">
+          <footer className="mt-12 pt-8 border-t border-zinc-200">
             <p className="text-sm text-muted-foreground mb-4">
               Last updated: January 16, 2026
             </p>

@@ -90,7 +90,7 @@ function SentContent() {
             being viewed.
           </p>
 
-          <div className="bg-secondary border border-zinc-800 rounded-lg p-4 mb-4 text-left">
+          <div className="bg-secondary border border-zinc-200 rounded-lg p-4 mb-4 text-left">
             <code className="text-sm text-foreground break-all font-mono">
               {secretUrl}
             </code>
@@ -113,7 +113,7 @@ function SentContent() {
             </p>
           </div>
 
-          <div className="text-left bg-secondary/50 rounded-lg p-4 border border-zinc-800">
+          <div className="text-left bg-secondary/50 rounded-lg p-4 border border-zinc-200">
             <h3 className="font-medium mb-3 text-foreground text-sm">
               🔐 What happens next
             </h3>

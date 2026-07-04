@@ -276,7 +276,7 @@ export default function ViewSecretPage() {
             )}
           </div>
 
-          <div className="bg-secondary border border-zinc-800 rounded-lg overflow-hidden mb-4">
+          <div className="bg-secondary border border-zinc-200 rounded-lg overflow-hidden mb-4">
             {revealed ? (
               <pre className="p-4 text-sm text-foreground font-mono whitespace-pre-wrap break-all max-h-96 overflow-y-auto">
                 {state.secret}

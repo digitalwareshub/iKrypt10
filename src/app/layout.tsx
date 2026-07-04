@@ -10,11 +10,11 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   metadataBase: new URL('https://ikrypt.com'),
   title: {
-    default: 'iKrypt — One-Time Secret Links | Key Never Touches Server',
+    default: 'iKrypt — Share Passwords and API Keys with One-Time Encrypted Links',
     template: '%s | iKrypt',
   },
   description:
-    'iKrypt lets you send secrets with one-time encrypted links that self-destruct after use. The decryption key never reaches our servers.',
+    'Create self-destructing encrypted links for passwords, API keys, .env values, and login credentials. No account required. The decryption key never reaches iKrypt\'s servers.',
   keywords: [
     'share password securely',
     'send secret link',
@@ -46,9 +46,9 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: 'iKrypt — Share Passwords & Secrets Securely',
+    title: 'iKrypt — Share Passwords and API Keys with One-Time Encrypted Links',
     description:
-      'Stop DM\'ing passwords. Send a secret once with a self-destructing link. Zero-knowledge encryption means even we can\'t read it.',
+      'Stop DM\'ing passwords. Create self-destructing encrypted links for passwords, API keys, and login credentials. The decryption key never reaches our servers.',
     url: 'https://ikrypt.com',
     siteName: 'iKrypt',
     images: [
@@ -64,9 +64,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'iKrypt — Share Passwords & Secrets Securely',
+    title: 'iKrypt — Share Passwords and API Keys with One-Time Encrypted Links',
     description:
-      'Stop DM\'ing passwords. Send a secret once with a self-destructing link. Zero-knowledge encryption.',
+      'Stop DM\'ing passwords. Create self-destructing encrypted links for passwords, API keys, and login credentials.',
     images: ['/og-image.png'],
     creator: '@ikrypt_',
   },

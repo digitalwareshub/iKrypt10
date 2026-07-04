@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
@@ -50,20 +51,12 @@ const posts: BlogPost[] = [
 
 export default function BlogPage() {
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="sticky top-0 py-4 px-4 bg-background/80 backdrop-blur-md border-b border-zinc-800/50 z-50">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Image src="/favicon-32x32.png" alt="iKrypt" width={24} height={24} />
-            <span className="text-xl font-bold gradient-text">iKrypt</span>
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen flex flex-col pattern-bg">
+      <SiteHeader />
 
       {/* Breadcrumbs */}
-      <nav className="px-4 py-3 border-b border-zinc-800/30">
-        <div className="max-w-2xl mx-auto">
+      <nav className="px-4 py-3 border-b border-zinc-200/60">
+        <div className="max-w-4xl mx-auto">
           <ol className="flex items-center gap-2 text-sm text-muted-foreground">
             <li>
               <Link href="/" className="hover:text-foreground transition-colors">
@@ -78,7 +71,7 @@ export default function BlogPage() {
 
       {/* Main Content */}
       <main className="flex-1 py-12 px-4">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold mb-4 text-foreground">Blog</h1>
           <p className="text-muted-foreground mb-12">
             Security tips, product updates, and insights on protecting sensitive data.

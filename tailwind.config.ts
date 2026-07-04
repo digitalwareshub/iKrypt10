@@ -9,25 +9,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Dark theme colors
-        background: '#0a0a0a',
-        foreground: '#fafafa',
+        // Light theme colors — calm, trustworthy developer-utility look
+        background: '#f8f8fb',
+        foreground: '#1e1b2e',
         primary: {
           DEFAULT: '#6366f1', // Indigo
           hover: '#4f46e5',
         },
         secondary: {
-          DEFAULT: '#1f1f1f',
-          hover: '#2a2a2a',
+          DEFAULT: '#ffffff',
+          hover: '#f3f2f8',
         },
         accent: {
-          DEFAULT: '#22c55e', // Green for success
-          warning: '#f59e0b',
-          danger: '#ef4444',
+          DEFAULT: '#16a34a', // Green for success
+          warning: '#b45309',
+          danger: '#dc2626',
         },
         muted: {
-          DEFAULT: '#71717a',
-          foreground: '#a1a1aa',
+          DEFAULT: '#6b7280',
+          foreground: '#525268',
         },
       },
       fontFamily: {

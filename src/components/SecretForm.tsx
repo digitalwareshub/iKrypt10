@@ -92,7 +92,7 @@ export default function SecretForm() {
           value={secret}
           onChange={(e) => setSecret(e.target.value)}
           placeholder="Paste your secret here... (password, API key, etc.)"
-          className="w-full h-40 px-4 py-3 bg-secondary border border-zinc-800 rounded-lg text-foreground placeholder-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-mono text-sm"
+          className="w-full h-40 px-4 py-3 bg-secondary border border-zinc-300 rounded-lg text-foreground placeholder-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-mono text-sm"
           disabled={isLoading}
         />
       </div>
@@ -178,7 +178,7 @@ export default function SecretForm() {
             value={notifyEmail}
             onChange={(e) => setNotifyEmail(e.target.value)}
             placeholder="your@email.com"
-            className="w-full px-4 py-2 bg-secondary border border-zinc-800 rounded-lg text-foreground placeholder-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm"
+            className="w-full px-4 py-2 bg-secondary border border-zinc-300 rounded-lg text-foreground placeholder-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm"
             disabled={isLoading}
           />
         )}
@@ -186,7 +186,7 @@ export default function SecretForm() {
 
       {/* Error Message */}
       {error && (
-        <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
           {error}
         </div>
       )}
@@ -197,7 +197,7 @@ export default function SecretForm() {
         disabled={isLoading || !secret.trim()}
         className={`w-full py-3 px-6 rounded-lg font-medium text-white transition-all ${
           isLoading || !secret.trim()
-            ? 'bg-zinc-700 cursor-not-allowed'
+            ? 'bg-zinc-300 cursor-not-allowed'
             : 'bg-primary hover:bg-primary-hover'
         } ${isLoading ? 'btn-loading' : ''}`}
       >
