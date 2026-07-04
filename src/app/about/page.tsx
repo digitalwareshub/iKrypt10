@@ -6,6 +6,9 @@ import Footer from '@/components/Footer';
 export const metadata: Metadata = {
   title: 'iKrypt - About',
   description: 'Learn about iKrypt and DigiWares - building privacy-focused tools that do one thing well.',
+  alternates: {
+    canonical: 'https://ikrypt.com/about',
+  },
 };
 
 export default function AboutPage() {

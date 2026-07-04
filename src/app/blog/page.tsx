@@ -6,6 +6,9 @@ import Footer from '@/components/Footer';
 export const metadata: Metadata = {
   title: 'iKrypt - Blog',
   description: 'Security tips, product updates, and insights on protecting sensitive data.',
+  alternates: {
+    canonical: 'https://ikrypt.com/blog',
+  },
 };
 
 interface BlogPost {
