@@ -2,107 +2,17 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Helper function to validate timestamp strings
-    function isValidTimestamp(ts) {
-      return ts is string && ts.size() > 0;
-    }
-
-    // Helper function to check if document has not expired
-    function isNotExpired() {
-      return resource.data.expiresAt == null ||
-             request.time < timestamp.date(resource.data.expiresAt);
-    }
-
-    // Encrypted pastes - require document ID to access (security through obscurity + encryption)
-    // Since we use client-side encryption, the content is already encrypted
-    // Access requires knowing the document ID (acts as first factor)
-    match /encrypted-pastes/{documentId} {
-      // Only allow read if the document hasn't expired
-      allow read: if isNotExpired();
-
-      // Allow create with proper validation
-      allow create: if request.resource.data.content is string
-                   && request.resource.data.content.size() > 0
-                   && request.resource.data.content.size() < 1000000  // 1MB limit
-                   && isValidTimestamp(request.resource.data.createdAt)
-                   && isValidTimestamp(request.resource.data.expiresAt);
-
-      // No updates or deletes for encrypted pastes
-      allow update: if false;
-      allow delete: if false;
-    }
-
-    // One-time messages - designed to be read once and deleted
-    match /one-time-messages/{documentId} {
-      // Allow read (client will delete after reading)
-      allow read: if isNotExpired();
-
-      // Allow create with proper validation
-      allow create: if request.resource.data.content is string
-                   && request.resource.data.content.size() > 0
-                   && request.resource.data.content.size() < 1000000  // 1MB limit
-                   && isValidTimestamp(request.resource.data.createdAt)
-                   && isValidTimestamp(request.resource.data.expiresAt);
-
-      // Allow delete for one-time messages (after reading)
-      allow update: if false;
-      allow delete: if true;
-    }
-
-    // Chat rooms - end-to-end encrypted messages
-    match /chat-rooms/{roomId} {
-      // Allow read/create room metadata
-      allow read: if true;
-      allow create: if request.resource.data.createdAt is string
-                   && request.resource.data.roomId is string;
-      allow update: if false;
-      allow delete: if false;
-
-      // Chat messages within rooms
-      match /messages/{messageId} {
-        // Allow read messages in room (requires knowing room ID)
-        allow read: if true;
-
-        // Allow create with validation
-        allow create: if request.resource.data.content is string
-                     && request.resource.data.content.size() > 0
-                     && request.resource.data.content.size() < 50000  // 50KB limit per message
-                     && request.resource.data.sender is string
-                     && request.resource.data.sender.size() > 0
-                     && request.resource.data.timestamp is string;
-
-        // No updates or deletes for chat messages
-        allow update: if false;
-        allow delete: if false;
-      }
-    }
-
-    // Secrets collection - one-time encrypted secrets
-    // Server-side API handles all operations, but we add rules for defense in depth
-    match /secrets/{documentId} {
-      // Allow read if not expired (expiresAt is a Firestore Timestamp)
-      allow read: if resource.data.expiresAt == null ||
-                  request.time < resource.data.expiresAt;
-
-      // Allow create with proper validation
-      allow create: if request.resource.data.ciphertext is string
-                   && request.resource.data.ciphertext.size() > 0
-                   && request.resource.data.ciphertext.size() < 1000000
-                   && request.resource.data.iv is string
-                   && request.resource.data.maxViews is number
-                   && request.resource.data.maxViews >= 1
-                   && request.resource.data.maxViews <= 100;
-
-      // Allow update only to increment viewCount
-      allow update: if request.resource.data.viewCount == resource.data.viewCount + 1
-                   && request.resource.data.ciphertext == resource.data.ciphertext
-                   && request.resource.data.iv == resource.data.iv;
-
-      // Allow delete (for cleanup after max views)
-      allow delete: if true;
-    }
-
-    // Deny all other collections by default
+    // All Firestore reads/writes for iKrypt must go through server-side API
+    // routes using the Firebase Admin SDK. The Admin SDK authenticates with
+    // server credentials and bypasses Firestore Security Rules.
+    //
+    // Direct browser/client access is denied for every collection so users
+    // cannot bypass API-level rate limits, expiry checks, or one-time-view
+    // transaction logic.
+    //
+    // Legacy collections such as encrypted-pastes, one-time-messages, and
+    // chat-rooms should remain denied unless a live feature explicitly needs
+    // them and has a separate reviewed security model.
     match /{document=**} {
       allow read, write: if false;
     }

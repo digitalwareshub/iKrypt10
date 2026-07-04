@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/firebase';
-import { collection, doc, setDoc, Timestamp } from 'firebase/firestore';
+import { getAdminDb } from '@/lib/firebaseAdmin';
+import { Timestamp } from 'firebase-admin/firestore';
 import {
   checkRateLimit,
   createSecretLimiter,
@@ -97,8 +97,8 @@ export async function POST(request: NextRequest) {
 
     // Store secret in Firestore
     // NOTE: We store ONLY the ciphertext, never the key
-    const secretRef = doc(collection(db, 'secrets'), secretId);
-    await setDoc(secretRef, {
+    const secretRef = getAdminDb().collection('secrets').doc(secretId);
+    await secretRef.set({
       ciphertext,
       iv,
       expiresAt,
