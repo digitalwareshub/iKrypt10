@@ -30,12 +30,6 @@ export default function Home() {
             >
               GitHub
             </a>
-            <Link
-              href="/healthcare"
-              className="text-sm font-medium text-primary hover:text-primary-hover transition-colors"
-            >
-              For Healthcare
-            </Link>
           </nav>
 
           <div className="md:hidden relative group">
@@ -60,12 +54,6 @@ export default function Home() {
               >
                 GitHub
               </a>
-              <Link
-                href="/healthcare"
-                className="block px-4 py-3 text-sm font-medium text-primary hover:text-primary-hover hover:bg-secondary/50 transition-colors"
-              >
-                For Healthcare
-              </Link>
             </div>
           </div>
         </div>
