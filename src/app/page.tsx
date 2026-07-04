@@ -5,9 +5,55 @@ import Footer from '@/components/Footer';
 
 const GITHUB_REPO_URL = 'https://github.com/digitalwareshub/iKrypt10';
 
+// FAQPage structured data — kept in sync with the FAQ section rendered
+// below, since structured data should only describe visible page content.
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': 'https://ikrypt.com/#faq',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Can you read my secrets?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. We only store encrypted ciphertext. The encryption key stays in the link fragment and is not sent to our server.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Why should I trust it?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Security tools need trust. That is why iKrypt is open source, so developers can inspect how the browser-side encryption works.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What happens after the link expires?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The secret becomes inaccessible and is deleted after the configured expiry or view limit.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is it free?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. Basic secret sharing is free and does not require an account.',
+      },
+    },
+  ],
+};
+
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col pattern-bg">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <header className="sticky top-0 py-4 px-4 bg-background/80 backdrop-blur-md border-b border-zinc-800/50 z-50">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">

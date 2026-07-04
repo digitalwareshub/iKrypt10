@@ -2,11 +2,10 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import AhrefsAnalytics from '@/components/AhrefsAnalytics';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
-
-const AHREFS_KEY = process.env.NEXT_PUBLIC_AHREFS_KEY;
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ikrypt.com'),
@@ -96,7 +95,9 @@ export const metadata: Metadata = {
   },
 };
 
-// JSON-LD Structured Data
+// Site-wide JSON-LD Structured Data (describes the site/organization itself,
+// valid on every page). FAQPage schema lives in app/page.tsx instead, since
+// that FAQ content is only actually visible on the homepage.
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -145,44 +146,6 @@ const jsonLd = {
         '@id': 'https://ikrypt.com/#organization',
       },
     },
-    {
-      '@type': 'FAQPage',
-      '@id': 'https://ikrypt.com/#faq',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: 'Is iKrypt really secure?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Yes. We use AES-256-GCM encryption, and the key is only in the URL fragment (the part after #). URL fragments are never sent to servers in HTTP requests, so we literally cannot see your encryption key.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'What happens after the link expires?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'The secret becomes inaccessible and is scheduled for deletion. Even if someone has the link, there\'s nothing to retrieve.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Can iKrypt read my secrets?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'No. We only store the encrypted ciphertext. Without the key (which we never receive), your secret is just random bytes to us. This is called zero-knowledge encryption.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Is iKrypt free to use?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Yes, iKrypt is completely free to use. We may introduce paid features for teams in the future, but basic secret sharing will always be free.',
-          },
-        },
-      ],
-    },
   ],
 };
 
@@ -198,14 +161,6 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {/* Ahrefs Analytics — only loads when env var is set */}
-        {AHREFS_KEY && (
-          <script
-            src="https://analytics.ahrefs.com/analytics.js"
-            data-key={AHREFS_KEY}
-            async
-          />
-        )}
       </head>
       <body className={inter.className}>
         <main className="min-h-screen">{children}</main>
@@ -213,6 +168,10 @@ export default function RootLayout({
         {/* Vercel Analytics */}
         <Analytics />
         <SpeedInsights />
+
+        {/* Ahrefs Analytics — only loads when configured, and never on
+            pages where a secret is created, typed, or displayed */}
+        <AhrefsAnalytics />
       </body>
     </html>
   );
