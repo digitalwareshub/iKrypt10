@@ -22,12 +22,12 @@ export const metadata: Metadata = {
 
 export default function BlogPost() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col pattern-bg">
       <SiteHeader />
 
       {/* Breadcrumbs */}
-      <nav className="px-4 py-3 border-b border-zinc-200/60">
-        <div className="max-w-4xl mx-auto">
+      <nav className="sticky top-[60px] z-40 px-4 py-3 border-b border-zinc-200/60 bg-background/90 backdrop-blur-md">
+        <div className="max-w-6xl mx-auto">
           <ol className="flex items-center gap-2 text-sm text-muted-foreground">
             <li>
               <Link href="/" className="hover:text-foreground transition-colors">
@@ -48,7 +48,7 @@ export default function BlogPost() {
 
       {/* Article */}
       <main className="flex-1 py-12 px-4">
-        <article className="max-w-4xl mx-auto">
+        <article className="max-w-6xl mx-auto">
           {/* Hero Image */}
           <div className="relative aspect-[1200/630] w-full rounded-xl overflow-hidden mb-8">
             <Image

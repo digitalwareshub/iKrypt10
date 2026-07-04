@@ -1,174 +1,294 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
+import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Secure Credential Sharing for Healthcare Teams (Early Interest) | iKrypt',
+  title: 'Healthcare Credential Sharing Interest Page — iKrypt',
   description:
-    'iKrypt is exploring a healthcare-focused credential sharing offering. No HIPAA compliance, BAA, or audit logs exist today — this page tracks early interest only.',
+    'iKrypt is exploring whether a healthcare-ready credential sharing product is worth building. This is an early-interest page only, not a HIPAA-compliant product.',
   robots: {
     index: false,
     follow: false,
   },
 };
 
+const availableToday = [
+  'Browser-side encryption before upload',
+  'One-time or limited-view encrypted links',
+  'Expiry-based access limits',
+  'No account required for the current product',
+  'Open-source codebase',
+  'No third-party analytics on secret creation or viewing pages',
+];
+
+const notAvailableToday = [
+  'HIPAA compliance',
+  'Business Associate Agreement, also called a BAA',
+  'Healthcare audit logs',
+  'Team accounts',
+  'Role-based access controls',
+  'Organization-level policies',
+  'Compliance reports',
+  'Healthcare paid plans',
+];
+
+const healthcareNeeds = [
+  {
+    title: 'Audit trails',
+    desc: 'Healthcare teams may need clear records of who accessed what, when, and under which organization.',
+  },
+  {
+    title: 'Signed BAA process',
+    desc: 'A healthcare-ready version would need a real legal and operational process for Business Associate Agreements.',
+  },
+  {
+    title: 'Team controls',
+    desc: 'Organizations may need team accounts, role-based access, admin controls, and policy enforcement.',
+  },
+  {
+    title: 'Compliance review',
+    desc: 'Healthcare use requires more than encryption. It needs a full compliance, security, and legal review.',
+  },
+];
+
+function CheckIcon({ className = 'h-4 w-4' }: { className?: string }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+      <path
+        fillRule="evenodd"
+        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
+function XIcon({ className = 'h-4 w-4' }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  );
+}
+
 export default function HealthcarePage() {
   return (
     <div className="min-h-screen flex flex-col pattern-bg">
-      {/* Header */}
-      <header className="sticky top-0 py-4 px-4 bg-background/80 backdrop-blur-md border-b border-zinc-200/60 z-50">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Image src="/favicon-32x32.png" alt="iKrypt" width={24} height={24} />
-            <span className="text-xl font-bold gradient-text">iKrypt</span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link
-              href="/"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Home
-            </Link>
-            <Link
-              href="/contact"
-              className="px-4 py-2 bg-primary text-white rounded-md text-sm font-medium hover:bg-primary-hover transition-colors"
-            >
-              Register interest
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
-      {/* Honest status banner */}
-      <div className="bg-amber-500/20 border-b border-amber-500/30 py-3 px-4">
-        <div className="max-w-6xl mx-auto flex items-center justify-center gap-2 text-amber-400 text-sm font-medium text-center">
-          <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <div className="border-b border-amber-200 bg-amber-50/85 px-4 py-3">
+        <div className="mx-auto flex max-w-6xl items-start justify-center gap-3 text-sm leading-6 text-amber-900">
+          <svg
+            className="mt-0.5 h-5 w-5 flex-shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+            />
           </svg>
-          <span>
-            This is an early-interest page, not a shipped product. iKrypt is not currently HIPAA
-            compliant and does not offer a BAA, audit logs, or team accounts.
-          </span>
+
+          <p className="text-center">
+            This is an early-interest page only. iKrypt is not currently a HIPAA-compliant product
+            and does not offer a BAA, healthcare audit logs, team accounts, or compliance reporting.
+          </p>
         </div>
       </div>
 
-      {/* Hero Section */}
-      <section className="hero-gradient py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
-            Thinking about credential sharing for
-            <span className="gradient-text"> healthcare teams</span>
-          </h1>
-
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Today, iKrypt is a general-purpose, zero-knowledge one-time secret link tool — the
-            same product available on the homepage. We&apos;re exploring whether a
-            healthcare-specific version (with the compliance features healthcare teams actually
-            need) is worth building. It does not exist yet.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-            <Link
-              href="/contact"
-              className="px-8 py-4 bg-primary text-white rounded-md font-medium hover:bg-primary-hover transition-colors"
-            >
-              Register interest
-            </Link>
-            <Link
-              href="/"
-              className="px-8 py-4 border border-primary text-primary rounded-md font-medium hover:bg-primary/10 transition-colors"
-            >
-              Try the current product
-            </Link>
-          </div>
+      <nav className="sticky top-[60px] z-40 border-b border-zinc-200/60 bg-background/90 px-4 py-3 backdrop-blur-md">
+        <div className="mx-auto max-w-6xl">
+          <ol className="flex items-center gap-2 text-sm text-muted-foreground">
+            <li>
+              <Link href="/" className="transition-colors hover:text-foreground">
+                Home
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li className="text-foreground">Healthcare Interest</li>
+          </ol>
         </div>
-      </section>
+      </nav>
 
-      {/* What exists today vs what doesn't */}
-      <section className="py-16 px-4 bg-secondary/30">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4 text-foreground">
-              What iKrypt actually offers today
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              We&apos;d rather undersell this than oversell it. Here&apos;s the honest breakdown.
+      <main className="flex-1 px-4 py-14 md:py-20">
+        <div className="mx-auto max-w-6xl">
+          <section className="mx-auto max-w-3xl text-center">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+              Early interest only
             </p>
-          </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="card-glow p-8 rounded-xl border-l-4 border-green-500">
-              <h3 className="text-xl font-semibold mb-4 text-foreground">
-                Available right now
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  'Zero-knowledge, client-side AES-256-GCM encryption',
-                  'One-time or limited-view self-destructing links',
-                  'No account required, free to use',
-                  'Optional email notification when a link is opened',
-                  'Open source — the code is public',
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-muted-foreground">{item}</span>
+            <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+              Exploring whether healthcare teams need a safer way to hand off credentials.
+            </h1>
+
+            <p className="mt-5 text-lg leading-8 text-muted-foreground">
+              Today, iKrypt is a general-purpose one-time encrypted secret sharing tool. We are
+              exploring whether a healthcare-ready version should exist, but that version has not
+              been built yet.
+            </p>
+
+            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <Link
+                href="/contact"
+                className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-hover"
+              >
+                Register interest
+              </Link>
+
+              <Link
+                href="/"
+                className="rounded-full border border-zinc-200 bg-white/75 px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-primary/30 hover:text-primary"
+              >
+                Try current iKrypt
+              </Link>
+            </div>
+
+            <p className="mt-5 text-sm leading-6 text-muted-foreground">
+              Do not use the current iKrypt product as proof of HIPAA compliance or as a replacement
+              for your organization&apos;s legal, security, or compliance review.
+            </p>
+          </section>
+
+          <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <div className="card-glow rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-bold text-foreground">What exists today</h2>
+
+              <p className="mt-4 text-sm leading-7 text-muted-foreground">
+                The current iKrypt product is a simple encrypted handoff tool for short-lived
+                secrets such as passwords, API keys, and temporary credentials.
+              </p>
+
+              <ul className="mt-6 space-y-3">
+                {availableToday.map((item) => (
+                  <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
+                    <CheckIcon className="mt-1 h-4 w-4 flex-shrink-0 text-primary" />
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="card-glow p-8 rounded-xl border-l-4 border-red-500">
-              <h3 className="text-xl font-semibold mb-4 text-foreground">
-                Not available — do not rely on these
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  'HIPAA compliance or a signed BAA',
-                  'Audit logs of who accessed what and when',
-                  'Team or role-based accounts',
-                  'Session timeouts or org-level access controls',
-                  'Compliance reports or paid healthcare plans',
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    <span className="text-muted-foreground">{item}</span>
+            <div className="card-glow rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-bold text-foreground">What does not exist today</h2>
+
+              <p className="mt-4 text-sm leading-7 text-muted-foreground">
+                These features are not available in the current product. Please do not rely on
+                iKrypt as if they exist.
+              </p>
+
+              <ul className="mt-6 space-y-3">
+                {notAvailableToday.map((item) => (
+                  <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
+                    <XIcon className="mt-1 h-4 w-4 flex-shrink-0 text-red-500" />
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
-          </div>
+          </section>
 
-          <p className="mt-8 text-center text-sm text-muted-foreground max-w-2xl mx-auto">
-            If your organization is a HIPAA-covered entity or business associate, using iKrypt
-            today does not satisfy HIPAA technical safeguard requirements on its own (no BAA is
-            available). Please evaluate accordingly.
-          </p>
-        </div>
-      </section>
+          <section className="mt-16">
+            <div className="mx-auto mb-10 max-w-3xl text-center">
+              <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+                Why this would need a separate product
+              </p>
 
-      {/* Interest form CTA */}
-      <section className="py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4 text-foreground">
-            Want a healthcare-ready version?
-          </h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            Tell us what your team needs — audit logs, BAA, team accounts, or something else —
-            and we&apos;ll reach out if we build it. No commitment, no credit card, no spam.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-block px-8 py-4 bg-primary text-white rounded-md text-lg font-medium hover:bg-primary-hover transition-colors"
-          >
-            Register interest
-          </Link>
+              <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                Healthcare credential sharing needs more than encrypted links.
+              </h2>
+
+              <p className="mt-4 text-muted-foreground">
+                Encryption is only one part of a healthcare-ready system. A real product for this
+                market would need compliance, legal, organizational, and operational controls.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {healthcareNeeds.map((item) => (
+                <div key={item.title} className="card-glow rounded-2xl p-6">
+                  <h3 className="font-semibold text-foreground">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+            <div className="card-glow rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-bold text-foreground">What we are trying to learn</h2>
+
+              <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
+                <p>
+                  We are not trying to dress the current iKrypt product as a healthcare compliance
+                  tool. We are trying to understand whether healthcare teams have a specific,
+                  recurring credential handoff problem worth solving properly.
+                </p>
+
+                <p>
+                  Useful feedback includes what tools you use today, where credential handoffs
+                  happen, what audit requirements matter, and what would need to exist before your
+                  organization could consider a product like this.
+                </p>
+              </div>
+            </div>
+
+            <div className="card-glow rounded-2xl p-6 md:p-8">
+              <h2 className="text-2xl font-bold text-foreground">Before contacting us</h2>
+
+              <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
+                <p>
+                  Please do not send patient information, protected health information, passwords,
+                  API keys, private keys, or production credentials through the contact form.
+                </p>
+
+                <p>
+                  If you are sharing feedback, describe the workflow and requirements without
+                  including real sensitive data.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="mt-16">
+            <div className="card-glow rounded-3xl p-8 text-center md:p-10">
+              <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+                Interested in a healthcare-ready version?
+              </p>
+
+              <h2 className="text-3xl font-bold tracking-tight text-foreground">
+                Tell us what would actually be required.
+              </h2>
+
+              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-muted-foreground">
+                Share what your team would need: audit logs, BAA process, team accounts, admin
+                controls, retention settings, or other requirements. No commitment, no credit card,
+                no compliance claims.
+              </p>
+
+              <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <Link
+                  href="/contact"
+                  className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-hover"
+                >
+                  Register interest
+                </Link>
+
+                <Link
+                  href="/security"
+                  className="rounded-full border border-zinc-200 bg-white/75 px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-primary/30 hover:text-primary"
+                >
+                  Read current security model
+                </Link>
+              </div>
+            </div>
+          </section>
         </div>
-      </section>
+      </main>
 
       <Footer />
     </div>
