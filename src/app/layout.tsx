@@ -10,33 +10,11 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   metadataBase: new URL('https://ikrypt.com'),
   title: {
-    default: 'iKrypt — Share Passwords and API Keys with One-Time Encrypted Links',
+    default: 'iKrypt — Privacy Scanner & Redaction Tool',
     template: '%s | iKrypt',
   },
   description:
-    'Create self-destructing encrypted links for passwords, API keys, .env values, and login credentials. No account required. The decryption key never reaches iKrypt\'s servers.',
-  keywords: [
-    'share password securely',
-    'send secret link',
-    'self destructing message',
-    'one time secret',
-    'encrypted link sharing',
-    'how to share passwords securely with team',
-    'send API key securely',
-    'share credentials without slack',
-    'self destructing password link',
-    'zero knowledge secret sharing',
-    'share sensitive information securely',
-    'one time password sharing link',
-    'secure way to send passwords',
-    'encrypted message that deletes itself',
-    'share ssh key securely',
-    'send login credentials safely',
-    'password sharing tool for teams',
-    'secure secret sharing app',
-    'disposable encrypted link',
-    'burn after reading message',
-  ],
+    'Check screenshots, photos and documents for personal information, sensitive details and hidden metadata before you share them. Privacy-first tools from iKrypt.',
   authors: [{ name: 'iKrypt', url: 'https://ikrypt.com' }],
   creator: 'iKrypt',
   publisher: 'iKrypt',
@@ -44,31 +22,6 @@ export const metadata: Metadata = {
     email: false,
     address: false,
     telephone: false,
-  },
-  openGraph: {
-    title: 'iKrypt — Share Passwords and API Keys with One-Time Encrypted Links',
-    description:
-      'Stop DM\'ing passwords. Create self-destructing encrypted links for passwords, API keys, and login credentials. The decryption key never reaches our servers.',
-    url: 'https://ikrypt.com',
-    siteName: 'iKrypt',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'iKrypt - Share secrets securely with self-destructing links',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'iKrypt — Share Passwords and API Keys with One-Time Encrypted Links',
-    description:
-      'Stop DM\'ing passwords. Create self-destructing encrypted links for passwords, API keys, and login credentials.',
-    images: ['/og-image.png'],
-    creator: '@ikrypt_',
   },
   robots: {
     index: true,
@@ -90,14 +43,8 @@ export const metadata: Metadata = {
     apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
   },
   manifest: '/site.webmanifest',
-  alternates: {
-    canonical: 'https://ikrypt.com',
-  },
 };
 
-// Site-wide JSON-LD Structured Data (describes the site/organization itself,
-// valid on every page). FAQPage schema lives in app/page.tsx instead, since
-// that FAQ content is only actually visible on the homepage.
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -107,20 +54,16 @@ const jsonLd = {
       name: 'iKrypt',
       url: 'https://ikrypt.com',
       description:
-        'Share passwords and secrets securely with self-destructing encrypted links. Zero-knowledge encryption ensures complete privacy.',
+        'Privacy scanner and redaction tools for checking screenshots, photos and documents before sharing, plus encrypted one-time secret links.',
       applicationCategory: 'SecurityApplication',
       operatingSystem: 'Any',
-      offers: {
-        '@type': 'Offer',
-        price: '0',
-        priceCurrency: 'USD',
-      },
       featureList: [
-        'Zero-knowledge encryption',
-        'Self-destructing links',
-        'No account required',
-        'View notifications',
-        'Custom expiry times',
+        'Privacy scanning',
+        'Personal information detection',
+        'Local browser processing',
+        'Image and document redaction',
+        'Metadata inspection',
+        'Encrypted one-time secret links',
       ],
     },
     {
@@ -133,7 +76,7 @@ const jsonLd = {
         url: 'https://ikrypt.com/logo.svg',
       },
       sameAs: [
-        'https://x.com/ikrypt_',
+        'https://x.com/bydigiwares',
         'https://github.com/digitalwareshub/iKrypt10',
       ],
     },
@@ -164,13 +107,8 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <main className="min-h-screen">{children}</main>
-
-        {/* Vercel Analytics */}
         <Analytics />
         <SpeedInsights />
-
-        {/* Ahrefs Analytics — only loads when configured, and never on
-            pages where a secret is created, typed, or displayed */}
         <AhrefsAnalytics />
       </body>
     </html>
