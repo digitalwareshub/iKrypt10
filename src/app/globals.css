@@ -7,9 +7,9 @@
   --foreground: #0f172a;
   --muted: #64748b;
   --border: #e2e8f0;
-  --accent: #4f46e5;
-  --accent-strong: #4338ca;
-  --accent-soft: #eef2ff;
+  --accent: #0f766e;
+  --accent-strong: #115e59;
+  --accent-soft: #ccfbf1;
 }
 
 html {
@@ -37,12 +37,44 @@ body {
  */
 .hero-gradient {
   background:
-    radial-gradient(ellipse 58% 42% at 50% 2%, rgba(79, 70, 229, 0.065), transparent 100%),
+    radial-gradient(ellipse 58% 42% at 50% 2%, rgba(15, 118, 110, 0.065), transparent 100%),
     linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
 }
 
 .pattern-bg {
   background: transparent;
+}
+
+
+/* A distinct security-first landing page: midnight canvas, restrained teal
+ * accents, and a bright product surface. Scoped to homepage classes. */
+.ik-hero {
+  color: #f8fafc;
+  background:
+    radial-gradient(ellipse 42% 50% at 90% 18%, rgba(20, 184, 166, 0.085), transparent 100%),
+    radial-gradient(ellipse 50% 70% at 0% 100%, rgba(13, 148, 136, 0.065), transparent 100%),
+    linear-gradient(145deg, #0a1417 0%, #091114 48%, #060d10 100%);
+}
+
+.ik-hero-grid {
+  opacity: 0.3;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.085) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.085) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(90deg, transparent 0%, black 40%, black 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 40%, black 100%);
+}
+
+.ik-form-glow {
+  background: linear-gradient(150deg, rgba(94, 234, 212, 0.16), transparent 70%);
+  filter: blur(20px);
+}
+
+@media (max-width: 1023px) {
+  .ik-hero-grid {
+    opacity: 0.17;
+  }
 }
 
 /* Homepage sections remain flat, with one deliberately subtle alternate tone. */
@@ -51,11 +83,11 @@ body {
 }
 
 .home-section-muted {
-  background: #f8fafc;
+  background: #f2f7f6;
 }
 
 .home-eyebrow {
-  color: #4338ca;
+  color: #0f766e;
   font-size: 0.75rem;
   font-weight: 700;
   line-height: 1.25rem;
@@ -83,7 +115,7 @@ body {
 }
 
 .gradient-text {
-  background: linear-gradient(120deg, #1e293b 0%, #4338ca 100%);
+  background: linear-gradient(120deg, #134e4a 0%, #0f766e 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -93,10 +125,10 @@ body {
 @keyframes pulse-glow {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.06);
+    box-shadow: 0 0 0 0 rgba(15, 118, 110, 0.06);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(79, 70, 229, 0);
+    box-shadow: 0 0 0 6px rgba(15, 118, 110, 0);
   }
 }
 
@@ -106,12 +138,12 @@ body {
 
 /* A consistent keyboard focus ring is especially important on the secret form. */
 *:focus-visible {
-  outline: 2px solid #4f46e5;
+  outline: 2px solid #0f766e;
   outline-offset: 3px;
 }
 
 ::selection {
-  background: rgba(79, 70, 229, 0.18);
+  background: rgba(15, 118, 110, 0.18);
   color: #0f172a;
 }
 
@@ -152,13 +184,13 @@ input[type='radio'] {
 }
 
 input[type='radio']:checked {
-  border-color: #4f46e5;
-  background: #4f46e5;
+  border-color: #0f766e;
+  background: #0f766e;
   box-shadow: inset 0 0 0 3px #ffffff;
 }
 
 input[type='radio']:hover {
-  border-color: #4f46e5;
+  border-color: #0f766e;
 }
 
 input[type='checkbox'] {
@@ -174,8 +206,8 @@ input[type='checkbox'] {
 }
 
 input[type='checkbox']:checked {
-  border-color: #4f46e5;
-  background: #4f46e5;
+  border-color: #0f766e;
+  background: #0f766e;
 }
 
 input[type='checkbox']:checked::after {
@@ -188,7 +220,7 @@ input[type='checkbox']:checked::after {
 }
 
 input[type='checkbox']:hover {
-  border-color: #4f46e5;
+  border-color: #0f766e;
 }
 
 /* Keep the current loading-state contract used by SecretForm. */
