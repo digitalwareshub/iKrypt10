@@ -3,27 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --background: #fafaff;
-  --foreground: #151327;
-  --muted: #5f6072;
-  --border: #e4e2f0;
-  --accent: #5b5ff1;
-  --accent-strong: #4f46e5;
-  --accent-soft: #eef0ff;
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --accent: #4f46e5;
+  --accent-strong: #4338ca;
+  --accent-soft: #eef2ff;
 }
 
 html {
   min-height: 100%;
   background: var(--background);
+  scroll-behavior: smooth;
 }
 
 body {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 50% 8%, rgba(99, 102, 241, 0.10), transparent 34rem),
-    radial-gradient(circle at 12% 30%, rgba(139, 92, 246, 0.08), transparent 28rem),
-    radial-gradient(circle at 86% 34%, rgba(99, 102, 241, 0.07), transparent 30rem),
-    linear-gradient(180deg, #ffffff 0%, #f8f7ff 42%, #ffffff 100%);
+  background: #ffffff;
   color: var(--foreground);
   font-family:
     'Inter',
@@ -32,144 +29,169 @@ body {
     'Segoe UI',
     Roboto,
     sans-serif;
+}
+
+/*
+ * Keep public pages light and restrained. A security tool should make the
+ * sensitive-data workflow easy to inspect, not compete with glowing artwork.
+ */
+.hero-gradient {
+  background:
+    radial-gradient(ellipse 58% 42% at 50% 2%, rgba(79, 70, 229, 0.065), transparent 100%),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.pattern-bg {
+  background: transparent;
+}
+
+/* Homepage sections remain flat, with one deliberately subtle alternate tone. */
+.home-section {
+  background: #ffffff;
+}
+
+.home-section-muted {
+  background: #f8fafc;
+}
+
+.home-eyebrow {
+  color: #4338ca;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.home-step,
+.home-flow-step {
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.025);
+}
+
+/* Existing info cards on supporting pages keep a consistent, quieter look. */
+.card-glow {
   position: relative;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 5px 22px rgba(15, 23, 42, 0.045);
 }
 
-/* Global encrypted mesh overlay */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.9;
-  background-image:
-    radial-gradient(circle, rgba(91, 95, 241, 0.20) 1.5px, transparent 2px),
-    linear-gradient(58deg, transparent 0 49.5%, rgba(91, 95, 241, 0.075) 49.5% 50.5%, transparent 50.5% 100%),
-    linear-gradient(118deg, transparent 0 49.5%, rgba(91, 95, 241, 0.055) 49.5% 50.5%, transparent 50.5% 100%);
-  background-size:
-    96px 96px,
-    190px 150px,
-    210px 170px;
-  background-position:
-    0 0,
-    -30px 20px,
-    40px -10px;
-
-  /* Keeps mesh mostly on the sides so the hero/content remains clean */
-  -webkit-mask-image:
-    linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.95) 0%,
-      rgba(0, 0, 0, 0.50) 18%,
-      rgba(0, 0, 0, 0.12) 36%,
-      rgba(0, 0, 0, 0.04) 50%,
-      rgba(0, 0, 0, 0.12) 64%,
-      rgba(0, 0, 0, 0.50) 82%,
-      rgba(0, 0, 0, 0.95) 100%
-    );
-  mask-image:
-    linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.95) 0%,
-      rgba(0, 0, 0, 0.50) 18%,
-      rgba(0, 0, 0, 0.12) 36%,
-      rgba(0, 0, 0, 0.04) 50%,
-      rgba(0, 0, 0, 0.12) 64%,
-      rgba(0, 0, 0, 0.50) 82%,
-      rgba(0, 0, 0, 0.95) 100%
-    );
+.trust-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.035);
 }
 
-/* Keeps actual app content above the global mesh */
-body > * {
-  position: relative;
-  z-index: 1;
+.gradient-text {
+  background: linear-gradient(120deg, #1e293b 0%, #4338ca 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* Custom scrollbar */
+/* Keep animations unobtrusive on supporting pages. */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.06);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(79, 70, 229, 0);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+/* A consistent keyboard focus ring is especially important on the secret form. */
+*:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 3px;
+}
+
+::selection {
+  background: rgba(79, 70, 229, 0.18);
+  color: #0f172a;
+}
+
+/* Scrollbar polish without attention-grabbing decoration. */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #edecf3;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c7c5d6;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a5bd;
+  background: #94a3b8;
 }
 
-/* Focus styles */
-*:focus-visible {
-  outline: 2px solid #6366f1;
-  outline-offset: 2px;
-}
-
-/* Textarea styling */
 textarea {
-  resize: none;
+  resize: vertical;
 }
 
-/* Radio button custom styling */
+/* Shared controls for supporting pages that still use native radio/checkboxes. */
 input[type='radio'] {
   appearance: none;
   width: 18px;
   height: 18px;
-  border: 2px solid #d1d0dc;
+  flex-shrink: 0;
+  border: 2px solid #cbd5e1;
   border-radius: 50%;
   background: #ffffff;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 input[type='radio']:checked {
-  border-color: #6366f1;
-  background: #6366f1;
+  border-color: #4f46e5;
+  background: #4f46e5;
   box-shadow: inset 0 0 0 3px #ffffff;
 }
 
 input[type='radio']:hover {
-  border-color: #6366f1;
+  border-color: #4f46e5;
 }
 
-/* Checkbox custom styling */
 input[type='checkbox'] {
   appearance: none;
   width: 18px;
   height: 18px;
-  border: 2px solid #d1d0dc;
-  border-radius: 4px;
+  flex-shrink: 0;
+  border: 2px solid #cbd5e1;
+  border-radius: 5px;
   background: #ffffff;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 input[type='checkbox']:checked {
-  border-color: #6366f1;
-  background: #6366f1;
+  border-color: #4f46e5;
+  background: #4f46e5;
 }
 
 input[type='checkbox']:checked::after {
   content: '✓';
   display: block;
-  text-align: center;
   color: white;
   font-size: 12px;
   line-height: 14px;
+  text-align: center;
 }
 
 input[type='checkbox']:hover {
-  border-color: #6366f1;
+  border-color: #4f46e5;
 }
 
-/* Button loading state */
+/* Keep the current loading-state contract used by SecretForm. */
 .btn-loading {
   position: relative;
   color: transparent;
@@ -178,15 +200,15 @@ input[type='checkbox']:hover {
 .btn-loading::after {
   content: '';
   position: absolute;
-  width: 16px;
-  height: 16px;
   top: 50%;
   left: 50%;
-  margin-left: -8px;
+  width: 16px;
+  height: 16px;
   margin-top: -8px;
+  margin-left: -8px;
   border: 2px solid #ffffff;
-  border-radius: 50%;
   border-top-color: transparent;
+  border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
 
@@ -196,88 +218,16 @@ input[type='checkbox']:hover {
   }
 }
 
-/* Hero background — clean light surface with soft glow */
-.hero-gradient {
-  position: relative;
-  background:
-    radial-gradient(circle at 50% 12%, rgba(99, 102, 241, 0.13), transparent 30rem),
-    radial-gradient(circle at 50% 42%, rgba(139, 92, 246, 0.06), transparent 34rem);
-}
-
-/* Optional wrapper class for public pages */
-.pattern-bg {
-  position: relative;
-  background: transparent;
-}
-
-/* Clean white cards */
-.card-glow {
-  position: relative;
-  background: rgba(255, 255, 255, 0.90);
-  border: 1px solid rgba(228, 226, 240, 0.95);
-  box-shadow:
-    0 1px 2px rgba(30, 27, 46, 0.04),
-    0 12px 40px rgba(30, 27, 46, 0.08);
-  backdrop-filter: blur(10px);
-}
-
-/* Trust/info cards */
-.trust-card {
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(228, 226, 240, 0.95);
-  box-shadow:
-    0 1px 2px rgba(30, 27, 46, 0.035),
-    0 8px 24px rgba(30, 27, 46, 0.055);
-  backdrop-filter: blur(10px);
-}
-
-/* Gradient text — premium, not neon */
-.gradient-text {
-  background: linear-gradient(135deg, #1f1b5f 0%, #4f46e5 52%, #6d5dfc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Soft pulse for lock icon */
-@keyframes pulse-glow {
-  0%,
-  100% {
-    box-shadow:
-      0 0 0 0 rgba(99, 102, 241, 0.12),
-      0 12px 28px rgba(99, 102, 241, 0.14);
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 
-  50% {
-    box-shadow:
-      0 0 0 10px rgba(99, 102, 241, 0.00),
-      0 16px 36px rgba(99, 102, 241, 0.20);
-  }
-}
-
-.pulse-glow {
-  animation: pulse-glow 2.8s ease-in-out infinite;
-}
-
-/* Softer selection colour */
-::selection {
-  background: rgba(99, 102, 241, 0.18);
-  color: #151327;
-}
-
-/* Mobile: reduce mesh strength so it does not become noisy */
-@media (max-width: 768px) {
-  body::before {
-    opacity: 0.45;
-    background-size:
-      110px 110px,
-      220px 180px,
-      240px 190px;
+  .pulse-glow {
+    animation: none;
   }
 
-  .card-glow {
-    box-shadow:
-      0 1px 2px rgba(30, 27, 46, 0.04),
-      0 8px 24px rgba(30, 27, 46, 0.07);
+  .btn-loading::after {
+    animation-duration: 1.2s;
   }
 }
