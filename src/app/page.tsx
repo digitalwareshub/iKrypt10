@@ -116,39 +116,78 @@ export default function Home() {
       <SiteHeader />
 
       <main>
-        <section className="hero-gradient px-4 pb-14 pt-10 sm:pt-12 md:pb-20 md:pt-16">
-          <div className="mx-auto max-w-6xl">
-            <div className="mx-auto max-w-3xl text-center">
+        <section className="ik-hero relative isolate overflow-hidden px-4 pb-16 pt-10 sm:pt-14 lg:pb-24 lg:pt-20">
+          <div className="ik-hero-grid pointer-events-none absolute inset-0" aria-hidden="true" />
+          <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1fr)] lg:gap-14">
+            <div className="max-w-2xl">
               <a
                 href={GITHUB_REPO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-indigo-200/80 bg-white px-3.5 py-1.5 text-xs font-semibold text-indigo-700 transition-colors hover:border-indigo-300 hover:bg-indigo-50 sm:text-sm"
+                className="inline-flex items-center gap-2 rounded-full border border-teal-300/25 bg-teal-200/5 px-3.5 py-2 text-xs font-semibold tracking-wide text-teal-200 transition-colors hover:border-teal-300/60 hover:bg-teal-200/10"
               >
-                <span className="h-1.5 w-1.5 rounded-full bg-indigo-600" aria-hidden="true" />
-                Open source · Inspect the code on GitHub
+                <span className="h-2 w-2 rounded-full bg-teal-300" aria-hidden="true" />
+                OPEN SOURCE · BROWSER-ENCRYPTED
+                <span aria-hidden="true">↗</span>
               </a>
 
-              <h1 className="mt-7 text-balance text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl md:text-6xl">
-                Share secrets. <span className="text-indigo-700">Not risks.</span>
+              <h1 className="mt-8 max-w-[12ch] text-[clamp(3.1rem,6vw,5.6rem)] font-semibold leading-[1.05] tracking-[-0.055em] text-white">
+                Share secrets.
+                <span className="mt-2 block text-teal-300">Not risks.</span>
               </h1>
-              <p className="mx-auto mt-5 max-w-2xl text-balance text-base leading-7 text-slate-600 sm:text-lg md:text-xl md:leading-8">
-                Share passwords, API keys, and sensitive information with encrypted links that expire.
-                Your secret is encrypted before it leaves your browser.
+
+              <p className="mt-7 max-w-lg text-lg leading-8 text-slate-300 sm:text-xl">
+                Passwords, API keys, sensitive information. Create encrypted links that expire,
+                with access limits you control.
               </p>
-              <p className="mt-3 text-sm font-medium text-slate-500">
-                Free to use. No account required.
+              <p className="mt-4 text-sm font-medium text-slate-400">
+                Free to use · No account required
               </p>
+
+              <div className="mt-9 hidden max-w-md border-t border-white/15 pt-6 lg:block">
+                <div className="grid grid-cols-2 gap-x-6 gap-y-5">
+                  <div>
+                    <p className="font-mono text-xs uppercase tracking-[0.18em] text-teal-300">01 / Browser</p>
+                    <p className="mt-2 text-sm text-slate-300">Your secret is encrypted locally.</p>
+                  </div>
+                  <div>
+                    <p className="font-mono text-xs uppercase tracking-[0.18em] text-teal-300">02 / Server</p>
+                    <p className="mt-2 text-sm text-slate-300">Only encrypted data is stored.</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="mx-auto mt-8 max-w-2xl rounded-3xl border border-slate-200 bg-white p-4 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.28)] sm:p-6 md:mt-10 md:p-8">
-              <SecretForm />
+            <div id="create-secret" className="relative min-w-0">
+              <div className="ik-form-glow pointer-events-none absolute -inset-3 rounded-[2.25rem]" aria-hidden="true" />
+              <div className="relative overflow-hidden rounded-[1.4rem] border border-white/15 bg-white shadow-[0_32px_95px_-22px_rgba(0,0,0,0.6)] sm:rounded-[1.7rem]">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 bg-slate-50 px-5 py-4 sm:px-7">
+                  <div>
+                    <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-teal-800">
+                      SECURE LINK GENERATOR
+                    </p>
+                    <h2 className="mt-1 text-lg font-bold tracking-tight text-slate-950">Create an encrypted link</h2>
+                  </div>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50 px-3 py-1.5 text-xs font-semibold text-teal-900">
+                    <span className="h-1.5 w-1.5 rounded-full bg-teal-600" aria-hidden="true" />
+                    Private
+                  </span>
+                </div>
+                <div className="px-5 py-6 sm:px-7 sm:py-7">
+                  <SecretForm />
+                </div>
+              </div>
+              <p className="mt-4 text-center text-xs leading-5 text-slate-400">
+                The key is contained in the sharing link; our servers receive only ciphertext.
+              </p>
             </div>
+          </div>
 
-            <div className="mx-auto mt-7 flex max-w-3xl flex-wrap items-center justify-center gap-x-7 gap-y-3 text-sm text-slate-600">
-              {['Encrypted in your browser', 'Key not stored on our servers', 'Expiry and view limits'].map((item) => (
+          <div className="relative mx-auto mt-14 max-w-7xl border-t border-white/10 pt-7 lg:mt-20">
+            <div className="flex flex-wrap justify-center gap-x-9 gap-y-3 text-sm font-medium text-slate-300">
+              {['256-bit AES-GCM encryption', 'Expiring links', '1, 3, or 5 allowed views', 'Public source code'].map((item) => (
                 <span key={item} className="inline-flex items-center gap-2">
-                  <CheckIcon className="h-4 w-4 text-indigo-600" />
+                  <CheckIcon className="h-4 w-4 text-teal-300" />
                   {item}
                 </span>
               ))}
@@ -170,7 +209,7 @@ export default function Home() {
             <div className="grid gap-4 md:grid-cols-3">
               {howItWorks.map((item) => (
                 <div key={item.number} className="home-step rounded-2xl border border-slate-200 bg-white p-6">
-                  <span className="font-mono text-sm font-semibold text-indigo-700">{item.number}</span>
+                  <span className="font-mono text-sm font-semibold text-teal-800">{item.number}</span>
                   <h3 className="mt-4 text-lg font-semibold text-slate-900">{item.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-slate-600">{item.desc}</p>
                 </div>
@@ -194,26 +233,26 @@ export default function Home() {
 
             <div className="mx-auto flex max-w-5xl flex-col items-stretch gap-3 md:flex-row md:items-center">
               <div className="home-flow-step flex-1 rounded-2xl border border-slate-200 bg-white p-6">
-                <p className="font-mono text-xs font-semibold uppercase tracking-wider text-indigo-700">01 · Your browser</p>
+                <p className="font-mono text-xs font-semibold uppercase tracking-wider text-teal-800">01 · Your browser</p>
                 <h3 className="mt-2 text-lg font-semibold text-slate-900">Encrypt locally</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">Plaintext is encrypted on your device before upload.</p>
               </div>
               <div className="hidden justify-center md:flex"><ArrowIcon /></div>
               <div className="home-flow-step flex-1 rounded-2xl border border-slate-200 bg-white p-6">
-                <p className="font-mono text-xs font-semibold uppercase tracking-wider text-indigo-700">02 · iKrypt</p>
+                <p className="font-mono text-xs font-semibold uppercase tracking-wider text-teal-800">02 · iKrypt</p>
                 <h3 className="mt-2 text-lg font-semibold text-slate-900">Store ciphertext</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">Our service enforces expiry and view limits on encrypted data.</p>
               </div>
               <div className="hidden justify-center md:flex"><ArrowIcon /></div>
               <div className="home-flow-step flex-1 rounded-2xl border border-slate-200 bg-white p-6">
-                <p className="font-mono text-xs font-semibold uppercase tracking-wider text-indigo-700">03 · Recipient</p>
+                <p className="font-mono text-xs font-semibold uppercase tracking-wider text-teal-800">03 · Recipient</p>
                 <h3 className="mt-2 text-lg font-semibold text-slate-900">Decrypt locally</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">The recipient opens the full link to reveal the secret in their browser.</p>
               </div>
             </div>
 
             <div className="mt-8 text-center">
-              <Link href="/security" className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-700 underline-offset-4 hover:underline">
+              <Link href="/security" className="inline-flex items-center gap-2 text-sm font-semibold text-teal-800 underline-offset-4 hover:underline">
                 Read the full security architecture <span aria-hidden="true">→</span>
               </Link>
             </div>
@@ -284,7 +323,7 @@ export default function Home() {
                 <details key={item.q} className="group py-5">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left font-semibold text-slate-900 marker:hidden [&::-webkit-details-marker]:hidden">
                     <span>{item.q}</span>
-                    <span className="text-xl font-normal text-indigo-700 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                    <span className="text-xl font-normal text-teal-800 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
                   </summary>
                   <p className="max-w-2xl pr-8 pt-3 text-sm leading-7 text-slate-600">{item.a}</p>
                 </details>
