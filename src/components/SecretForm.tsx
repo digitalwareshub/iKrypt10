@@ -98,7 +98,7 @@ export default function SecretForm() {
           value={secret}
           onChange={(e) => setSecret(e.target.value)}
           placeholder="Paste a password, API key, or other sensitive text…"
-          className="block min-h-[148px] w-full rounded-xl border border-slate-300 bg-slate-50/60 px-4 py-3 font-mono text-sm leading-6 text-slate-900 outline-none transition-colors placeholder:text-slate-400 hover:border-slate-400 focus:border-indigo-600 focus:bg-white focus:ring-2 focus:ring-indigo-600/15 sm:min-h-[160px]"
+          className="block min-h-[148px] w-full rounded-xl border border-slate-300 bg-slate-50/60 px-4 py-3 font-mono text-sm leading-6 text-slate-900 outline-none transition-colors placeholder:text-slate-400 hover:border-slate-400 focus:border-teal-700 focus:bg-white focus:ring-2 focus:ring-teal-700/15 sm:min-h-[160px]"
           autoComplete="off"
           autoCapitalize="off"
           autoCorrect="off"
@@ -125,7 +125,7 @@ export default function SecretForm() {
                   checked={expiry === option.value}
                   onChange={(e) => setExpiry(e.target.value as ExpiryOption)}
                 />
-                <span className="flex min-h-11 items-center justify-center rounded-lg border border-slate-200 bg-white px-1.5 text-center text-xs font-medium text-slate-600 transition-colors hover:border-indigo-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-800 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-indigo-600 sm:text-sm">
+                <span className="flex min-h-11 items-center justify-center rounded-lg border border-slate-200 bg-white px-1.5 text-center text-xs font-medium text-slate-600 transition-colors hover:border-teal-300 peer-checked:border-teal-600 peer-checked:bg-teal-50 peer-checked:text-teal-900 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-teal-700 sm:text-sm">
                   {option.label}
                 </span>
               </label>
@@ -150,7 +150,7 @@ export default function SecretForm() {
                   checked={maxViews === option.value}
                   onChange={(e) => setMaxViews(parseInt(e.target.value) as ViewsOption)}
                 />
-                <span className="flex min-h-11 items-center justify-center rounded-lg border border-slate-200 bg-white px-1.5 text-center text-xs font-medium text-slate-600 transition-colors hover:border-indigo-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-800 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-indigo-600 sm:text-sm">
+                <span className="flex min-h-11 items-center justify-center rounded-lg border border-slate-200 bg-white px-1.5 text-center text-xs font-medium text-slate-600 transition-colors hover:border-teal-300 peer-checked:border-teal-600 peer-checked:bg-teal-50 peer-checked:text-teal-900 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-teal-700 sm:text-sm">
                   {option.label}
                 </span>
               </label>
@@ -180,7 +180,7 @@ export default function SecretForm() {
               onChange={(e) => setNotifyEmail(e.target.value)}
               placeholder="you@example.com"
               autoComplete="email"
-              className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15"
+              className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-teal-700 focus:ring-2 focus:ring-teal-700/15"
               disabled={isLoading}
             />
           </div>
@@ -199,7 +199,7 @@ export default function SecretForm() {
         className={'mt-6 flex min-h-12 w-full items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold text-white transition-colors focus-visible:outline-offset-4 ' +
           (isLoading || !secret.trim()
             ? 'cursor-not-allowed bg-slate-300'
-            : 'bg-indigo-700 hover:bg-indigo-800') +
+            : 'bg-teal-700 hover:bg-teal-800') +
           (isLoading ? ' btn-loading' : '')}
       >
         {isLoading ? 'Creating encrypted link…' : 'Create encrypted link'}
