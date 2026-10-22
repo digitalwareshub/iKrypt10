@@ -44,23 +44,40 @@ function MenuIcon({ open }: { open: boolean }) {
 export default function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const isHome = pathname === '/';
+  const createHref = isHome ? '/#create-secret' : '/';
+
+  const headerTheme = isHome
+    ? 'border-white/10 bg-[#091215]/95 text-white'
+    : 'border-slate-200 bg-white/95 text-slate-900';
+
+  const subtleLink = isHome
+    ? 'text-slate-300 hover:text-white'
+    : 'text-slate-600 hover:text-slate-950';
+
+  const actionTheme = isHome
+    ? 'bg-teal-300 text-[#092124] hover:bg-teal-200'
+    : 'bg-teal-700 text-white hover:bg-teal-800';
 
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-200/70 bg-white/75 px-4 py-3 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
+    <header className={'sticky top-0 z-50 border-b px-4 py-3 backdrop-blur-xl ' + headerTheme}>
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         <Link
           href="/"
           onClick={() => setMenuOpen(false)}
-          className="flex items-center gap-2 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+          className="flex items-center gap-2.5 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
           aria-label="iKrypt home"
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-primary/20">
+          <span className={'flex h-9 w-9 items-center justify-center rounded-xl ring-1 ' +
+            (isHome ? 'bg-white/10 ring-white/20' : 'bg-teal-50 ring-teal-200')}>
             <Image src="/favicon-32x32.png" alt="" width={22} height={22} priority />
           </span>
-          <span className="text-xl font-bold tracking-tight gradient-text">iKrypt</span>
+          <span className={'text-xl font-bold tracking-tight ' + (isHome ? 'text-white' : 'text-teal-900')}>
+            iKrypt
+          </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex" aria-label="Main navigation">
+        <nav className="hidden items-center gap-8 md:flex" aria-label="Main navigation">
           {NAV_LINKS.map((link) => {
             const active = pathname === link.href;
 
@@ -68,11 +85,8 @@ export default function SiteHeader() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors ${
-                  active
-                    ? 'text-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
+                className={'text-sm font-medium transition-colors ' +
+                  (active ? (isHome ? 'text-white' : 'text-teal-800') : subtleLink)}
               >
                 {link.label}
               </Link>
@@ -86,14 +100,16 @@ export default function SiteHeader() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="iKrypt on GitHub"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 bg-white text-muted-foreground shadow-sm transition-colors hover:text-foreground"
+            className={'flex h-9 w-9 items-center justify-center rounded-full border transition-colors ' +
+              (isHome
+                ? 'border-white/20 bg-white/5 text-slate-300 hover:text-white'
+                : 'border-slate-200 bg-white text-slate-600 hover:text-slate-900')}
           >
             <GitHubIcon />
           </a>
-
           <Link
-            href="/"
-            className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-hover"
+            href={createHref}
+            className={'rounded-full px-4 py-2 text-sm font-semibold transition-colors ' + actionTheme}
           >
             Create secret
           </Link>
@@ -104,7 +120,10 @@ export default function SiteHeader() {
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
           aria-label="Toggle navigation menu"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-muted-foreground shadow-sm transition-colors hover:text-foreground md:hidden"
+          className={'flex h-10 w-10 items-center justify-center rounded-full border transition-colors md:hidden ' +
+            (isHome
+              ? 'border-white/20 bg-white/10 text-white hover:bg-white/20'
+              : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50')}
         >
           <MenuIcon open={menuOpen} />
         </button>
@@ -112,40 +131,40 @@ export default function SiteHeader() {
 
       {menuOpen && (
         <div id="mobile-menu" className="md:hidden">
-          <div className="mx-auto mt-3 max-w-6xl rounded-2xl border border-zinc-200 bg-white/95 p-2 shadow-xl backdrop-blur">
+          <div className={'mx-auto mt-3 max-w-7xl rounded-2xl border p-2 shadow-xl ' +
+            (isHome
+              ? 'border-white/15 bg-[#122225] text-white'
+              : 'border-slate-200 bg-white text-slate-900')}>
             <Link
-              href="/"
+              href={createHref}
               onClick={() => setMenuOpen(false)}
-              className="block rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-primary/5 hover:text-foreground"
+              className={'block rounded-xl px-4 py-3 text-sm font-semibold ' +
+                (isHome ? 'bg-teal-300 text-[#092124]' : 'bg-teal-50 text-teal-800')}
             >
               Create secret
             </Link>
-
-            {NAV_LINKS.map((link) => {
-              const active = pathname === link.href;
-
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className={`block rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
-                    active
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-muted-foreground hover:bg-primary/5 hover:text-foreground'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className={'mt-1 block rounded-xl px-4 py-3 text-sm font-medium transition-colors ' +
+                  (isHome
+                    ? 'text-slate-200 hover:bg-white/10 hover:text-white'
+                    : 'text-slate-700 hover:bg-slate-50')}
+              >
+                {link.label}
+              </Link>
+            ))}
             <a
               href={GITHUB_REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMenuOpen(false)}
-              className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-primary/5 hover:text-foreground"
+              className={'mt-1 flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-colors ' +
+                (isHome
+                  ? 'text-slate-200 hover:bg-white/10'
+                  : 'text-slate-700 hover:bg-slate-50')}
             >
               <GitHubIcon />
               GitHub
