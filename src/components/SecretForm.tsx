@@ -85,128 +85,129 @@ export default function SecretForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-xl mx-auto">
-      {/* Secret Input */}
-      <div className="mb-6">
+    <form onSubmit={handleSubmit} className="mx-auto w-full max-w-xl">
+      <div>
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+          <label htmlFor="secret-input" className="text-sm font-semibold text-slate-900">
+            Secret to share
+          </label>
+          <span className="text-xs font-medium text-slate-500">Encrypted before upload</span>
+        </div>
         <textarea
+          id="secret-input"
           value={secret}
           onChange={(e) => setSecret(e.target.value)}
-          placeholder="Paste your secret here... (password, API key, etc.)"
-          className="w-full h-40 px-4 py-3 bg-secondary border border-zinc-300 rounded-lg text-foreground placeholder-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-mono text-sm"
+          placeholder="Paste a password, API key, or other sensitive text…"
+          className="block min-h-[148px] w-full rounded-xl border border-slate-300 bg-slate-50/60 px-4 py-3 font-mono text-sm leading-6 text-slate-900 outline-none transition-colors placeholder:text-slate-400 hover:border-slate-400 focus:border-indigo-600 focus:bg-white focus:ring-2 focus:ring-indigo-600/15 sm:min-h-[160px]"
+          autoComplete="off"
+          autoCapitalize="off"
+          autoCorrect="off"
+          spellCheck={false}
           disabled={isLoading}
         />
       </div>
 
-      {/* Options Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        {/* Expiry Options */}
-        <div>
-          <label className="block text-sm text-muted-foreground mb-3">
-            Expires after
-          </label>
-          <div className="flex gap-3">
+      <div className="mt-6 grid gap-5 sm:grid-cols-2 sm:gap-6">
+        <fieldset disabled={isLoading}>
+          <legend className="mb-2.5 text-sm font-semibold text-slate-900">Expires after</legend>
+          <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
             {[
               { value: '10m', label: '10 min' },
               { value: '1h', label: '1 hour' },
               { value: '24h', label: '24 hours' },
             ].map((option) => (
-              <label
-                key={option.value}
-                className="flex items-center gap-2 cursor-pointer"
-              >
+              <label key={option.value} className="cursor-pointer">
                 <input
+                  className="peer sr-only"
                   type="radio"
                   name="expiry"
                   value={option.value}
                   checked={expiry === option.value}
                   onChange={(e) => setExpiry(e.target.value as ExpiryOption)}
-                  disabled={isLoading}
                 />
-                <span className="text-sm">{option.label}</span>
+                <span className="flex min-h-11 items-center justify-center rounded-lg border border-slate-200 bg-white px-1.5 text-center text-xs font-medium text-slate-600 transition-colors hover:border-indigo-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-800 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-indigo-600 sm:text-sm">
+                  {option.label}
+                </span>
               </label>
             ))}
           </div>
-        </div>
+        </fieldset>
 
-        {/* View Limit Options */}
-        <div>
-          <label className="block text-sm text-muted-foreground mb-3">
-            Views allowed
-          </label>
-          <div className="flex gap-3">
+        <fieldset disabled={isLoading}>
+          <legend className="mb-2.5 text-sm font-semibold text-slate-900">Views allowed</legend>
+          <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
             {[
               { value: 1, label: '1 view' },
               { value: 3, label: '3 views' },
               { value: 5, label: '5 views' },
             ].map((option) => (
-              <label
-                key={option.value}
-                className="flex items-center gap-2 cursor-pointer"
-              >
+              <label key={option.value} className="cursor-pointer">
                 <input
+                  className="peer sr-only"
                   type="radio"
                   name="maxViews"
                   value={option.value}
                   checked={maxViews === option.value}
-                  onChange={(e) =>
-                    setMaxViews(parseInt(e.target.value) as ViewsOption)
-                  }
-                  disabled={isLoading}
+                  onChange={(e) => setMaxViews(parseInt(e.target.value) as ViewsOption)}
                 />
-                <span className="text-sm">{option.label}</span>
+                <span className="flex min-h-11 items-center justify-center rounded-lg border border-slate-200 bg-white px-1.5 text-center text-xs font-medium text-slate-600 transition-colors hover:border-indigo-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-800 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-indigo-600 sm:text-sm">
+                  {option.label}
+                </span>
               </label>
             ))}
           </div>
-        </div>
+        </fieldset>
       </div>
 
-      {/* Email Notification */}
-      <div className="mb-6">
-        <label className="flex items-center gap-3 cursor-pointer mb-3">
+      <div className="mt-6 border-t border-slate-100 pt-5">
+        <label className="flex cursor-pointer items-start gap-3 text-sm text-slate-700">
           <input
             type="checkbox"
+            className="mt-0.5"
             checked={enableNotify}
             onChange={(e) => setEnableNotify(e.target.checked)}
             disabled={isLoading}
           />
-          <span className="text-sm">Notify me when the link is opened</span>
+          <span>Notify me by email when this link is opened <span className="text-slate-500">(optional)</span></span>
         </label>
-
         {enableNotify && (
-          <input
-            type="email"
-            value={notifyEmail}
-            onChange={(e) => setNotifyEmail(e.target.value)}
-            placeholder="your@email.com"
-            className="w-full px-4 py-2 bg-secondary border border-zinc-300 rounded-lg text-foreground placeholder-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm"
-            disabled={isLoading}
-          />
+          <div className="mt-3">
+            <label htmlFor="notify-email" className="sr-only">Notification email address</label>
+            <input
+              id="notify-email"
+              type="email"
+              value={notifyEmail}
+              onChange={(e) => setNotifyEmail(e.target.value)}
+              placeholder="you@example.com"
+              autoComplete="email"
+              className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15"
+              disabled={isLoading}
+            />
+          </div>
         )}
       </div>
 
-      {/* Error Message */}
       {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+        <p role="alert" className="mt-5 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-700">
           {error}
-        </div>
+        </p>
       )}
 
-      {/* Submit Button */}
       <button
         type="submit"
         disabled={isLoading || !secret.trim()}
-        className={`w-full py-3 px-6 rounded-lg font-medium text-white transition-all ${
-          isLoading || !secret.trim()
-            ? 'bg-zinc-300 cursor-not-allowed'
-            : 'bg-primary hover:bg-primary-hover'
-        } ${isLoading ? 'btn-loading' : ''}`}
+        className={'mt-6 flex min-h-12 w-full items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold text-white transition-colors focus-visible:outline-offset-4 ' +
+          (isLoading || !secret.trim()
+            ? 'cursor-not-allowed bg-slate-300'
+            : 'bg-indigo-700 hover:bg-indigo-800') +
+          (isLoading ? ' btn-loading' : '')}
       >
-        Create Secret Link
+        {isLoading ? 'Creating encrypted link…' : 'Create encrypted link'}
       </button>
 
-      {/* Trust Message */}
-      <p className="mt-4 text-center text-xs text-muted">
-        🔐 The encryption key never leaves your browser
+      <p className="mx-auto mt-4 max-w-md text-center text-xs leading-5 text-slate-500">
+        The decryption key is included in the sharing link, not uploaded to iKrypt.
+        Share the full link only with someone you trust.
       </p>
     </form>
   );
