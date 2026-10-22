@@ -9,12 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Light theme colors — calm, trustworthy developer-utility look
+        // Calm teal brand system: dark product hero with clear, readable light surfaces
         background: '#f8f8fb',
         foreground: '#1e1b2e',
         primary: {
-          DEFAULT: '#6366f1', // Indigo
-          hover: '#4f46e5',
+          DEFAULT: '#0f766e', // Deep teal
+          hover: '#115e59',
         },
         secondary: {
           DEFAULT: '#ffffff',
