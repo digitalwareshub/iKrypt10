@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
+import Mesh from '@/components/Mesh';
 
 export const metadata: Metadata = {
-  title: 'Create a One-Time Secret Link — Encrypted, Expiring, No Login Required',
+  title: 'One-Time Secret Link: Encrypted, Expiring, No Login',
   description:
     'Create a one-time secret link for passwords, API keys, .env values, and temporary credentials. Browser-side encryption, expiry limits, and no account required.',
   alternates: {
@@ -245,7 +246,7 @@ export default function OneTimeSecretLinkPage() {
       <div className="min-h-screen flex flex-col pattern-bg">
         <SiteHeader />
 
-        <nav className="sticky top-[60px] z-40 border-b border-zinc-200/60 bg-background/90 px-4 py-3 backdrop-blur-md">
+        <nav className="sticky top-[60px] z-40 border-b border-line bg-background/90 px-4 py-3 backdrop-blur-md">
           <div className="mx-auto max-w-6xl">
             <ol className="flex items-center gap-2 text-sm text-muted-foreground">
               <li>
@@ -259,14 +260,15 @@ export default function OneTimeSecretLinkPage() {
           </div>
         </nav>
 
-        <main className="flex-1 px-4 py-14 md:py-20">
+        <main id="content" className="relative isolate flex-1 overflow-hidden px-4 py-14 md:py-20">
+        <Mesh variant="right" />
           <div className="mx-auto max-w-6xl">
             <section className="mx-auto max-w-3xl text-center">
-              <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+              <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                 One-time secret links
               </p>
 
-              <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+              <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] text-balance">
                 Create a one-time secret link for short-lived sensitive handoffs.
               </h1>
 
@@ -279,14 +281,14 @@ export default function OneTimeSecretLinkPage() {
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
                   href="/"
-                  className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-hover"
+                  className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
                 >
                   Create a one-time secret
                 </Link>
 
                 <Link
                   href="/security"
-                  className="rounded-full border border-zinc-200 bg-white/75 px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-primary/30 hover:text-primary"
+                  className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                 >
                   Read security architecture
                 </Link>
@@ -304,7 +306,7 @@ export default function OneTimeSecretLinkPage() {
                   <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <CheckIcon className="h-5 w-5" />
                   </div>
-                  <h2 className="font-semibold text-foreground">{item.title}</h2>
+                  <h2 className="font-semibold text-heading tracking-[-0.01em]">{item.title}</h2>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.desc}</p>
                 </div>
               ))}
@@ -312,7 +314,7 @@ export default function OneTimeSecretLinkPage() {
 
             <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-[1.05fr_0.95fr]">
               <div className="card-glow rounded-2xl p-6 md:p-8">
-                <h2 className="text-2xl font-bold text-foreground">
+                <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">
                   What makes a secret link “one-time”?
                 </h2>
 
@@ -327,7 +329,7 @@ export default function OneTimeSecretLinkPage() {
                     With iKrypt, the secret is encrypted in your browser before upload. The server
                     stores encrypted ciphertext and enforces the view limit and expiry. The
                     decryption key stays in the URL fragment, after the{' '}
-                    <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-foreground">#</code>{' '}
+                    <code className="rounded bg-raised px-1.5 py-0.5 text-foreground">#</code>{' '}
                     symbol.
                   </p>
 
@@ -339,13 +341,13 @@ export default function OneTimeSecretLinkPage() {
               </div>
 
               <div className="card-glow rounded-2xl p-6 md:p-8">
-                <h2 className="text-2xl font-bold text-foreground">Good for</h2>
+                <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Good for</h2>
 
                 <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {goodFor.map((item) => (
                     <div
                       key={item}
-                      className="rounded-xl border border-zinc-200/70 bg-white/70 px-4 py-3 text-sm font-medium text-foreground"
+                      className="rounded-xl border border-line bg-surface px-4 py-3 text-sm font-medium text-foreground"
                     >
                       {item}
                     </div>
@@ -356,11 +358,11 @@ export default function OneTimeSecretLinkPage() {
 
             <section className="mt-16">
               <div className="mx-auto mb-10 max-w-3xl text-center">
-                <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+                <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                   Workflow
                 </p>
 
-                <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
                   How a one-time secret link works
                 </h2>
 
@@ -383,7 +385,7 @@ export default function OneTimeSecretLinkPage() {
 
             <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
               <div className="card-glow rounded-2xl p-6 md:p-8">
-                <h2 className="text-2xl font-bold text-foreground">Best use cases</h2>
+                <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Best use cases</h2>
 
                 <p className="mt-4 text-sm leading-7 text-muted-foreground">
                   One-time links are best when a secret is needed briefly, by one intended person
@@ -392,7 +394,7 @@ export default function OneTimeSecretLinkPage() {
 
                 <div className="mt-6 grid grid-cols-1 gap-3">
                   {commonScenarios.map((item) => (
-                    <div key={item.title} className="rounded-xl border border-zinc-200/70 bg-white/70 p-4">
+                    <div key={item.title} className="rounded-xl border border-line bg-surface p-4">
                       <h3 className="text-sm font-semibold text-foreground">{item.title}</h3>
                       <p className="mt-1 text-sm leading-6 text-muted-foreground">{item.desc}</p>
                     </div>
@@ -401,7 +403,7 @@ export default function OneTimeSecretLinkPage() {
               </div>
 
               <div className="card-glow rounded-2xl p-6 md:p-8">
-                <h2 className="text-2xl font-bold text-foreground">Not meant for</h2>
+                <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Not meant for</h2>
 
                 <p className="mt-4 text-sm leading-7 text-muted-foreground">
                   iKrypt is intentionally small. It is not trying to replace your long-term
@@ -411,7 +413,7 @@ export default function OneTimeSecretLinkPage() {
                 <ul className="mt-6 space-y-3">
                   {notFor.map((item) => (
                     <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
-                      <XIcon className="mt-1 h-4 w-4 flex-shrink-0 text-red-500" />
+                      <XIcon className="mt-1 h-4 w-4 flex-shrink-0 text-[#F87171]" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -421,7 +423,7 @@ export default function OneTimeSecretLinkPage() {
 
             <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
               <div className="card-glow rounded-2xl p-6 md:p-8">
-                <h2 className="text-2xl font-bold text-foreground">
+                <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">
                   How to use one-time secret links safely
                 </h2>
 
@@ -436,7 +438,7 @@ export default function OneTimeSecretLinkPage() {
               </div>
 
               <div className="card-glow rounded-2xl p-6 md:p-8">
-                <h2 className="text-2xl font-bold text-foreground">
+                <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">
                   What a one-time link cannot protect against
                 </h2>
 
@@ -448,7 +450,7 @@ export default function OneTimeSecretLinkPage() {
                 <ul className="mt-6 space-y-3">
                   {limitations.map((item) => (
                     <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
-                      <XIcon className="mt-1 h-4 w-4 flex-shrink-0 text-red-500" />
+                      <XIcon className="mt-1 h-4 w-4 flex-shrink-0 text-[#F87171]" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -458,11 +460,11 @@ export default function OneTimeSecretLinkPage() {
 
             <section className="mt-16">
               <div className="mx-auto mb-10 max-w-3xl text-center">
-                <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+                <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                   Related guides
                 </p>
 
-                <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
                   More secure sharing workflows
                 </h2>
               </div>
@@ -483,7 +485,7 @@ export default function OneTimeSecretLinkPage() {
 
             <section id="faq" className="mt-16">
               <div className="mx-auto mb-10 max-w-3xl text-center">
-                <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
                   Frequently asked questions
                 </h2>
               </div>
@@ -500,11 +502,11 @@ export default function OneTimeSecretLinkPage() {
 
             <section className="mt-16">
               <div className="card-glow rounded-3xl p-8 text-center md:p-10">
-                <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+                <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                   Create a one-time secret
                 </p>
 
-                <h2 className="text-3xl font-bold tracking-tight text-foreground">
+                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
                   Send a short-lived secret without leaving it in message history forever.
                 </h2>
 
@@ -516,14 +518,14 @@ export default function OneTimeSecretLinkPage() {
                 <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
                   <Link
                     href="/"
-                    className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-hover"
+                    className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
                   >
                     Create a one-time secret
                   </Link>
 
                   <Link
                     href="/security"
-                    className="rounded-full border border-zinc-200 bg-white/75 px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-primary/30 hover:text-primary"
+                    className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                   >
                     Review security model
                   </Link>

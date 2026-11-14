@@ -3,18 +3,21 @@ import Link from 'next/link';
 import Image from 'next/image';
 import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
+import Mesh from '@/components/Mesh';
 
 export const metadata: Metadata = {
-  title: 'The 7 Biggest Password Sharing Mistakes (And How to Avoid Them) - iKrypt',
-  description: 'From sticky notes to Slack messages, these 7 password sharing mistakes cause 80% of credential breaches. Learn the simple fixes that take the same time.',
+  title: '7 Password Sharing Mistakes and How to Avoid Them',
+  description:
+    'From sticky notes to Slack messages: seven common password sharing habits that leave credentials exposed, and fixes that take the same time.',
   keywords: ['password sharing mistakes', 'secure password sharing best practices', 'how NOT to share passwords', 'password security'],
   alternates: {
     canonical: 'https://ikrypt.com/blog/password-sharing-mistakes',
   },
   openGraph: {
     title: 'The 7 Biggest Password Sharing Mistakes',
-    description: 'These 7 password sharing mistakes cause 80% of credential breaches. Learn the simple fixes.',
+    description: 'These 7 password sharing mistakes leave credentials exposed. Learn the simple fixes.',
     type: 'article',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'iKrypt — one-time encrypted links' }],
     publishedTime: '2026-01-16T00:00:00.000Z',
     authors: ['DigiWares'],
   },
@@ -26,7 +29,7 @@ export default function BlogPost() {
       <SiteHeader />
 
       {/* Breadcrumbs */}
-      <nav className="sticky top-[60px] z-40 px-4 py-3 border-b border-zinc-200/60 bg-background/90 backdrop-blur-md">
+      <nav className="sticky top-[60px] z-40 px-4 py-3 border-b border-line bg-background/90 backdrop-blur-md">
         <div className="max-w-6xl mx-auto">
           <ol className="flex items-center gap-2 text-sm text-muted-foreground">
             <li>
@@ -47,8 +50,9 @@ export default function BlogPost() {
       </nav>
 
       {/* Article */}
-      <main className="flex-1 py-12 px-4">
-        <article className="max-w-6xl mx-auto">
+      <main id="content" className="relative isolate flex-1 overflow-hidden py-12 px-4">
+        <Mesh variant="right" />
+        <article className="mx-auto max-w-3xl">
           {/* Hero Image */}
           <div className="relative aspect-[1200/630] w-full rounded-xl overflow-hidden mb-8">
             <Image
@@ -62,7 +66,7 @@ export default function BlogPost() {
 
           {/* Article Header */}
           <header className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4 text-foreground leading-tight">
+            <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] mb-4">
               The 7 Biggest Password Sharing Mistakes (And How to Avoid Them)
             </h1>
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -73,7 +77,7 @@ export default function BlogPost() {
           </header>
 
           {/* Article Content */}
-          <div className="prose prose-zinc max-w-none">
+          <div className="prose-ikrypt max-w-none">
             <p className="text-lg text-muted-foreground leading-relaxed mb-4">
               Your employee just wrote the WiFi password on a sticky note and handed it to a contractor. Another team member just typed database credentials into Slack. Your developer emailed API keys to a client.
             </p>
@@ -83,15 +87,15 @@ export default function BlogPost() {
             </p>
 
             <p className="text-muted-foreground leading-relaxed mb-4">
-              In 2024, Verizon&apos;s Data Breach Report found that <strong className="text-foreground">81% of hacking-related breaches</strong> used either stolen or weak passwords. But here&apos;s the kicker: most of those passwords weren&apos;t &quot;hacked&quot; in the traditional sense. They were <strong className="text-foreground">handed over through insecure sharing practices.</strong>
+              Verizon&apos;s annual Data Breach Investigations Report has consistently found <strong className="text-foreground">stolen or weak credentials</strong> among the most common ways attackers get in. Many of those credentials were never cracked: they were <strong className="text-foreground">left lying around by everyday sharing habits.</strong>
             </p>
 
             <p className="text-muted-foreground leading-relaxed mb-6">
-              Let&apos;s break down the 7 biggest password sharing mistakes&mdash;and the simple fixes that take the same amount of time but eliminate 90% of the risk.
+              Let&apos;s break down the 7 biggest password sharing mistakes&mdash;and the simple fixes that take the same amount of time but remove most of the exposure.
             </p>
 
             {/* Mistake 1 */}
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">Mistake #1: Writing Passwords on Post-it Notes</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">Mistake #1: Writing Passwords on Post-it Notes</h2>
 
             <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">What People Do:</h3>
 
@@ -103,12 +107,12 @@ export default function BlogPost() {
             </ul>
 
             <p className="text-muted-foreground leading-relaxed mt-4">
-              <strong className="text-foreground">Real example:</strong> In 2023, a cleaning contractor at a law firm photographed 23 sticky notes with passwords over 6 months. Sold access for $50,000.
+              <strong className="text-foreground">Typical scenario:</strong> anyone who walks past the desk (visitors, cleaners, delivery staff) can read or photograph the note, and nobody would ever know.
             </p>
 
             <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">Why It&apos;s Dangerous:</h3>
 
-            <ul className="list-disc list-inside space-y-1 text-red-600 ml-4">
+            <ul className="list-disc list-inside space-y-1 text-[#FCA5A5] ml-4">
               <li>Anyone walking by can see it</li>
               <li>No way to track who has access</li>
               <li>Never expires (sticky notes last forever)</li>
@@ -125,16 +129,16 @@ export default function BlogPost() {
               </ol>
               <p className="text-sm text-muted-foreground mt-2">
                 <strong>Time required:</strong> 15 seconds (same as writing a sticky note)<br />
-                <strong>Risk reduction:</strong> 95%
+               
               </p>
             </div>
 
             {/* Mistake 2 */}
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">Mistake #2: Sharing in Slack, Teams, or Discord</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">Mistake #2: Sharing in Slack, Teams, or Discord</h2>
 
             <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">What People Do:</h3>
 
-            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4">
+            <div className="bg-surface border border-line-strong rounded-lg p-4 my-4">
               <p className="text-sm text-muted-foreground font-mono">
                 @new_hire Welcome! Here are your credentials:<br />
                 Password: SuperSecret2024!
@@ -143,7 +147,7 @@ export default function BlogPost() {
 
             <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">Why It&apos;s Dangerous:</h3>
 
-            <ul className="list-disc list-inside space-y-1 text-red-600 ml-4">
+            <ul className="list-disc list-inside space-y-1 text-[#FCA5A5] ml-4">
               <li>Searchable forever by anyone in workspace</li>
               <li>New members see entire channel history</li>
               <li>Bots and integrations can read messages</li>
@@ -151,12 +155,12 @@ export default function BlogPost() {
             </ul>
 
             <p className="text-muted-foreground leading-relaxed mt-4">
-              <strong className="text-foreground">Real Case:</strong> Developer shared AWS credentials in Slack. 6 months later, contractor joined the channel, searched &quot;AWS,&quot; found credentials, deleted production database.
+              <strong className="text-foreground">Typical scenario:</strong> credentials pasted into a channel months ago are still there when a new contractor joins and searches the history for &quot;AWS&quot;.
             </p>
 
             <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 my-4">
               <p className="text-foreground font-semibold mb-2">The Fix:</p>
-              <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-3 my-2">
+              <div className="bg-surface border border-line-strong rounded-lg p-3 my-2">
                 <p className="text-sm text-muted-foreground font-mono">
                   @new_hire Here&apos;s access:<br />
                   Link: [one-time secret link]<br />
@@ -164,16 +168,16 @@ export default function BlogPost() {
                 </p>
               </div>
               <p className="text-sm text-muted-foreground mt-2">
-                <strong>Time required:</strong> 15 seconds | <strong>Risk reduction:</strong> 90%
+                <strong>Time required:</strong> 15 seconds
               </p>
             </div>
 
             {/* Mistake 3 */}
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">Mistake #3: Sending via SMS or Text Message</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">Mistake #3: Sending via SMS or Text Message</h2>
 
             <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">Why It&apos;s Dangerous:</h3>
 
-            <ul className="list-disc list-inside space-y-1 text-red-600 ml-4">
+            <ul className="list-disc list-inside space-y-1 text-[#FCA5A5] ml-4">
               <li>SMS is <strong>completely unencrypted</strong></li>
               <li>Visible in phone notifications (lock screen)</li>
               <li>Backed up to iCloud/Google automatically</li>
@@ -181,7 +185,7 @@ export default function BlogPost() {
             </ul>
 
             <p className="text-muted-foreground leading-relaxed mt-4">
-              <strong className="text-foreground">FBI 2024 Report:</strong> SIM swapping attacks increased +400% since 2020, used in 68% of account takeovers.
+              <strong className="text-foreground">Also worth knowing:</strong> the FBI has repeatedly warned about SIM-swapping, where attackers take over a phone number and receive its messages.
             </p>
 
             <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 my-4">
@@ -190,15 +194,14 @@ export default function BlogPost() {
                 <li>Use Signal or WhatsApp (end-to-end encrypted)</li>
                 <li>Or: Use one-time secret link (works on any device)</li>
               </ul>
-              <p className="text-sm text-muted-foreground mt-2"><strong>Risk reduction:</strong> 85%</p>
             </div>
 
             {/* Mistake 4 */}
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">Mistake #4: Email with Subject Line &quot;Password Inside&quot;</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">Mistake #4: Email with Subject Line &quot;Password Inside&quot;</h2>
 
             <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">What People Do:</h3>
 
-            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4">
+            <div className="bg-surface border border-line-strong rounded-lg p-4 my-4">
               <p className="text-sm text-muted-foreground font-mono">
                 Subject: AWS Password<br />
                 Body: Password is: AdminPass2024
@@ -211,24 +214,24 @@ export default function BlogPost() {
 
             <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 my-4">
               <p className="text-foreground font-semibold mb-2">The Fix:</p>
-              <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-3 my-2">
+              <div className="bg-surface border border-line-strong rounded-lg p-3 my-2">
                 <p className="text-sm text-muted-foreground font-mono">
                   Subject: Re: Project access<br />
                   Body: Link: [one-time secret]
                 </p>
               </div>
               <p className="text-sm text-muted-foreground mt-2">
-                Password never appears in email at all. <strong>Risk reduction:</strong> 80%
+                Password never appears in email at all.
               </p>
             </div>
 
             {/* Mistake 5 */}
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">Mistake #5: Using Shared Spreadsheets for Team Passwords</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">Mistake #5: Using Shared Spreadsheets for Team Passwords</h2>
 
-            <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">Real Breach (2024):</h3>
+            <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">Typical scenario:</h3>
 
             <p className="text-muted-foreground leading-relaxed">
-              Marketing agency stored client credentials in Google Sheet. Junior employee set to &quot;Anyone with link can view.&quot; Link was indexed by Google. Competitor found it. Accessed 30+ client accounts. <strong className="text-foreground">Agency shut down.</strong>
+              A team keeps client logins in a shared spreadsheet. Someone changes sharing to &quot;Anyone with the link&quot;, the link gets forwarded, and now <strong className="text-foreground">every credential in the sheet is exposed at once.</strong>
             </p>
 
             <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 my-4">
@@ -241,7 +244,7 @@ export default function BlogPost() {
             </div>
 
             {/* Mistake 6 */}
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">Mistake #6: Reusing the Same Password (Then Sharing It)</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">Mistake #6: Reusing the Same Password (Then Sharing It)</h2>
 
             <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">The Domino Effect:</h3>
 
@@ -250,7 +253,7 @@ export default function BlogPost() {
             </p>
 
             <p className="text-muted-foreground leading-relaxed mt-4">
-              <strong className="text-foreground">Real example:</strong> Company used &quot;TechCo2024!&quot; for multiple systems. Intern accessed production database, leaked it on GitHub. <strong className="text-foreground">Cost: $2.3M in fines.</strong>
+              <strong className="text-foreground">Typical scenario:</strong> one password such as &quot;TechCo2024!&quot; opens Wi-Fi, email and the production database, so <strong className="text-foreground">one leak exposes everything.</strong>
             </p>
 
             <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 my-4">
@@ -264,7 +267,7 @@ export default function BlogPost() {
             </div>
 
             {/* Mistake 7 */}
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">Mistake #7: Never Changing Shared Passwords</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">Mistake #7: Never Changing Shared Passwords</h2>
 
             <h3 className="text-xl font-semibold mt-6 mb-3 text-foreground">The Problem:</h3>
 
@@ -273,7 +276,7 @@ export default function BlogPost() {
             </p>
 
             <p className="text-muted-foreground leading-relaxed mt-4">
-              <strong className="text-foreground">Real case:</strong> Medical practice shared password with billing company in 2020. Never changed it. Billing company breached in 2024. Hacker accessed 50,000 patient records. <strong className="text-foreground">HIPAA fine: $1.2 million.</strong>
+              <strong className="text-foreground">Typical scenario:</strong> a password shared with a vendor years ago is never changed. When that vendor is breached, <strong className="text-foreground">your account goes with it.</strong>
             </p>
 
             <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 my-4">
@@ -286,7 +289,7 @@ export default function BlogPost() {
             </div>
 
             {/* Pattern */}
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The Pattern You&apos;re Missing</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">The Pattern You&apos;re Missing</h2>
 
             <p className="text-muted-foreground leading-relaxed">
               <strong className="text-foreground">Passwords shared once become permanent vulnerabilities.</strong>
@@ -297,15 +300,15 @@ export default function BlogPost() {
             </p>
 
             {/* Solution */}
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The Simple Solution</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">The Simple Solution</h2>
 
             <p className="text-muted-foreground leading-relaxed mb-4">
               <strong className="text-foreground">Stop sharing permanent credentials. Share temporary access instead.</strong>
             </p>
 
-            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4">
+            <div className="bg-surface border border-line-strong rounded-lg p-4 my-4">
               <p className="text-muted-foreground mb-4">
-                <strong className="text-red-600">Old way:</strong><br />
+                <strong className="text-[#FCA5A5]">Old way:</strong><br />
                 Types password &rarr; Sends &rarr; Password lives forever &rarr; Breach waiting to happen
               </p>
               <p className="text-muted-foreground">
@@ -315,11 +318,11 @@ export default function BlogPost() {
             </div>
 
             <p className="text-muted-foreground leading-relaxed">
-              <strong className="text-foreground">Same time. 90% less risk.</strong>
+              <strong className="text-foreground">Same time. Far less exposure.</strong>
             </p>
 
             {/* Action Plan */}
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">Your Action Plan</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">Your Action Plan</h2>
 
             <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
               <li><strong className="text-foreground">Monday:</strong> Search your email for &quot;password&quot; and cringe</li>
@@ -332,10 +335,10 @@ export default function BlogPost() {
             </p>
 
             {/* Bottom Line */}
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The Bottom Line</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">The Bottom Line</h2>
 
             <p className="text-muted-foreground leading-relaxed">
-              These 7 mistakes account for <strong className="text-foreground">80%+ of credential breaches.</strong> Fix them, eliminate most of your risk.
+              These 7 habits keep credentials exposed long after they were needed. <strong className="text-foreground">Fix them and most of that exposure disappears.</strong>
             </p>
 
             <p className="text-muted-foreground leading-relaxed">
@@ -351,7 +354,7 @@ export default function BlogPost() {
             </p>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-hover rounded-lg text-white font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-hover rounded-lg text-primary-foreground font-medium transition-colors"
             >
               Create a One-Time Secret
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -361,7 +364,7 @@ export default function BlogPost() {
           </div>
 
           {/* Related Articles */}
-          <div className="mt-12 pt-8 border-t border-zinc-200">
+          <div className="mt-12 pt-8 border-t border-line">
             <h3 className="text-lg font-semibold mb-4 text-foreground">Related Articles</h3>
             <ul className="space-y-2 text-muted-foreground">
               <li>
@@ -378,7 +381,7 @@ export default function BlogPost() {
           </div>
 
           {/* Article Footer */}
-          <footer className="mt-8 pt-8 border-t border-zinc-200">
+          <footer className="mt-8 pt-8 border-t border-line">
             <p className="text-sm text-muted-foreground mb-4">
               Last updated: January 16, 2026
             </p>

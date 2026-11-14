@@ -2,11 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
+import Mesh from '@/components/Mesh';
 
 export const metadata: Metadata = {
-  title: 'Send an API Key Securely with a One-Time Encrypted Link — iKrypt',
+  title: 'Send an API Key Securely with a One-Time Link',
   description:
-    'Send API keys, access tokens, and developer credentials securely without pasting them into Slack, email, or tickets. Create a one-time encrypted link with no account required.',
+    'Share an API key or token through a one-time encrypted link instead of Slack or email. Encrypted in your browser; the link expires after use.',
   alternates: {
     canonical: 'https://ikrypt.com/send-api-key-securely',
   },
@@ -206,7 +207,7 @@ export default function SendApiKeySecurelyPage() {
       <div className="min-h-screen flex flex-col pattern-bg">
         <SiteHeader />
 
-        <nav className="sticky top-[60px] z-40 border-b border-zinc-200/60 bg-background/90 px-4 py-3 backdrop-blur-md">
+        <nav className="sticky top-[60px] z-40 border-b border-line bg-background/90 px-4 py-3 backdrop-blur-md">
           <div className="mx-auto max-w-6xl">
             <ol className="flex items-center gap-2 text-sm text-muted-foreground">
               <li>
@@ -220,14 +221,15 @@ export default function SendApiKeySecurelyPage() {
           </div>
         </nav>
 
-        <main className="flex-1 px-4 py-14 md:py-20">
+        <main id="content" className="relative isolate flex-1 overflow-hidden px-4 py-14 md:py-20">
+        <Mesh variant="right" />
           <div className="mx-auto max-w-6xl">
             <section className="mx-auto max-w-3xl text-center">
-              <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+              <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                 Secure API key sharing
               </p>
 
-              <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+              <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] text-balance">
                 Send an API key securely without pasting it into Slack, email, or tickets.
               </h1>
 
@@ -240,14 +242,14 @@ export default function SendApiKeySecurelyPage() {
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
                   href="/"
-                  className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-hover"
+                  className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
                 >
                   Create an API key link
                 </Link>
 
                 <Link
                   href="/security"
-                  className="rounded-full border border-zinc-200 bg-white/75 px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-primary/30 hover:text-primary"
+                  className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                 >
                   Read security architecture
                 </Link>
@@ -278,7 +280,7 @@ export default function SendApiKeySecurelyPage() {
                   <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <CheckIcon className="h-5 w-5" />
                   </div>
-                  <h2 className="font-semibold text-foreground">{item.title}</h2>
+                  <h2 className="font-semibold text-heading tracking-[-0.01em]">{item.title}</h2>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.desc}</p>
                 </div>
               ))}
@@ -286,7 +288,7 @@ export default function SendApiKeySecurelyPage() {
 
             <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-[1.05fr_0.95fr]">
               <div className="card-glow rounded-2xl p-6 md:p-8">
-                <h2 className="text-2xl font-bold text-foreground">
+                <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">
                   Why API keys should not live in chat history
                 </h2>
 
@@ -313,14 +315,14 @@ export default function SendApiKeySecurelyPage() {
               </div>
 
               <div className="card-glow rounded-2xl p-6 md:p-8">
-                <h2 className="text-2xl font-bold text-foreground">
+                <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">
                   Risky places to paste API keys
                 </h2>
 
                 <ul className="mt-6 space-y-3">
                   {riskyPlaces.map((item) => (
                     <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
-                      <XIcon className="mt-1 h-4 w-4 flex-shrink-0 text-red-500" />
+                      <XIcon className="mt-1 h-4 w-4 flex-shrink-0 text-[#F87171]" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -330,11 +332,11 @@ export default function SendApiKeySecurelyPage() {
 
             <section className="mt-16">
               <div className="mx-auto mb-10 max-w-3xl text-center">
-                <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+                <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                   Workflow
                 </p>
 
-                <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
                   How to send an API key securely with iKrypt
                 </h2>
 
@@ -356,7 +358,7 @@ export default function SendApiKeySecurelyPage() {
 
             <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
               <div className="card-glow rounded-2xl p-6 md:p-8">
-                <h2 className="text-2xl font-bold text-foreground">
+                <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">
                   Better API key sharing practices
                 </h2>
 
@@ -375,7 +377,7 @@ export default function SendApiKeySecurelyPage() {
               </div>
 
               <div className="card-glow rounded-2xl p-6 md:p-8">
-                <h2 className="text-2xl font-bold text-foreground">
+                <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">
                   What iKrypt cannot fix
                 </h2>
 
@@ -387,7 +389,7 @@ export default function SendApiKeySecurelyPage() {
                 <ul className="mt-6 space-y-3">
                   {limitations.map((item) => (
                     <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
-                      <XIcon className="mt-1 h-4 w-4 flex-shrink-0 text-red-500" />
+                      <XIcon className="mt-1 h-4 w-4 flex-shrink-0 text-[#F87171]" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -397,11 +399,11 @@ export default function SendApiKeySecurelyPage() {
 
             <section className="mt-16">
               <div className="mx-auto mb-10 max-w-3xl text-center">
-                <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+                <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                   Use cases
                 </p>
 
-                <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
                   When to send an API key with a one-time link
                 </h2>
               </div>
@@ -420,11 +422,11 @@ export default function SendApiKeySecurelyPage() {
 
             <section className="mt-16">
               <div className="mx-auto mb-10 max-w-3xl text-center">
-                <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+                <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                   Related guides
                 </p>
 
-                <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
                   More ways to share secrets safely
                 </h2>
               </div>
@@ -445,7 +447,7 @@ export default function SendApiKeySecurelyPage() {
 
             <section id="faq" className="mt-16">
               <div className="mx-auto mb-10 max-w-3xl text-center">
-                <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
                   Frequently asked questions
                 </h2>
               </div>
@@ -462,11 +464,11 @@ export default function SendApiKeySecurelyPage() {
 
             <section className="mt-16">
               <div className="card-glow rounded-3xl p-8 text-center md:p-10">
-                <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+                <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                   Create a secure developer handoff
                 </p>
 
-                <h2 className="text-3xl font-bold tracking-tight text-foreground">
+                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
                   Send an API key without leaving it in permanent chat history.
                 </h2>
 
@@ -478,14 +480,14 @@ export default function SendApiKeySecurelyPage() {
                 <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
                   <Link
                     href="/"
-                    className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-hover"
+                    className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
                   >
                     Create an API key link
                   </Link>
 
                   <Link
                     href="/share-env-file-securely"
-                    className="rounded-full border border-zinc-200 bg-white/75 px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-primary/30 hover:text-primary"
+                    className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                   >
                     Next: share .env values securely
                   </Link>

@@ -1,7 +1,7 @@
 {
   "name": "iKrypt - Send secrets safely",
   "short_name": "iKrypt",
-  "description": "Share passwords and secrets securely with self-destructing encrypted links.",
+  "description": "One-time encrypted links for passwords, API keys and other secrets.",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -14,8 +14,8 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#6366f1",
-  "background_color": "#0a0a0a",
+  "theme_color": "#070A13",
+  "background_color": "#070A13",
   "display": "standalone",
   "start_url": "/",
   "scope": "/"

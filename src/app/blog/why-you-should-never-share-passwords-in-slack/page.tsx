@@ -3,18 +3,21 @@ import Link from 'next/link';
 import Image from 'next/image';
 import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
+import Mesh from '@/components/Mesh';
 
 export const metadata: Metadata = {
-  title: 'Why You Should NEVER Share Passwords in Slack - iKrypt',
-  description: 'That WiFi password you sent in Slack is now searchable forever. Learn why Slack is terrible for sharing credentials and what security teams actually use instead.',
+  title: 'Why You Shouldn’t Share Passwords in Slack',
+  description:
+    'A password sent in Slack stays searchable for as long as the message exists. Why chat is a poor place for credentials, and what to use instead.',
   keywords: ['share password securely', 'send password safely', 'slack password sharing', 'secure password sharing tool', 'one time secret'],
   alternates: {
     canonical: 'https://ikrypt.com/blog/why-you-should-never-share-passwords-in-slack',
   },
   openGraph: {
-    title: 'Why You Should NEVER Share Passwords in Slack',
+    title: 'Why You Shouldn’t Share Passwords in Slack',
     description: 'That WiFi password you sent in Slack is now searchable forever. Learn the secure alternative.',
     type: 'article',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'iKrypt — one-time encrypted links' }],
     publishedTime: '2026-01-16T00:00:00.000Z',
     authors: ['DigiWares'],
   },
@@ -26,7 +29,7 @@ export default function BlogPost() {
       <SiteHeader />
 
       {/* Breadcrumbs */}
-      <nav className="sticky top-[60px] z-40 px-4 py-3 border-b border-zinc-200/60 bg-background/90 backdrop-blur-md">
+      <nav className="sticky top-[60px] z-40 px-4 py-3 border-b border-line bg-background/90 backdrop-blur-md">
         <div className="max-w-6xl mx-auto">
           <ol className="flex items-center gap-2 text-sm text-muted-foreground">
             <li>
@@ -47,8 +50,9 @@ export default function BlogPost() {
       </nav>
 
       {/* Article */}
-      <main className="flex-1 py-12 px-4">
-        <article className="max-w-6xl mx-auto">
+      <main id="content" className="relative isolate flex-1 overflow-hidden py-12 px-4">
+        <Mesh variant="right" />
+        <article className="mx-auto max-w-3xl">
           {/* Hero Image */}
           <div className="relative aspect-[1200/630] w-full rounded-xl overflow-hidden mb-8">
             <Image
@@ -62,7 +66,7 @@ export default function BlogPost() {
 
           {/* Article Header */}
           <header className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4 text-foreground leading-tight">
+            <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] mb-4">
               Why You Should NEVER Share Passwords in Slack (And What to Use Instead)
             </h1>
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -73,7 +77,7 @@ export default function BlogPost() {
           </header>
 
           {/* Article Content */}
-          <div className="prose prose-zinc max-w-none">
+          <div className="prose-ikrypt max-w-none">
             <p className="text-lg text-muted-foreground leading-relaxed mb-4">
               That WiFi password you just sent to your new hire in Slack? It&apos;s now searchable forever. By anyone in your workspace. Including that intern who starts next week.
             </p>
@@ -82,7 +86,7 @@ export default function BlogPost() {
               In 2024 alone, thousands of companies had their Slack credentials exposed in data breaches. But here&apos;s what most people don&apos;t realize: <strong className="text-foreground">the password leak didn&apos;t come from hackers.</strong> It came from their own Slack search history.
             </p>
 
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The Problem with Slack Password Sharing</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">The Problem with Slack Password Sharing</h2>
 
             <p className="text-muted-foreground leading-relaxed">
               Slack is amazing for team communication. It&apos;s terrible for sharing sensitive information. Here&apos;s why:
@@ -111,7 +115,7 @@ export default function BlogPost() {
               Here&apos;s a scenario that happens every day:
             </p>
 
-            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4 text-muted-foreground">
+            <div className="bg-surface border border-line-strong rounded-lg p-4 my-4 text-muted-foreground">
               <p><strong className="text-foreground">Monday:</strong> Sarah shares the company WiFi password in #general</p>
               <p><strong className="text-foreground">Friday:</strong> New employee Jake joins the team</p>
               <p><strong className="text-foreground">Also Friday:</strong> Jake now has access to EVERY message in #general, including that WiFi password from Monday</p>
@@ -128,7 +132,7 @@ export default function BlogPost() {
             </p>
 
             <p className="text-muted-foreground leading-relaxed">
-              Auditors specifically look for credential sharing in chat tools, lack of access controls, and no audit trail for sensitive data. One healthcare startup faced a $150,000 HIPAA fine because an employee shared database credentials in Slack, which was then accessed during an audit.
+              Auditors specifically look for credential sharing in chat tools, lack of access controls, and no audit trail for sensitive data. Credentials sitting in chat history are exactly the kind of finding that turns a routine audit into a remediation project.
             </p>
 
             <h3 className="text-xl font-semibold mt-8 mb-3 text-foreground">4. No Expiration = Infinite Exposure Window</h3>
@@ -141,12 +145,12 @@ export default function BlogPost() {
               This means a password you shared in 2022 could still be found by a new employee in 2026.
             </p>
 
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The Real Risks: What Actually Happens</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">The Real Risks: What Actually Happens</h2>
 
             <h3 className="text-xl font-semibold mt-8 mb-3 text-foreground">Case Study 1: The Stolen Startup</h3>
 
             <p className="text-muted-foreground leading-relaxed">
-              A fintech startup shared their AWS credentials in a private Slack channel. Six months later, a former employee (who still had Slack access) used the credentials, deleted their production database, demanded $50,000 ransom, and the company had to shut down.
+              Typical scenario: cloud credentials are pasted into a private channel. Months later, someone who should no longer have access (a former contractor whose account was never removed) can still search for them.
             </p>
 
             <p className="text-muted-foreground leading-relaxed">
@@ -159,15 +163,15 @@ export default function BlogPost() {
               A marketing agency hired a contractor and added them to several Slack channels. The contractor searched for &quot;password:&quot; in Slack, found 30+ client credentials, sold them on a dark web forum, and disappeared. The agency lost 12 clients and faced multiple lawsuits.
             </p>
 
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The WRONG Alternatives (Almost as Bad)</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">The WRONG Alternatives (Almost as Bad)</h2>
 
             <div className="space-y-4 text-muted-foreground">
-              <p><strong className="text-red-600">Email:</strong> Slightly better than Slack, but emails get forwarded, have no expiration, are stored in email servers forever, and are searchable in inboxes.</p>
-              <p><strong className="text-red-600">SMS/Text Message:</strong> Even worse. Stored on phone carriers&apos; servers, visible in notifications, backed up to cloud (iCloud, Google), no encryption by default.</p>
-              <p><strong className="text-red-600">Google Docs/Spreadsheets:</strong> Common but risky. Access controls often misconfigured, shareable links can leak, revision history shows everything.</p>
+              <p><strong className="text-[#FCA5A5]">Email:</strong> Slightly better than Slack, but emails get forwarded, have no expiration, are stored in email servers forever, and are searchable in inboxes.</p>
+              <p><strong className="text-[#FCA5A5]">SMS/Text Message:</strong> Even worse. Stored on phone carriers&apos; servers, visible in notifications, backed up to cloud (iCloud, Google), no encryption by default.</p>
+              <p><strong className="text-[#FCA5A5]">Google Docs/Spreadsheets:</strong> Common but risky. Access controls often misconfigured, shareable links can leak, revision history shows everything.</p>
             </div>
 
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The RIGHT Way: One-Time Secret Links</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">The RIGHT Way: One-Time Secret Links</h2>
 
             <p className="text-muted-foreground leading-relaxed">
               Here&apos;s what security teams at companies like Netflix and Stripe actually do:
@@ -198,17 +202,16 @@ export default function BlogPost() {
               <li>Set expiration (e.g., &quot;delete after 1 view&quot;)</li>
               <li>Get a unique link</li>
               <li>Send ONLY the link in Slack</li>
-              <li>Recipient opens it once, password disappears forever</li>
+              <li>Recipient reveals it once, then it&apos;s deleted</li>
             </ol>
 
             <p className="text-muted-foreground leading-relaxed mt-4">
-              <strong className="text-foreground">Time required:</strong> 15 seconds<br />
-              <strong className="text-foreground">Risk reduced:</strong> 95%
+              <strong className="text-foreground">Time required:</strong> about 15 seconds
             </p>
 
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The 30-Second Security Upgrade</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">The 30-Second Security Upgrade</h2>
 
-            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4">
+            <div className="bg-surface border border-line-strong rounded-lg p-4 my-4">
               <p className="text-muted-foreground mb-4">
                 <strong className="text-foreground">Old way (30 seconds):</strong><br />
                 You: types password in Slack<br />
@@ -224,16 +227,16 @@ export default function BlogPost() {
             </div>
 
             <p className="text-muted-foreground leading-relaxed">
-              Same time investment. 95% less risk.
+              Same time investment. Far less exposure.
             </p>
 
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">Common Questions</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">Common Questions</h2>
 
             <div className="space-y-6">
               <div>
                 <h4 className="font-semibold text-foreground mb-2">&quot;But we&apos;re a small company. Who would target us?&quot;</h4>
                 <p className="text-muted-foreground leading-relaxed">
-                  86% of cyberattacks target small businesses. You&apos;re easier targets than enterprises. Plus, compliance violations don&apos;t care about company size&mdash;HIPAA fines hit startups just as hard.
+                  Small teams are frequent targets precisely because they have fewer controls, and compliance rules apply regardless of company size.
                 </p>
               </div>
 
@@ -259,7 +262,7 @@ export default function BlogPost() {
               </div>
             </div>
 
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The Bottom Line</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">The Bottom Line</h2>
 
             <p className="text-muted-foreground leading-relaxed">
               <strong className="text-foreground">Every password shared in Slack is a time bomb.</strong>
@@ -292,7 +295,7 @@ export default function BlogPost() {
             </p>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-hover rounded-lg text-white font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-hover rounded-lg text-primary-foreground font-medium transition-colors"
             >
               Create Your First Self-Destructing Secret
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -305,7 +308,7 @@ export default function BlogPost() {
           </div>
 
           {/* Article Footer */}
-          <footer className="mt-12 pt-8 border-t border-zinc-200">
+          <footer className="mt-12 pt-8 border-t border-line">
             <p className="text-sm text-muted-foreground mb-4">
               Last updated: January 16, 2026
             </p>

@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
+import Mesh from '@/components/Mesh';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — iKrypt',
+  title: 'Terms of Service',
   description:
     'Terms of Service for iKrypt: rules for using one-time encrypted secret links, acceptable use, service limitations, privacy, and liability.',
   alternates: {
@@ -94,7 +95,7 @@ export default function TermsPage() {
       <div className="min-h-screen flex flex-col pattern-bg">
         <SiteHeader />
 
-        <nav className="sticky top-[60px] z-40 border-b border-zinc-200/60 bg-background/90 px-4 py-3 backdrop-blur-md">
+        <nav className="sticky top-[60px] z-40 border-b border-line bg-background/90 px-4 py-3 backdrop-blur-md">
           <div className="mx-auto max-w-6xl">
             <ol className="flex items-center gap-2 text-sm text-muted-foreground">
               <li>
@@ -108,14 +109,15 @@ export default function TermsPage() {
           </div>
         </nav>
 
-        <main className="flex-1 px-4 py-14 md:py-20">
+        <main id="content" className="relative isolate flex-1 overflow-hidden px-4 py-14 md:py-20">
+        <Mesh variant="right" />
           <div className="mx-auto max-w-6xl">
             <section className="mx-auto max-w-3xl text-center">
-              <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+              <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                 Terms of Service
               </p>
 
-              <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+              <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] text-balance">
                 The rules for using iKrypt safely and responsibly.
               </h1>
 
@@ -133,7 +135,7 @@ export default function TermsPage() {
                   <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <CheckIcon className="h-5 w-5" />
                   </div>
-                  <h2 className="font-semibold text-foreground">{item.title}</h2>
+                  <h2 className="font-semibold text-heading tracking-[-0.01em]">{item.title}</h2>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.desc}</p>
                 </div>
               ))}
@@ -142,7 +144,7 @@ export default function TermsPage() {
             <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-[0.75fr_1.25fr]">
               <aside className="lg:sticky lg:top-24 lg:self-start">
                 <div className="card-glow rounded-2xl p-5">
-                  <h2 className="text-sm font-semibold uppercase tracking-wide text-primary">
+                  <h2 className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary">
                     On this page
                   </h2>
 
@@ -175,7 +177,7 @@ export default function TermsPage() {
 
               <div className="space-y-6">
                 <section id="acceptance" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">1. Acceptance of these terms</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">1. Acceptance of these terms</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>
@@ -191,7 +193,7 @@ export default function TermsPage() {
                 </section>
 
                 <section id="service" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">2. What iKrypt is</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">2. What iKrypt is</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>
@@ -214,7 +216,7 @@ export default function TermsPage() {
                 </section>
 
                 <section id="responsibilities" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">3. Your responsibilities</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">3. Your responsibilities</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
                     You are responsible for how you create, manage, and share iKrypt links.
@@ -231,7 +233,7 @@ export default function TermsPage() {
                 </section>
 
                 <section id="acceptable-use" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">4. Acceptable use</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">4. Acceptable use</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
                     You agree not to use iKrypt for harmful, illegal, abusive, or unauthorized
@@ -241,7 +243,7 @@ export default function TermsPage() {
                   <ul className="mt-6 space-y-3">
                     {prohibitedUses.map((item) => (
                       <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
-                        <XIcon className="mt-1 h-4 w-4 flex-shrink-0 text-red-500" />
+                        <XIcon className="mt-1 h-4 w-4 flex-shrink-0 text-[#F87171]" />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -249,14 +251,14 @@ export default function TermsPage() {
                 </section>
 
                 <section id="security-model" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">5. Security model</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">5. Security model</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>
                       iKrypt uses browser-side encryption. The plaintext secret is encrypted in
                       your browser before it is uploaded. The decryption key is placed in the URL
                       fragment, which is the part after the{' '}
-                      <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-foreground">#</code>{' '}
+                      <code className="rounded bg-raised px-1.5 py-0.5 text-foreground">#</code>{' '}
                       symbol.
                     </p>
 
@@ -286,7 +288,7 @@ export default function TermsPage() {
                 </section>
 
                 <section id="deletion" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">6. Deletion and expiry</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">6. Deletion and expiry</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>
@@ -314,7 +316,7 @@ export default function TermsPage() {
                 </section>
 
                 <section id="no-vault" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">
                     7. iKrypt is not a password vault
                   </h2>
 
@@ -333,7 +335,7 @@ export default function TermsPage() {
                 </section>
 
                 <section id="availability" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">8. Availability and changes</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">8. Availability and changes</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>
@@ -355,7 +357,7 @@ export default function TermsPage() {
                 </section>
 
                 <section id="disclaimers" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">9. Disclaimers</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">9. Disclaimers</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>
@@ -381,7 +383,7 @@ export default function TermsPage() {
                 </section>
 
                 <section id="liability" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">10. Limitation of liability</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">10. Limitation of liability</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
                     To the maximum extent permitted by law, iKrypt and its operators will not be
@@ -393,7 +395,7 @@ export default function TermsPage() {
                 </section>
 
                 <section id="indemnity" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">11. Your responsibility for misuse</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">11. Your responsibility for misuse</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
                     You are responsible for your use of iKrypt and for any content or links you
@@ -404,7 +406,7 @@ export default function TermsPage() {
                 </section>
 
                 <section id="privacy" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">12. Privacy</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">12. Privacy</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
                     Our handling of encrypted secrets, metadata, analytics, contact forms, and
@@ -420,7 +422,7 @@ export default function TermsPage() {
                 </section>
 
                 <section id="changes" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">13. Changes to these terms</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">13. Changes to these terms</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
                     We may update these terms from time to time. When we make meaningful changes,
@@ -431,7 +433,7 @@ export default function TermsPage() {
                 </section>
 
                 <section id="contact" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">14. Contact</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">14. Contact</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
                     For questions about these Terms, contact us at{' '}

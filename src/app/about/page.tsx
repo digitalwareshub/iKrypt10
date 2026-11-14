@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
+import Mesh from '@/components/Mesh';
 
 const GITHUB_REPO_URL = 'https://github.com/digitalwareshub/iKrypt10';
 const X_URL = 'https://x.com/bydigiwares';
@@ -48,7 +49,7 @@ export default function AboutPage() {
     <div className="min-h-screen flex flex-col pattern-bg">
       <SiteHeader />
 
-      <nav className="sticky top-[60px] z-40 border-b border-zinc-200/60 bg-background/90 px-4 py-3 backdrop-blur-md">
+      <nav className="sticky top-[60px] z-40 border-b border-line bg-background/90 px-4 py-3 backdrop-blur-md">
         <div className="mx-auto max-w-6xl">
           <ol className="flex items-center gap-2 text-sm text-muted-foreground">
             <li>
@@ -62,14 +63,15 @@ export default function AboutPage() {
         </div>
       </nav>
 
-      <main className="flex-1 px-4 py-14 md:py-20">
+      <main id="content" className="relative isolate flex-1 overflow-hidden px-4 py-14 md:py-20">
+        <Mesh variant="right" />
         <div className="mx-auto max-w-6xl">
           <section className="mx-auto max-w-3xl text-center">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+            <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
               About iKrypt
             </p>
 
-            <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+            <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] text-balance">
               A simple way to share secrets without leaving them in chat history forever.
             </h1>
 
@@ -83,14 +85,14 @@ export default function AboutPage() {
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 href="/"
-                className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-hover"
+                className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
               >
                 Create a secret
               </Link>
 
               <Link
                 href="/security"
-                className="rounded-full border border-zinc-200 bg-white/75 px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-primary/30 hover:text-primary"
+                className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
               >
                 Read security architecture
               </Link>
@@ -99,7 +101,7 @@ export default function AboutPage() {
 
           <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.1fr]">
             <div className="card-glow rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-bold text-foreground">Why iKrypt exists</h2>
+              <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Why iKrypt exists</h2>
 
               <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                 <p>
@@ -121,13 +123,13 @@ export default function AboutPage() {
             </div>
 
             <div className="card-glow rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-bold text-foreground">What you can share</h2>
+              <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">What you can share</h2>
 
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {examples.map((item) => (
                   <div
                     key={item}
-                    className="rounded-xl border border-zinc-200/70 bg-white/70 px-4 py-3 text-sm font-medium text-foreground"
+                    className="rounded-xl border border-line bg-surface px-4 py-3 text-sm font-medium text-foreground"
                   >
                     {item}
                   </div>
@@ -143,10 +145,10 @@ export default function AboutPage() {
 
           <section className="mt-16">
             <div className="mx-auto mb-10 max-w-2xl text-center">
-              <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+              <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                 Principles
               </p>
-              <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+              <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
                 Built to stay simple and inspectable
               </h2>
             </div>
@@ -163,7 +165,7 @@ export default function AboutPage() {
 
           <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
             <div className="card-glow rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-bold text-foreground">Built by Digiwares</h2>
+              <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Built by Digiwares</h2>
 
               <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                 <p>
@@ -188,7 +190,7 @@ export default function AboutPage() {
             </div>
 
             <div className="card-glow rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-bold text-foreground">Get in touch</h2>
+              <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Get in touch</h2>
 
               <p className="mt-5 text-sm leading-7 text-muted-foreground">
                 Questions, feedback, or security concerns? You can reach out through the contact
@@ -198,7 +200,7 @@ export default function AboutPage() {
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   href="/contact"
-                  className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-hover"
+                  className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
                 >
                   Contact us
                 </Link>
@@ -207,7 +209,7 @@ export default function AboutPage() {
                   href={X_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full border border-zinc-200 bg-white/75 px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-primary/30 hover:text-primary"
+                  className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                 >
                   @bydigiwares
                 </a>
@@ -216,7 +218,7 @@ export default function AboutPage() {
                   href={GITHUB_REPO_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full border border-zinc-200 bg-white/75 px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-primary/30 hover:text-primary"
+                  className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                 >
                   GitHub
                 </a>

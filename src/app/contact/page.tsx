@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
+import Mesh from '@/components/Mesh';
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -11,7 +12,7 @@ const GITHUB_REPO_URL = 'https://github.com/digitalwareshub/iKrypt10';
 const X_URL = 'https://x.com/bydigiwares';
 
 const inputClass =
-  'w-full rounded-xl border border-zinc-200 bg-white/80 px-4 py-3 text-foreground shadow-sm transition-all placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary';
+  'w-full rounded-xl border border-line bg-surface px-4 py-3 text-foreground  transition-all placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary';
 
 const contactReasons = [
   {
@@ -68,7 +69,7 @@ export default function ContactPage() {
     <div className="min-h-screen flex flex-col pattern-bg">
       <SiteHeader />
 
-      <nav className="sticky top-[60px] z-40 border-b border-zinc-200/60 bg-background/90 px-4 py-3 backdrop-blur-md">
+      <nav className="sticky top-[60px] z-40 border-b border-line bg-background/90 px-4 py-3 backdrop-blur-md">
         <div className="mx-auto max-w-6xl">
           <ol className="flex items-center gap-2 text-sm text-muted-foreground">
             <li>
@@ -82,14 +83,15 @@ export default function ContactPage() {
         </div>
       </nav>
 
-      <main className="flex-1 px-4 py-14 md:py-20">
+      <main id="content" className="relative isolate flex-1 overflow-hidden px-4 py-14 md:py-20">
+        <Mesh variant="right" />
         <div className="mx-auto max-w-6xl">
           <section className="mx-auto max-w-3xl text-center">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+            <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
               Contact
             </p>
 
-            <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+            <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] text-balance">
               Questions, feedback, or security concerns?
             </h1>
 
@@ -98,7 +100,7 @@ export default function ContactPage() {
               secret sharing flow.
             </p>
 
-            <div className="mx-auto mt-6 max-w-2xl rounded-2xl border border-amber-200 bg-amber-50/80 px-5 py-4 text-left text-sm leading-6 text-amber-900 shadow-sm">
+            <div className="mx-auto mt-6 max-w-2xl rounded-2xl border border-accent-warning/30 bg-accent-warning/10/80 px-5 py-4 text-left text-sm leading-6 text-[#FCD34D] ">
               <strong>Important:</strong> do not paste real passwords, API keys, recovery codes,
               private keys, or other secrets into this contact form. Use iKrypt itself to create a
               one-time encrypted link when you need to share a secret.
@@ -109,20 +111,20 @@ export default function ContactPage() {
             <div className="space-y-4">
               {contactReasons.map((item) => (
                 <div key={item.title} className="card-glow rounded-2xl p-6">
-                  <h2 className="font-semibold text-foreground">{item.title}</h2>
+                  <h2 className="font-semibold text-heading tracking-[-0.01em]">{item.title}</h2>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.desc}</p>
                 </div>
               ))}
 
               <div className="card-glow rounded-2xl p-6">
-                <h2 className="font-semibold text-foreground">Other ways to follow</h2>
+                <h2 className="font-semibold text-heading tracking-[-0.01em]">Other ways to follow</h2>
 
                 <div className="mt-4 flex flex-wrap gap-3">
                   <a
                     href={X_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-full border border-zinc-200 bg-white/75 px-4 py-2 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-primary/30 hover:text-primary"
+                    className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                   >
                     @bydigiwares on X
                   </a>
@@ -131,7 +133,7 @@ export default function ContactPage() {
                     href={GITHUB_REPO_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-full border border-zinc-200 bg-white/75 px-4 py-2 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-primary/30 hover:text-primary"
+                    className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                   >
                     GitHub
                   </a>
@@ -142,7 +144,7 @@ export default function ContactPage() {
             <div className="card-glow rounded-2xl p-5 md:p-8">
               {status === 'success' ? (
                 <div className="py-10 text-center">
-                  <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-primary/20">
+                  <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-line">
                     <svg
                       className="h-7 w-7"
                       fill="none"
@@ -159,7 +161,7 @@ export default function ContactPage() {
                     </svg>
                   </div>
 
-                  <h2 className="text-2xl font-bold text-foreground">Message sent</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Message sent</h2>
 
                   <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted-foreground">
                     Thanks for reaching out. If you included a reply email, we&apos;ll get back to
@@ -168,7 +170,7 @@ export default function ContactPage() {
 
                   <button
                     onClick={() => setStatus('idle')}
-                    className="mt-7 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-hover"
+                    className="mt-7 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
                   >
                     Send another message
                   </button>
@@ -241,7 +243,7 @@ export default function ContactPage() {
                   </div>
 
                   {status === 'error' && (
-                    <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700">
+                    <div className="rounded-xl border border-accent-danger/40 bg-accent-danger/10 px-4 py-3 text-sm leading-6 text-[#FCA5A5]">
                       {errorMessage}
                     </div>
                   )}
@@ -249,7 +251,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={status === 'submitting'}
-                    className="w-full rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
+                    className="w-full rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {status === 'submitting' ? 'Sending...' : 'Send message'}
                   </button>

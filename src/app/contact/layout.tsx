@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'iKrypt - Contact',
-  description: 'Get in touch with iKrypt for questions, feedback, or bug reports.',
+  title: 'Contact',
+  description:
+    'Questions, feedback or a security concern about iKrypt? Send us a message. Please never include real passwords, keys or other secrets.',
   alternates: {
     canonical: 'https://ikrypt.com/contact',
   },

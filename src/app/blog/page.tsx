@@ -3,9 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
+import Mesh from '@/components/Mesh';
 
 export const metadata: Metadata = {
-  title: 'iKrypt Blog — Secure Secret Sharing Guides',
+  title: 'Blog — Guides to Sharing Secrets Safely',
   description:
     'Practical guides on sharing passwords, API keys, .env values, and temporary secrets more safely with one-time encrypted links.',
   alternates: {
@@ -124,7 +125,7 @@ export default function BlogPage() {
       <div className="min-h-screen flex flex-col pattern-bg">
         <SiteHeader />
 
-        <nav className="sticky top-[60px] z-40 border-b border-zinc-200/60 bg-background/90 px-4 py-3 backdrop-blur-md">
+        <nav className="sticky top-[60px] z-40 border-b border-line bg-background/90 px-4 py-3 backdrop-blur-md">
           <div className="mx-auto max-w-6xl">
             <ol className="flex items-center gap-2 text-sm text-muted-foreground">
               <li>
@@ -138,14 +139,15 @@ export default function BlogPage() {
           </div>
         </nav>
 
-        <main className="flex-1 px-4 py-14 md:py-20">
+        <main id="content" className="relative isolate flex-1 overflow-hidden px-4 py-14 md:py-20">
+        <Mesh variant="right" />
           <div className="mx-auto max-w-6xl">
             <section className="mx-auto max-w-3xl text-center">
-              <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+              <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                 iKrypt Blog
               </p>
 
-              <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+              <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] text-balance">
                 Practical guides for sharing secrets more safely.
               </h1>
 
@@ -183,7 +185,7 @@ export default function BlogPage() {
                           <span>{featuredPost.readTime}</span>
                         </div>
 
-                        <h2 className="text-2xl font-bold tracking-tight text-foreground transition-colors group-hover:text-primary md:text-3xl">
+                        <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px] transition-colors group-hover:text-primary">
                           {featuredPost.title}
                         </h2>
 
@@ -204,10 +206,10 @@ export default function BlogPage() {
                   <section className="mt-16">
                     <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                       <div>
-                        <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-primary">
+                        <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-2">
                           More guides
                         </p>
-                        <h2 className="text-3xl font-bold tracking-tight text-foreground">
+                        <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
                           Secure sharing basics
                         </h2>
                       </div>
@@ -243,7 +245,7 @@ export default function BlogPage() {
                                 <span>{post.readTime}</span>
                               </div>
 
-                              <h2 className="text-xl font-semibold text-foreground transition-colors group-hover:text-primary">
+                              <h2 className="text-xl font-semibold text-heading transition-colors group-hover:text-primary tracking-[-0.01em]">
                                 {post.title}
                               </h2>
 
@@ -265,11 +267,11 @@ export default function BlogPage() {
 
                 <section className="mt-16">
                   <div className="card-glow rounded-3xl p-8 text-center md:p-10">
-                    <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+                    <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                       Create a secure handoff
                     </p>
 
-                    <h2 className="text-3xl font-bold tracking-tight text-foreground">
+                    <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
                       Need to share a password, API key, or temporary secret?
                     </h2>
 
@@ -281,14 +283,14 @@ export default function BlogPage() {
                     <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
                       <Link
                         href="/"
-                        className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-hover"
+                        className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
                       >
                         Create a secret
                       </Link>
 
                       <Link
                         href="/security"
-                        className="rounded-full border border-zinc-200 bg-white/75 px-5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-primary/30 hover:text-primary"
+                        className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                       >
                         Read security architecture
                       </Link>
@@ -299,7 +301,7 @@ export default function BlogPage() {
             ) : (
               <section className="mt-14">
                 <div className="card-glow mx-auto max-w-2xl rounded-3xl p-8 text-center md:p-10">
-                  <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
+                  <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-line">
                     <svg
                       className="h-7 w-7"
                       fill="none"
@@ -316,7 +318,7 @@ export default function BlogPage() {
                     </svg>
                   </div>
 
-                  <h2 className="text-2xl font-bold text-foreground">Guides coming soon</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Guides coming soon</h2>
 
                   <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-muted-foreground">
                     We&apos;re preparing practical guides on secure secret sharing, password

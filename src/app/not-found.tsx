@@ -1,86 +1,40 @@
-'use client';
-
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import SiteHeader from '@/components/SiteHeader';
+import Footer from '@/components/Footer';
+import Mesh from '@/components/Mesh';
 
 export default function NotFound() {
-  const router = useRouter();
-  const [countdown, setCountdown] = useState(5);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          router.push('/');
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [router]);
-
   return (
-    <div className="min-h-screen flex flex-col pattern-bg">
+    <>
       <SiteHeader />
-
-      {/* Content */}
-      <main className="flex-1 flex items-center justify-center px-4">
-        <div className="text-center max-w-md">
-          <div className="text-8xl font-bold gradient-text mb-4">404</div>
-          <h1 className="text-2xl font-semibold text-foreground mb-2">Page not found</h1>
-          <p className="text-muted-foreground mb-2">
-            The page you&apos;re looking for doesn&apos;t exist or has been moved.
+      <main id="content" className="relative isolate flex min-h-[70vh] items-center justify-center overflow-hidden px-4 py-20">
+        <Mesh variant="right" />
+        <div className="max-w-md text-center">
+          <p className="mb-4 font-mono text-xs uppercase tracking-[0.08em] text-primary">Error 404</p>
+          <h1 className="font-display text-[44px] leading-[1.04] tracking-[-0.02em] text-heading sm:text-[56px]">
+            Page not found.
+          </h1>
+          <p className="mt-5 text-base leading-relaxed text-muted-foreground">
+            This page doesn’t exist or has moved. If you followed a secret link, check that you copied all of it,
+            including the part after the # symbol.
           </p>
-          <p className="text-sm text-muted-foreground mb-8">
-            Redirecting to home in {countdown} second{countdown !== 1 ? 's' : ''}...
-          </p>
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-            Back to Home
-          </Link>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/"
+              className="rounded-xl bg-primary px-5 py-3 font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+            >
+              Create a secret
+            </Link>
+            <Link
+              href="/security"
+              className="rounded-xl border border-line-strong px-5 py-3 font-medium text-foreground transition-colors hover:bg-raised"
+            >
+              How it works
+            </Link>
+          </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="py-8 px-4 border-t border-zinc-200">
-        <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} iKrypt. Send secrets safely.
-          </div>
-          <div className="flex items-center gap-6">
-            <Link
-              href="/terms"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Terms
-            </Link>
-            <Link
-              href="/privacy"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Privacy
-            </Link>
-            <a
-              href="https://x.com/ikrypt_"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Twitter
-            </a>
-          </div>
-        </div>
-      </footer>
-    </div>
+      <Footer />
+    </>
   );
 }

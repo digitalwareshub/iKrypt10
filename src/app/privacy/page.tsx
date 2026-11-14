@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
+import Mesh from '@/components/Mesh';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — iKrypt',
+  title: 'Privacy Policy',
   description:
     'Privacy Policy for iKrypt: how we handle encrypted secrets, metadata, analytics, contact forms, email notifications, and third-party services.',
   alternates: {
@@ -109,7 +110,7 @@ export default function PrivacyPage() {
       <div className="min-h-screen flex flex-col pattern-bg">
         <SiteHeader />
 
-        <nav className="sticky top-[60px] z-40 border-b border-zinc-200/60 bg-background/90 px-4 py-3 backdrop-blur-md">
+        <nav className="sticky top-[60px] z-40 border-b border-line bg-background/90 px-4 py-3 backdrop-blur-md">
           <div className="mx-auto max-w-6xl">
             <ol className="flex items-center gap-2 text-sm text-muted-foreground">
               <li>
@@ -123,14 +124,15 @@ export default function PrivacyPage() {
           </div>
         </nav>
 
-        <main className="flex-1 px-4 py-14 md:py-20">
+        <main id="content" className="relative isolate flex-1 overflow-hidden px-4 py-14 md:py-20">
+        <Mesh variant="right" />
           <div className="mx-auto max-w-6xl">
             <section className="mx-auto max-w-3xl text-center">
-              <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+              <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                 Privacy Policy
               </p>
 
-              <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+              <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] text-balance">
                 Privacy-first secret sharing, explained plainly.
               </h1>
 
@@ -149,7 +151,7 @@ export default function PrivacyPage() {
                   <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <CheckIcon className="h-5 w-5" />
                   </div>
-                  <h2 className="font-semibold text-foreground">{item.title}</h2>
+                  <h2 className="font-semibold text-heading tracking-[-0.01em]">{item.title}</h2>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.desc}</p>
                 </div>
               ))}
@@ -158,7 +160,7 @@ export default function PrivacyPage() {
             <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-[0.75fr_1.25fr]">
               <aside className="lg:sticky lg:top-24 lg:self-start">
                 <div className="card-glow rounded-2xl p-5">
-                  <h2 className="text-sm font-semibold uppercase tracking-wide text-primary">
+                  <h2 className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary">
                     On this page
                   </h2>
                   <nav className="mt-4 space-y-2 text-sm">
@@ -187,7 +189,7 @@ export default function PrivacyPage() {
 
               <div className="space-y-6">
                 <section id="privacy-model" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">Our privacy model</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Our privacy model</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>
@@ -199,7 +201,7 @@ export default function PrivacyPage() {
                     <p>
                       The decryption key is placed in the URL fragment, which is the part of the
                       link after the{' '}
-                      <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-foreground">#</code>{' '}
+                      <code className="rounded bg-raised px-1.5 py-0.5 text-foreground">#</code>{' '}
                       symbol. Browsers do not send URL fragments to servers in normal HTTP
                       requests, so iKrypt does not receive that key.
                     </p>
@@ -214,7 +216,7 @@ export default function PrivacyPage() {
                 </section>
 
                 <section id="cannot-access" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">What we cannot access</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">What we cannot access</h2>
 
                   <ul className="mt-6 space-y-3">
                     {cannotAccess.map((item) => (
@@ -227,7 +229,7 @@ export default function PrivacyPage() {
                 </section>
 
                 <section id="what-we-store" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">What we store</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">What we store</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
                     For secret links, iKrypt stores the minimum data needed to deliver the
@@ -251,7 +253,7 @@ export default function PrivacyPage() {
                 </section>
 
                 <section id="deletion" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">Deletion and expiry</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Deletion and expiry</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>Encrypted secrets become inaccessible when one of these happens:</p>
@@ -278,7 +280,7 @@ export default function PrivacyPage() {
                 </section>
 
                 <section id="analytics" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">Analytics and scripts</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Analytics and scripts</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>
@@ -309,7 +311,7 @@ export default function PrivacyPage() {
                 </section>
 
                 <section id="cookies" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">Cookies and local storage</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Cookies and local storage</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>
@@ -327,7 +329,7 @@ export default function PrivacyPage() {
                 </section>
 
                 <section id="rate-limiting" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">Rate limiting and abuse prevention</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Rate limiting and abuse prevention</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
                     To prevent abuse, spam, and automated misuse, iKrypt may process request
@@ -338,7 +340,7 @@ export default function PrivacyPage() {
                 </section>
 
                 <section id="email-notifications" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">Email notifications</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Email notifications</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>
@@ -361,7 +363,7 @@ export default function PrivacyPage() {
                 </section>
 
                 <section id="contact-forms" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">Contact forms</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Contact forms</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>
@@ -378,7 +380,7 @@ export default function PrivacyPage() {
                 </section>
 
                 <section id="third-parties" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">Third-party services</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Third-party services</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
                     iKrypt uses third-party infrastructure providers to operate the service:
@@ -388,7 +390,7 @@ export default function PrivacyPage() {
                     {thirdParties.map((item) => (
                       <div
                         key={item.name}
-                        className="rounded-xl border border-zinc-200/70 bg-white/70 p-4"
+                        className="rounded-xl border border-line bg-surface p-4"
                       >
                         <h3 className="text-sm font-semibold text-foreground">{item.name}</h3>
                         <p className="mt-1 text-sm leading-6 text-muted-foreground">
@@ -400,7 +402,7 @@ export default function PrivacyPage() {
                 </section>
 
                 <section id="your-rights" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">Your rights and choices</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Your rights and choices</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>
@@ -423,7 +425,7 @@ export default function PrivacyPage() {
                 </section>
 
                 <section id="changes" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">Changes to this policy</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Changes to this policy</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
                     We may update this Privacy Policy from time to time as iKrypt changes. When we
@@ -433,7 +435,7 @@ export default function PrivacyPage() {
                 </section>
 
                 <section id="contact" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-2xl font-bold text-foreground">Contact</h2>
+                  <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Contact</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
                     For privacy-related questions, contact us at{' '}

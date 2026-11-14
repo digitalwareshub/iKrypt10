@@ -3,9 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
+import Mesh from '@/components/Mesh';
 
 export const metadata: Metadata = {
-  title: 'How to Send a Password via Email Securely (2026 Guide) - iKrypt',
+  title: 'How to Send a Password by Email Securely (2026 Guide)',
   description: 'Learn why emailing passwords is dangerous and the secure alternative that takes the same amount of time. Step-by-step guide to sending credentials safely.',
   keywords: ['send password email securely', 'how to email a password safely', 'secure password sharing', 'send credentials securely'],
   alternates: {
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
     title: 'How to Send a Password via Email Securely (2026 Guide)',
     description: 'That password you emailed will live forever in sent folders and backups. Learn the secure alternative.',
     type: 'article',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'iKrypt — one-time encrypted links' }],
     publishedTime: '2026-01-16T00:00:00.000Z',
     authors: ['DigiWares'],
   },
@@ -26,7 +28,7 @@ export default function BlogPost() {
       <SiteHeader />
 
       {/* Breadcrumbs */}
-      <nav className="sticky top-[60px] z-40 px-4 py-3 border-b border-zinc-200/60 bg-background/90 backdrop-blur-md">
+      <nav className="sticky top-[60px] z-40 px-4 py-3 border-b border-line bg-background/90 backdrop-blur-md">
         <div className="max-w-6xl mx-auto">
           <ol className="flex items-center gap-2 text-sm text-muted-foreground">
             <li>
@@ -47,8 +49,9 @@ export default function BlogPost() {
       </nav>
 
       {/* Article */}
-      <main className="flex-1 py-12 px-4">
-        <article className="max-w-6xl mx-auto">
+      <main id="content" className="relative isolate flex-1 overflow-hidden py-12 px-4">
+        <Mesh variant="right" />
+        <article className="mx-auto max-w-3xl">
           {/* Hero Image */}
           <div className="relative aspect-[1200/630] w-full rounded-xl overflow-hidden mb-8">
             <Image
@@ -62,7 +65,7 @@ export default function BlogPost() {
 
           {/* Article Header */}
           <header className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4 text-foreground leading-tight">
+            <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] mb-4">
               How to Send a Password via Email Securely (2026 Guide)
             </h1>
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -73,7 +76,7 @@ export default function BlogPost() {
           </header>
 
           {/* Article Content */}
-          <div className="prose prose-zinc max-w-none">
+          <div className="prose-ikrypt max-w-none">
             <p className="text-lg text-muted-foreground leading-relaxed mb-4">
               You need to send a password to a client. You open your email, type their address, paste the password, and hit send.
             </p>
@@ -96,10 +99,10 @@ export default function BlogPost() {
             </p>
 
             <p className="text-muted-foreground leading-relaxed">
-              In 2024, <strong className="text-foreground">over 300 million passwords were exposed through email breaches alone.</strong> The average email account stores 1,247 messages containing sensitive credentials. Most people have no idea.
+              Email accounts are long-lived archives. <strong className="text-foreground">A password sent by email stays in the sender&apos;s and the recipient&apos;s mailboxes, in backups and on every synced device</strong>, often for years after it was needed.
             </p>
 
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">Why Email Is (Almost) the Worst Way to Share Passwords</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">Why Email Is (Almost) the Worst Way to Share Passwords</h2>
 
             <p className="text-muted-foreground leading-relaxed">
               Let&apos;s be clear: <strong className="text-foreground">email was never designed for security.</strong> It was designed in 1971 for researchers to send text messages. Sending passwords via email is like:
@@ -135,25 +138,23 @@ export default function BlogPost() {
             <h3 className="text-xl font-semibold mt-8 mb-3 text-foreground">Real Numbers: How Bad Is It?</h3>
 
             <p className="text-muted-foreground leading-relaxed">
-              According to a 2024 Verizon Data Breach Report:
+              Verizon&apos;s annual Data Breach Investigations Report has consistently found that:
             </p>
 
             <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
-              <li><strong className="text-foreground">82% of breaches</strong> involved credentials</li>
-              <li><strong className="text-foreground">30% of phishing emails</strong> are opened</li>
-              <li><strong className="text-foreground">12% of those</strong> result in credential exposure</li>
-              <li><strong className="text-foreground">Email breaches</strong> take an average of 207 days to detect</li>
+              <li><strong className="text-foreground">Stolen credentials</strong> are among the most common ways attackers get in</li>
+              <li><strong className="text-foreground">Breaches</strong> often go undetected for months, long enough for old emails to be searched</li>
             </ul>
 
             <p className="text-muted-foreground leading-relaxed mt-4">
               Translation: If you email a password today, there&apos;s a decent chance it will be compromised&mdash;and you won&apos;t know for 6+ months.
             </p>
 
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The 5 Biggest Email Password Mistakes</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">The 5 Biggest Email Password Mistakes</h2>
 
             <h3 className="text-xl font-semibold mt-8 mb-3 text-foreground">Mistake #1: Sending Username AND Password in the Same Email</h3>
 
-            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4">
+            <div className="bg-surface border border-line-strong rounded-lg p-4 my-4">
               <p className="text-sm text-muted-foreground font-mono">
                 Subject: Login credentials<br /><br />
                 Username: admin@company.com<br />
@@ -189,7 +190,7 @@ export default function BlogPost() {
               The email becomes a permanent vulnerability that lives forever in multiple inboxes.
             </p>
 
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The RIGHT Way: Step-by-Step Secure Email Password Sharing</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">The RIGHT Way: Step-by-Step Secure Email Password Sharing</h2>
 
             <h3 className="text-xl font-semibold mt-8 mb-3 text-foreground">Method 1: One-Time Secret Link (Best for Most Cases)</h3>
 
@@ -201,7 +202,7 @@ export default function BlogPost() {
               <li>Email ONLY the link (not the password)</li>
             </ol>
 
-            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4">
+            <div className="bg-surface border border-line-strong rounded-lg p-4 my-4">
               <p className="text-sm text-muted-foreground font-mono">
                 Subject: Re: Access needed<br /><br />
                 Here&apos;s the link to the credentials:<br />
@@ -228,11 +229,11 @@ export default function BlogPost() {
               Send username via email. Send password via Signal/WhatsApp/SMS. Requires breach of BOTH channels to be useful.
             </p>
 
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">Quick Comparison</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">Quick Comparison</h2>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm text-muted-foreground border border-zinc-300 rounded-lg">
-                <thead className="bg-secondary/50">
+            <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Comparison table (scrollable)">
+              <table className="w-full text-sm text-muted-foreground border border-line-strong rounded-lg">
+                <thead className="bg-surface">
                   <tr>
                     <th className="px-4 py-2 text-left text-foreground">Method</th>
                     <th className="px-4 py-2 text-left text-foreground">Security</th>
@@ -240,48 +241,48 @@ export default function BlogPost() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-t border-zinc-300">
+                  <tr className="border-t border-line-strong">
                     <td className="px-4 py-2">Regular Email</td>
-                    <td className="px-4 py-2 text-red-600">10/100</td>
+                    <td className="px-4 py-2 text-[#FCA5A5]">10/100</td>
                     <td className="px-4 py-2">Never use</td>
                   </tr>
-                  <tr className="border-t border-zinc-300">
+                  <tr className="border-t border-line-strong">
                     <td className="px-4 py-2">One-Time Secret Link</td>
-                    <td className="px-4 py-2 text-green-600">95/100</td>
+                    <td className="px-4 py-2 text-accent">95/100</td>
                     <td className="px-4 py-2 font-semibold text-foreground">Most cases</td>
                   </tr>
-                  <tr className="border-t border-zinc-300">
+                  <tr className="border-t border-line-strong">
                     <td className="px-4 py-2">Two-Channel Split</td>
-                    <td className="px-4 py-2 text-green-600">85/100</td>
+                    <td className="px-4 py-2 text-accent">85/100</td>
                     <td className="px-4 py-2">High security</td>
                   </tr>
-                  <tr className="border-t border-zinc-300">
+                  <tr className="border-t border-line-strong">
                     <td className="px-4 py-2">Temp Account</td>
-                    <td className="px-4 py-2 text-green-600">95/100</td>
+                    <td className="px-4 py-2 text-accent">95/100</td>
                     <td className="px-4 py-2">System access</td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The 30-Second Secure Workflow</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">The 30-Second Secure Workflow</h2>
 
-            <div className="bg-secondary/50 border border-zinc-300 rounded-lg p-4 my-4">
+            <div className="bg-surface border border-line-strong rounded-lg p-4 my-4">
               <p className="text-muted-foreground mb-4">
-                <strong className="text-red-600">Instead of this:</strong><br />
+                <strong className="text-[#FCA5A5]">Instead of this:</strong><br />
                 Type password in email &rarr; Send &rarr; Exposed forever
               </p>
               <p className="text-muted-foreground">
-                <strong className="text-green-600">Do this:</strong><br />
+                <strong className="text-accent">Do this:</strong><br />
                 Create one-time link &rarr; Email link &rarr; Auto-deletes after viewing
               </p>
             </div>
 
             <p className="text-muted-foreground leading-relaxed">
-              Same time. 95% less risk.
+              Same time. Far less exposure.
             </p>
 
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">Common Questions</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">Common Questions</h2>
 
             <div className="space-y-6">
               <div>
@@ -306,14 +307,14 @@ export default function BlogPost() {
               </div>
             </div>
 
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-foreground">The Bottom Line</h2>
+            <h2 className="text-2xl font-semibold mt-10 mb-4 text-heading tracking-[-0.01em]">The Bottom Line</h2>
 
             <p className="text-muted-foreground leading-relaxed">
               <strong className="text-foreground">Email was never designed for passwords. Stop using it that way.</strong>
             </p>
 
             <p className="text-muted-foreground leading-relaxed">
-              The solution: Stop typing passwords in emails. Use one-time secret links. Same 15 seconds, 95% less risk.
+              The solution: Stop typing passwords in emails. Use one-time secret links. Same 15 seconds, and no password left sitting in an inbox.
             </p>
           </div>
 
@@ -325,7 +326,7 @@ export default function BlogPost() {
             </p>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-hover rounded-lg text-white font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-hover rounded-lg text-primary-foreground font-medium transition-colors"
             >
               Create a One-Time Secret
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -335,7 +336,7 @@ export default function BlogPost() {
           </div>
 
           {/* Related Articles */}
-          <div className="mt-12 pt-8 border-t border-zinc-200">
+          <div className="mt-12 pt-8 border-t border-line">
             <h3 className="text-lg font-semibold mb-4 text-foreground">Related Articles</h3>
             <ul className="space-y-2 text-muted-foreground">
               <li>
@@ -352,7 +353,7 @@ export default function BlogPost() {
           </div>
 
           {/* Article Footer */}
-          <footer className="mt-8 pt-8 border-t border-zinc-200">
+          <footer className="mt-8 pt-8 border-t border-line">
             <p className="text-sm text-muted-foreground mb-4">
               Last updated: January 16, 2026
             </p>
