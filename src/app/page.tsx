@@ -3,6 +3,9 @@ import SecretForm from '@/components/SecretForm';
 import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
 
+// Rendered per request so the middleware's CSP nonce is applied (see src/middleware.ts).
+export const dynamic = 'force-dynamic';
+
 const GITHUB_REPO_URL = 'https://github.com/digitalwareshub/iKrypt10';
 
 const faqJsonLd = {
@@ -31,7 +34,7 @@ const faqJsonLd = {
       name: 'What happens after a secret expires?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Expired secrets become inaccessible immediately. The encrypted data is automatically removed by Firestore TTL, typically within 24 hours.',
+        text: 'Expired secrets become inaccessible immediately. The encrypted data is removed by automatic cleanup after expiry.',
       },
     },
     {
@@ -49,7 +52,7 @@ const trustBadges = [
   'Encrypted in your browser',
   'Key never reaches server',
   'No account required',
-  'Open source',
+  'Public source code',
   'No analytics on secret pages',
 ];
 
@@ -95,11 +98,11 @@ const securityPoints = [
   },
   {
     title: 'Expired secrets are blocked immediately',
-    desc: 'Once a secret expires, the API blocks access. Firestore TTL removes expired encrypted data automatically, typically within 24 hours.',
+    desc: 'Once a secret expires, the API blocks access. Expired encrypted data is then removed by automatic cleanup.',
   },
   {
     title: 'Secret pages stay clean',
-    desc: 'The pages where secrets are created or viewed do not load third-party analytics scripts.',
+    desc: 'The pages where secrets are created or viewed do not load any analytics or third-party scripts.',
   },
 ];
 
@@ -139,7 +142,7 @@ const faqs = [
   },
   {
     q: 'What happens after the link expires?',
-    a: 'The secret becomes inaccessible immediately after expiry. The encrypted data is then automatically removed by Firestore TTL, typically within 24 hours.',
+    a: 'The secret becomes inaccessible immediately after expiry. The encrypted data is then removed by automatic cleanup after expiry.',
   },
   {
     q: 'Is it free?',
@@ -201,7 +204,7 @@ export default function Home() {
                 className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white/70 px-4 py-2 text-sm font-medium text-primary shadow-sm backdrop-blur transition-colors hover:border-primary/35 hover:bg-white"
               >
                 <span className="h-2 w-2 rounded-full bg-primary" />
-                Open source — inspect the code on GitHub
+                Public source code — inspect it on GitHub
               </a>
 
               <div className="pulse-glow mx-auto mt-8 mb-7 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-primary/15">
@@ -242,8 +245,7 @@ export default function Home() {
             </div>
 
             <p className="mx-auto mt-7 max-w-3xl text-center text-sm text-muted-foreground">
-              Expired secrets become inaccessible immediately and are automatically deleted by Firestore TTL,
-              typically within 24 hours.
+              Expired secrets become inaccessible immediately and are removed by automatic cleanup afterwards.
             </p>
           </div>
         </section>

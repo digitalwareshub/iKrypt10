@@ -1,6 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  poweredByHeader: false,
+
+  // Baseline security headers for every route. Kept here (not vercel.json)
+  // so local builds and tests see exactly the headers production serves.
+  // Secret pages (/, /sent, /s/[id]) additionally get a stricter nonce-based
+  // CSP from src/middleware.ts; browsers enforce both policies.
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'Strict-Transport-Security', value: "max-age=31536000; includeSubDomains; preload" },
+          { key: 'X-Frame-Options', value: "DENY" },
+          { key: 'X-Content-Type-Options', value: "nosniff" },
+          { key: 'Referrer-Policy', value: "strict-origin-when-cross-origin" },
+          { key: 'Permissions-Policy', value: "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()" },
+          { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://formspree.io; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" },
+        ],
+      },
+    ];
+  },
 
   // All redirects live here — vercel.json redirects block has been removed
   // to avoid duplication and potential conflicts
