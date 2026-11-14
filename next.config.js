@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // Tests build into a separate folder so a running `next dev` (which uses
+  // .next) cannot overwrite the production build under test.
+  distDir: process.env.NEXT_DIST_DIR || '.next',
 
   // Baseline security headers for every route. Kept here (not vercel.json)
   // so local builds and tests see exactly the headers production serves.

@@ -175,6 +175,60 @@ test.describe('API hardening', () => {
     }
   });
 
+  test('usage counters count exactly what happened, and nothing else', async ({ page, context, request }) => {
+    const day = new Date().toISOString().slice(0, 10);
+    const ref = emulatorDb().collection('usageStats').doc(day);
+    const read = async () => ((await ref.get()).data() ?? {}) as Record<string, number>;
+    const before = await read();
+
+    // 1 three-view secret with notification, revealed 3 times, then a 4th attempt.
+    await page.goto('/');
+    await page.getByPlaceholder(/paste your secret/i).fill(PLAINTEXT_MARKER);
+    await page.getByRole('radio', { name: '3 views' }).check();
+    await page.getByRole('radio', { name: '1 hour' }).check();
+    await page.getByRole('checkbox').check();
+    await page.getByPlaceholder('your@email.com').fill('owner@example.com');
+    await page.getByRole('button', { name: /create secret link/i }).click();
+    await page.waitForURL('**/sent');
+    const link = (await page.locator('code').first().textContent())!.trim();
+    const { path, id } = splitLink(link);
+    for (let i = 0; i < 3; i++) {
+      const p = await context.newPage();
+      await p.goto(path); // status checks must not be counted
+      await p.getByRole('button', { name: /reveal secret/i }).click();
+      await expect(p.locator('pre')).toHaveText(PLAINTEXT_MARKER);
+      await p.close();
+    }
+    expect((await request.post(`/api/secrets/${id}`)).status()).toBe(404);
+    // 1 invalid creation attempt.
+    expect((await request.post('/api/secrets', { data: { nope: true } })).status()).toBe(400);
+
+    const after = await read();
+    const delta = (k: string) => (after[k] ?? 0) - (before[k] ?? 0);
+    expect(delta('created')).toBe(1);
+    expect(delta('createdExpiry1h')).toBe(1);
+    expect(delta('createdViews3')).toBe(1);
+    expect(delta('createdWithNotify')).toBe(1);
+    expect(delta('revealed')).toBe(3);
+    expect(delta('finalViewDeleted')).toBe(1);
+    expect(delta('unavailableNotFound')).toBe(1);
+    expect(delta('rejectedInvalid')).toBe(1);
+    for (const k of ['createdExpiry24h', 'createdExpiry10m', 'createdViews1', 'createdViews5', 'unavailableExpired', 'unavailableMaxViews', 'rejectedRateLimited']) {
+      expect(delta(k), k).toBe(0);
+    }
+
+    // Privacy: the document holds only the day and integer counters, and no
+    // value anywhere matches the secret ID, the key, the email or the content.
+    const raw = JSON.stringify(after);
+    for (const sensitive of [id, splitLink(link).key, 'owner@example.com', PLAINTEXT_MARKER]) {
+      expect(raw).not.toContain(sensitive);
+    }
+    for (const [k, v] of Object.entries(after)) {
+      if (k === 'day') expect(v).toBe(day);
+      else expect(Number.isInteger(v), k).toBe(true);
+    }
+  });
+
   test('usage counters are aggregate only', async ({ page }) => {
     await createSecretViaUi(page);
     const day = new Date().toISOString().slice(0, 10);
