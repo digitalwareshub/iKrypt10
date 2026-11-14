@@ -14,16 +14,15 @@
     "test:concurrency": "firebase emulators:exec --only firestore \"tsx scripts/test-concurrent-view.ts\""
   },
   "dependencies": {
-    "@upstash/ratelimit": "^2.0.7",
-    "@upstash/redis": "^1.36.1",
+    "@upstash/ratelimit": "^2.2.1",
+    "@upstash/redis": "^1.41.0",
     "@vercel/analytics": "^1.6.1",
     "@vercel/speed-insights": "^1.3.1",
-    "firebase": "^12.7.0",
-    "firebase-admin": "^12.0.0",
-    "next": "^15.4.1",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
-    "resend": "^6.7.0",
+    "firebase-admin": "^14.5.1",
+    "next": "^15.5.29",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "resend": "^6.38.1",
     "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
@@ -31,14 +30,19 @@
     "@types/node": "^25.0.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "autoprefixer": "^10.4.23",
+    "autoprefixer": "^10.6.2",
     "eslint": "^8.57.1",
-    "eslint-config-next": "^15.4.1",
+    "eslint-config-next": "^15.5.29",
     "eslint-config-prettier": "^10.1.8",
     "firebase-tools": "^15.22.4",
-    "postcss": "^8.5.6",
+    "postcss": "^8.5.33",
     "prettier": "^3.7.4",
     "tsx": "^4.23.0",
     "typescript": "^5.9.3"
+  },
+  "overrides": {
+    "next": {
+      "postcss": "$postcss"
+    }
   }
 }
