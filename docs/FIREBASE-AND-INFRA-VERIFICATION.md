@@ -53,7 +53,11 @@ Also worth knowing: count records that are already expired, to see whether clean
 has been happening. In **Firestore → Query builder**: collection `secrets`,
 filter `expiresAt < now`. Any results older than ~48 hours mean TTL is not running.
 
-## 2. Deployed Firestore rules (audit §18, item 4)
+## 2. Deployed Firestore rules (audit §18, item 4) ✅ VERIFIED 14 Nov 2026
+
+**Confirmed in the Firebase console:** the live rules are the repo's deny-all `firestore.rules`, published 4 July 2026 5:06 pm.
+
+Original instructions:
 
 1. **Firestore Database → Rules**.
 2. Expected (matches `firestore.rules` in the repo):
@@ -63,7 +67,11 @@ filter `expiresAt < now`. Any results older than ~48 hours mean TTL is not runni
 3. If anything else is live, *change, needs owner approval*: deploy the repo's
    rules with `firebase deploy --only firestore:rules`.
 
-## 3. Deployed Cloud Storage rules (S5 — potentially High)
+## 3. Deployed Cloud Storage rules (S5) ✅ CLOSED 14 Nov 2026
+
+**Confirmed in the Firebase console:** Storage has never been set up for `ikrypt-95f1d` ("Get started" screen), so no bucket exists and the old permissive rules were never live. Nothing to do. Do **not** click "Get started".
+
+Original instructions:
 
 The repo's old `storage.rules` allowed **anyone** to upload 10 MB files to
 `encrypted-files/` and read them publicly. It is no longer deployed by

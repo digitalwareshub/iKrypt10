@@ -30,7 +30,7 @@ Run them yourself: `npm run test:unit`, `npm run test:e2e`, `npm run test:concur
 | **S2** | View consumed on page load; scanners burn secrets | **Fixed + verified** | Page load does a non-consuming `GET`; only **Reveal** (`POST`) consumes | "one-time secret: opening does not consume" test |
 | **S3** | Ahrefs on `/sent` | **Fixed + verified** | Ahrefs removed entirely; no third-party script origins remain | Secret-page tests assert same-origin scripts only |
 | **S4** | TTL deletion claimed but not evidenced | **Verified** | TTL policy on `secrets.expiresAt` is Serving in `ikrypt-95f1d` (owner, console, 14 Nov). Site wording ("removed by automatic cleanup") is accurate | Verification doc §1. Legacy collections `one-time-messages` / `chat-rooms` are not covered: owner decision to delete |
-| **S5** | Legacy public-write Storage rules may be live | **Repo fixed; production Unverified** | `storage.rules` now deny-all and wired into `firebase.json`; **nothing deployed**. Production stays as-is until you check and deploy | **Owner check**, verification doc §3 |
+| **S5** | Legacy public-write Storage rules may be live | **Closed: not exposed** | Storage was never set up in `ikrypt-95f1d` (owner, console, 14 Nov), so no bucket exists. `storage.rules` in the repo is now deny-all as a safeguard | Verification doc §3 |
 | **S6** | Outdated dependencies | **Fixed + verified** | Next 15.5.29, firebase-admin 14, resend 6.38, PostCSS override; unused `firebase` SDK removed; Dependabot added | `npm audit`: 0 |
 | **S7** | `unsafe-inline` CSP | **Fixed on secret pages + verified** | Per-request nonce CSP with `strict-dynamic` on `/`, `/sent`, `/s/[id]`. Marketing pages keep `unsafe-inline` so they stay static (no secrets there) | Secret-page CSP tests, 0 violations |
 | **S8** | Rate-limit IP behind Cloudflare | **Partly fixed; Unverified** | Vercel-set headers preferred (unspoofable). Whether Vercel sees Cloudflare IPs needs a dashboard check | **Owner check**, verification doc §6 |
@@ -70,7 +70,7 @@ No page scrolls horizontally at 390 px or 1440 px. All text colours measure at l
 
 **Must do before or right after merge**
 1. ~~Resend DNS~~ **Done 14 Nov 2026**: domain verified, test email delivered. Optional: add DMARC TXT `_dmarc` → `v=DMARC1; p=none;`.
-2. **Storage rules** (§3): check the live rules. If they're open, deploy deny-all.
+2. ~~Storage rules~~ **Closed 14 Nov 2026**: Storage never set up, no bucket. Firestore deny-all rules confirmed live (§2).
 3. ~~TTL policy~~ **Verified 14 Nov 2026** (Serving). New optional item: delete the legacy `one-time-messages` and `chat-rooms` collections (§1).
 
 **Should do**
