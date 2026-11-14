@@ -95,6 +95,10 @@ If open, *change, needs owner approval*:
 - Review the files in `encrypted-files/`, then delete them (the feature that used
   them was removed long ago).
 
+## 3b. Realtime Database ✅ CLOSED 14 Nov 2026
+
+**Confirmed in the Firebase console:** Realtime Database has never been created for `ikrypt-95f1d` ("Create Database" screen). Nothing is exposed. Do **not** click "Create Database".
+
 ## 4. Actual usage (audit §18, item 1)
 
 New in this branch: once deployed, daily aggregate counters are written to

@@ -70,7 +70,7 @@ No page scrolls horizontally at 390 px or 1440 px. All text colours measure at l
 
 **Must do before or right after merge**
 1. ~~Resend DNS~~ **Done 14 Nov 2026**: domain verified, test email delivered. Optional: add DMARC TXT `_dmarc` → `v=DMARC1; p=none;`.
-2. ~~Storage rules~~ **Closed 14 Nov 2026**: Storage never set up, no bucket. Firestore deny-all rules confirmed live (§2).
+2. ~~Storage rules~~ **Closed 14 Nov 2026**: Storage never set up, no bucket; Realtime Database never created; Firestore deny-all rules confirmed live (§2, §3, §3b).
 3. ~~TTL policy~~ **Verified 14 Nov 2026** (Serving). New optional item: delete the legacy `one-time-messages` and `chat-rooms` collections (§1).
 
 **Should do**
