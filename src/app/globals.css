@@ -2,282 +2,261 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * "Midnight Fragment" theme. Colour tokens live in tailwind.config.ts;
+ * the few raw values below mirror them.
+ */
 :root {
-  --background: #fafaff;
-  --foreground: #151327;
-  --muted: #5f6072;
-  --border: #e4e2f0;
-  --accent: #5b5ff1;
-  --accent-strong: #4f46e5;
-  --accent-soft: #eef0ff;
+  color-scheme: dark;
+  --bg: #070a13;
+  --surface: #0d1220;
+  --fg: #e8eaf6;
+  --muted: #a3a9c7;
+  --line: rgba(165, 180, 252, 0.14);
+  --accent: #a5b4fc;
 }
 
 html {
   min-height: 100%;
-  background: var(--background);
+  background: var(--bg);
 }
 
 body {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 50% 8%, rgba(99, 102, 241, 0.10), transparent 34rem),
-    radial-gradient(circle at 12% 30%, rgba(139, 92, 246, 0.08), transparent 28rem),
-    radial-gradient(circle at 86% 34%, rgba(99, 102, 241, 0.07), transparent 30rem),
-    linear-gradient(180deg, #ffffff 0%, #f8f7ff 42%, #ffffff 100%);
-  color: var(--foreground);
-  font-family:
-    'Inter',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    sans-serif;
-  position: relative;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* Global encrypted mesh overlay */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.9;
-  background-image:
-    radial-gradient(circle, rgba(91, 95, 241, 0.20) 1.5px, transparent 2px),
-    linear-gradient(58deg, transparent 0 49.5%, rgba(91, 95, 241, 0.075) 49.5% 50.5%, transparent 50.5% 100%),
-    linear-gradient(118deg, transparent 0 49.5%, rgba(91, 95, 241, 0.055) 49.5% 50.5%, transparent 50.5% 100%);
-  background-size:
-    96px 96px,
-    190px 150px,
-    210px 170px;
-  background-position:
-    0 0,
-    -30px 20px,
-    40px -10px;
-
-  /* Keeps mesh mostly on the sides so the hero/content remains clean */
-  -webkit-mask-image:
-    linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.95) 0%,
-      rgba(0, 0, 0, 0.50) 18%,
-      rgba(0, 0, 0, 0.12) 36%,
-      rgba(0, 0, 0, 0.04) 50%,
-      rgba(0, 0, 0, 0.12) 64%,
-      rgba(0, 0, 0, 0.50) 82%,
-      rgba(0, 0, 0, 0.95) 100%
-    );
-  mask-image:
-    linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.95) 0%,
-      rgba(0, 0, 0, 0.50) 18%,
-      rgba(0, 0, 0, 0.12) 36%,
-      rgba(0, 0, 0, 0.04) 50%,
-      rgba(0, 0, 0, 0.12) 64%,
-      rgba(0, 0, 0, 0.50) 82%,
-      rgba(0, 0, 0, 0.95) 100%
-    );
-}
-
-/* Keeps actual app content above the global mesh */
-body > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* Custom scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #edecf3;
+  background: #070a13;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e2640;
+  border-radius: 6px;
+  border: 2px solid #070a13;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2b3556;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #c7c5d6;
+/* Focus: always visible, high contrast */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #a8a5bd;
+::selection {
+  background: rgba(165, 180, 252, 0.28);
+  color: #ffffff;
 }
 
-/* Focus styles */
-*:focus-visible {
-  outline: 2px solid #6366f1;
-  outline-offset: 2px;
-}
-
-/* Textarea styling */
+/* Form controls */
 textarea {
-  resize: none;
+  resize: vertical;
 }
 
-/* Radio button custom styling */
-input[type='radio'] {
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border: 2px solid #d1d0dc;
-  border-radius: 50%;
-  background: #ffffff;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-input[type='radio']:checked {
-  border-color: #6366f1;
-  background: #6366f1;
-  box-shadow: inset 0 0 0 3px #ffffff;
-}
-
-input[type='radio']:hover {
-  border-color: #6366f1;
-}
-
-/* Checkbox custom styling */
 input[type='checkbox'] {
   appearance: none;
+  flex: none;
   width: 18px;
   height: 18px;
-  border: 2px solid #d1d0dc;
-  border-radius: 4px;
-  background: #ffffff;
+  border: 1.5px solid rgba(165, 180, 252, 0.45);
+  border-radius: 5px;
+  background: #070a13;
   cursor: pointer;
-  transition: all 0.15s ease;
+  display: inline-grid;
+  place-content: center;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
-
+input[type='checkbox']::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  transform: scale(0);
+  transition: transform 0.12s ease;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  background: #070a13;
+}
 input[type='checkbox']:checked {
-  border-color: #6366f1;
-  background: #6366f1;
+  background: var(--accent);
+  border-color: var(--accent);
 }
-
 input[type='checkbox']:checked::after {
-  content: '✓';
-  display: block;
-  text-align: center;
-  color: white;
-  font-size: 12px;
-  line-height: 14px;
+  transform: scale(1);
+}
+input[type='checkbox']:hover {
+  border-color: var(--accent);
 }
 
-input[type='checkbox']:hover {
-  border-color: #6366f1;
+/* Segmented control (radio group styled as pills) */
+.segmented {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+.segmented label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  border-radius: 7px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.segmented label:hover {
+  color: var(--fg);
+}
+.segmented input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+}
+.segmented label:has(input:checked) {
+  background: var(--accent);
+  color: #070a13;
+  font-weight: 600;
+}
+.segmented label:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* Button loading state */
 .btn-loading {
   position: relative;
-  color: transparent;
+  color: transparent !important;
 }
-
 .btn-loading::after {
   content: '';
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   top: 50%;
   left: 50%;
-  margin-left: -8px;
-  margin-top: -8px;
-  border: 2px solid #ffffff;
+  margin: -9px 0 0 -9px;
+  border: 2px solid #070a13;
   border-radius: 50%;
   border-top-color: transparent;
   animation: spin 0.6s linear infinite;
 }
-
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-/* Hero background — clean light surface with soft glow */
-.hero-gradient {
+/* Cards (legacy class names, restyled) */
+.card-glow,
+.trust-card {
   position: relative;
-  background:
-    radial-gradient(circle at 50% 12%, rgba(99, 102, 241, 0.13), transparent 30rem),
-    radial-gradient(circle at 50% 42%, rgba(139, 92, 246, 0.06), transparent 34rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 60px -32px rgba(0, 0, 0, 0.75);
 }
 
-/* Optional wrapper class for public pages */
+/* Legacy wrappers: transparent on the dark ground */
+.hero-gradient,
 .pattern-bg {
   position: relative;
   background: transparent;
 }
 
-/* Clean white cards */
-.card-glow {
-  position: relative;
-  background: rgba(255, 255, 255, 0.90);
-  border: 1px solid rgba(228, 226, 240, 0.95);
-  box-shadow:
-    0 1px 2px rgba(30, 27, 46, 0.04),
-    0 12px 40px rgba(30, 27, 46, 0.08);
-  backdrop-filter: blur(10px);
-}
-
-/* Trust/info cards */
-.trust-card {
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(228, 226, 240, 0.95);
-  box-shadow:
-    0 1px 2px rgba(30, 27, 46, 0.035),
-    0 8px 24px rgba(30, 27, 46, 0.055);
-  backdrop-filter: blur(10px);
-}
-
-/* Gradient text — premium, not neon */
+/* Legacy gradient text → plain accent; no gradient washes */
 .gradient-text {
-  background: linear-gradient(135deg, #1f1b5f 0%, #4f46e5 52%, #6d5dfc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--accent);
 }
 
-/* Soft pulse for lock icon */
-@keyframes pulse-glow {
-  0%,
-  100% {
-    box-shadow:
-      0 0 0 0 rgba(99, 102, 241, 0.12),
-      0 12px 28px rgba(99, 102, 241, 0.14);
-  }
-
-  50% {
-    box-shadow:
-      0 0 0 10px rgba(99, 102, 241, 0.00),
-      0 16px 36px rgba(99, 102, 241, 0.20);
-  }
-}
-
+/* No pulsing effects: keep the interface calm */
 .pulse-glow {
-  animation: pulse-glow 2.8s ease-in-out infinite;
+  animation: none;
 }
 
-/* Softer selection colour */
-::selection {
-  background: rgba(99, 102, 241, 0.18);
-  color: #151327;
+/* Long-form reading (blog posts, legal pages) */
+.prose-ikrypt {
+  color: var(--muted);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.prose-ikrypt h2 {
+  color: #f3f4fb;
+  font-size: 1.625rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin: 2.5rem 0 1rem;
+}
+.prose-ikrypt h3 {
+  color: var(--fg);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 2rem 0 0.75rem;
+}
+.prose-ikrypt p,
+.prose-ikrypt ul,
+.prose-ikrypt ol {
+  margin: 0 0 1.25rem;
+}
+.prose-ikrypt strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+.prose-ikrypt a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(165, 180, 252, 0.4);
+}
+.prose-ikrypt a:hover {
+  text-decoration-color: var(--accent);
+}
+.prose-ikrypt code {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.9em;
+  color: #c9cde3;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.1em 0.35em;
 }
 
-/* Mobile: reduce mesh strength so it does not become noisy */
-@media (max-width: 768px) {
-  body::before {
-    opacity: 0.45;
-    background-size:
-      110px 110px,
-      220px 180px,
-      240px 190px;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
+}
 
-  .card-glow {
-    box-shadow:
-      0 1px 2px rgba(30, 27, 46, 0.04),
-      0 8px 24px rgba(30, 27, 46, 0.07);
-  }
+/* Links inside running text must not rely on colour alone (WCAG 1.4.1). */
+main p a,
+main dd a {
+  text-decoration: underline;
+  text-decoration-color: rgba(165, 180, 252, 0.45);
+  text-underline-offset: 3px;
+}
+main p a:hover,
+main dd a:hover {
+  text-decoration-color: currentColor;
 }

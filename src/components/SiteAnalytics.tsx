@@ -11,6 +11,8 @@ import { redactAnalyticsUrl, shouldLoadAnalytics } from '@/lib/analyticsPolicy';
  */
 export default function SiteAnalytics() {
   const pathname = usePathname();
+  // Never in development: no analytics while working locally.
+  if (process.env.NODE_ENV !== 'production') return null;
   if (!shouldLoadAnalytics(pathname)) return null;
 
   return (

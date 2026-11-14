@@ -1,3 +1,6 @@
+// `next dev` needs eval for hot reloading; production never gets it.
+const devEval = process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : '';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -20,7 +23,7 @@ const nextConfig = {
           { key: 'X-Content-Type-Options', value: "nosniff" },
           { key: 'Referrer-Policy', value: "strict-origin-when-cross-origin" },
           { key: 'Permissions-Policy', value: "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()" },
-          { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://formspree.io; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" },
+          { key: 'Content-Security-Policy', value: `default-src 'self'; script-src 'self' 'unsafe-inline'${devEval}; connect-src 'self' https://formspree.io; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'` },
         ],
       },
     ];

@@ -1,18 +1,37 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import type { Metadata, Viewport } from 'next';
+import { Inter, Instrument_Serif, JetBrains_Mono } from 'next/font/google';
 import SiteAnalytics from '@/components/SiteAnalytics';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+// Self-hosted at build time by next/font: no requests to Google at runtime.
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
+const display = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-display',
+  display: 'swap',
+});
+const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
+  display: 'swap',
+});
+
+export const viewport: Viewport = {
+  themeColor: '#070A13',
+  colorScheme: 'dark',
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ikrypt.com'),
   title: {
-    default: 'iKrypt — Share Passwords and API Keys with One-Time Encrypted Links',
+    default: 'iKrypt — One-Time Encrypted Links for Passwords and API Keys',
     template: '%s | iKrypt',
   },
   description:
-    'Create self-destructing encrypted links for passwords, API keys, .env values, and login credentials. No account required. The decryption key never reaches iKrypt\'s servers.',
+    'Share passwords, API keys and .env values through a link that self-destructs. Encrypted in your browser; the key never reaches our servers. Free, no account.',
   keywords: [
     'share password securely',
     'send secret link',
@@ -105,7 +124,7 @@ const jsonLd = {
       name: 'iKrypt',
       url: 'https://ikrypt.com',
       description:
-        'Share passwords and secrets securely with self-destructing encrypted links. Zero-knowledge encryption ensures complete privacy.',
+        'One-time encrypted links for passwords, API keys and other secrets. Encrypted in the browser; the decryption key never reaches the server.',
       applicationCategory: 'SecurityApplication',
       operatingSystem: 'Any',
       offers: {
@@ -153,15 +172,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${display.variable} ${mono.variable}`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={inter.className}>
-        <main className="min-h-screen">{children}</main>
+      <body className="bg-background font-sans text-foreground">
+        <a
+          href="#content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+        >
+          Skip to content
+        </a>
+        <div className="min-h-screen">{children}</div>
 
         {/* First-party analytics: allow-listed marketing pages only, every
             event redacted. Never loads on /, /sent or /s/[id].
