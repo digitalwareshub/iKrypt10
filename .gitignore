@@ -42,3 +42,7 @@ docs/ikrypt-95f1d-firebase-adminsdk-fbsvc-d7f468e17e.json
 *.sln
 *.sw?
 .vercel
+
+# Playwright
+test-results/
+playwright-report/

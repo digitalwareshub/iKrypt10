@@ -30,7 +30,7 @@ if (!process.env.FIRESTORE_EMULATOR_HOST) {
   process.exit(1);
 }
 
-const app = initializeApp({ projectId: 'ikrypt-concurrency-test' });
+const app = initializeApp({ projectId: 'demo-ikrypt' });
 const db = getFirestore(app);
 
 async function seedSecret(id: string, maxViews: number) {
@@ -47,7 +47,6 @@ async function seedSecret(id: string, maxViews: number) {
       notifyEmail: null,
       notifiedAt: null,
       createdAt: Timestamp.now(),
-      creatorIpHash: 'test',
     });
 }
 
@@ -138,7 +137,6 @@ async function testExpiredSecretIsRejected() {
       notifyEmail: null,
       notifiedAt: null,
       createdAt: Timestamp.now(),
-      creatorIpHash: 'test',
     });
 
   const result = await consumeSecretView(db, id, new Date());

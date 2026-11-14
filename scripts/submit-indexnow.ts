@@ -4,7 +4,8 @@
  * a crawl. This does not guarantee indexing or ranking — it only shortens the
  * time between a deploy and a search engine noticing the URL changed.
  *
- * Runs automatically after each production build (see package.json "postbuild").
+ * Runs after every build (package.json "postbuild") but only submits when
+ * VERCEL_ENV === 'production'.
  * Silently no-ops if it can't reach the endpoint — never fails the build.
  */
 import sitemap from '../src/app/sitemap';
@@ -15,6 +16,13 @@ const KEY_LOCATION = `https://${HOST}/${INDEXNOW_KEY}.txt`;
 const ENDPOINT = 'https://api.indexnow.org/indexnow';
 
 async function main() {
+  // Only production deploys should notify search engines. Local, CI and
+  // Vercel preview builds must not submit URLs.
+  if (process.env.VERCEL_ENV !== 'production') {
+    console.log('IndexNow: skipped (not a Vercel production build).');
+    return;
+  }
+
   const entries = sitemap();
   const urlList = entries.map((entry) => entry.url);
 
