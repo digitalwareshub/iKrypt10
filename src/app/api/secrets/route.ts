@@ -6,10 +6,11 @@ import {
   createSecretLimiter,
   emailNotifyLimiter,
   getClientIp,
-  hashIp,
 } from '@/lib/rateLimit';
 import { isDisposableEmail, isValidEmail } from '@/lib/email';
 import { generateSecretId } from '@/lib/crypto';
+import { isValidCiphertext, isValidIv } from '@/lib/secretFormat';
+import { recordUsage } from '@/lib/usageStats';
 
 // Expiry options in milliseconds
 const EXPIRY_MS: Record<string, number> = {
@@ -18,105 +19,99 @@ const EXPIRY_MS: Record<string, number> = {
   '24h': 24 * 60 * 60 * 1000,
 };
 
+const ALLOWED_MAX_VIEWS = [1, 3, 5];
+
+async function badRequest(error: string) {
+  await recordUsage('rejectedInvalid');
+  return NextResponse.json({ error }, { status: 400 });
+}
+
 export async function POST(request: NextRequest) {
   try {
     const ip = getClientIp(request.headers);
 
-    // Rate limit check for secret creation
     const createLimit = await checkRateLimit(createSecretLimiter, ip);
     if (!createLimit.success) {
+      await recordUsage('rejectedRateLimited');
       return NextResponse.json(
         { error: 'Too many secrets created. Please try again later.' },
         { status: 429 }
       );
     }
 
-    const body = await request.json();
+    let body: Record<string, unknown>;
+    try {
+      const parsed = await request.json();
+      if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+        return await badRequest('Invalid request body');
+      }
+      body = parsed as Record<string, unknown>;
+    } catch {
+      return await badRequest('Invalid request body');
+    }
+
     const { ciphertext, iv, expiry, maxViews, notifyEmail } = body;
 
-    // Validate required fields
-    if (!ciphertext || !iv) {
-      return NextResponse.json(
-        { error: 'Missing encrypted content' },
-        { status: 400 }
-      );
+    if (!isValidCiphertext(ciphertext) || !isValidIv(iv)) {
+      return await badRequest('Missing, malformed or oversized encrypted content');
     }
 
-    // Validate expiry
-    if (!expiry || !EXPIRY_MS[expiry]) {
-      return NextResponse.json(
-        { error: 'Invalid expiry option' },
-        { status: 400 }
-      );
+    if (typeof expiry !== 'string' || !EXPIRY_MS[expiry]) {
+      return await badRequest('Invalid expiry option');
     }
 
-    // Validate maxViews
-    if (!maxViews || ![1, 3, 5].includes(maxViews)) {
-      return NextResponse.json(
-        { error: 'Invalid view limit' },
-        { status: 400 }
-      );
+    if (typeof maxViews !== 'number' || !ALLOWED_MAX_VIEWS.includes(maxViews)) {
+      return await badRequest('Invalid view limit');
     }
 
-    // Validate email if provided
-    if (notifyEmail) {
-      // Rate limit check for email notifications
+    let email: string | null = null;
+    if (notifyEmail !== undefined && notifyEmail !== null && notifyEmail !== '') {
       const emailLimit = await checkRateLimit(emailNotifyLimiter, ip);
       if (!emailLimit.success) {
+        await recordUsage('rejectedRateLimited');
         return NextResponse.json(
           { error: 'Too many notification requests. Please try again later.' },
           { status: 429 }
         );
       }
-
       if (!isValidEmail(notifyEmail)) {
-        return NextResponse.json(
-          { error: 'Invalid email address' },
-          { status: 400 }
-        );
+        return await badRequest('Invalid email address');
       }
-
       if (isDisposableEmail(notifyEmail)) {
-        return NextResponse.json(
-          { error: 'Disposable email addresses are not allowed' },
-          { status: 400 }
-        );
+        return await badRequest('Disposable email addresses are not allowed');
       }
+      email = notifyEmail;
     }
 
-    // Generate secret ID
     const secretId = generateSecretId();
+    const expiresAt = Timestamp.fromDate(new Date(Date.now() + EXPIRY_MS[expiry]));
 
-    // Calculate expiry timestamp
-    const expiresAt = Timestamp.fromDate(
-      new Date(Date.now() + EXPIRY_MS[expiry])
-    );
-
-    // Hash IP for storage (privacy)
-    const hashedIp = await hashIp(ip);
-
-    // Store secret in Firestore
-    // NOTE: We store ONLY the ciphertext, never the key
-    const secretRef = getAdminDb().collection('secrets').doc(secretId);
-    await secretRef.set({
+    // Only ciphertext and the minimum metadata needed to enforce limits are
+    // stored. The decryption key never reaches this server.
+    await getAdminDb().collection('secrets').doc(secretId).set({
       ciphertext,
       iv,
       expiresAt,
       maxViews,
       viewCount: 0,
       firstAccessedAt: null,
-      notifyEmail: notifyEmail || null,
+      notifyEmail: email,
       notifiedAt: null,
       createdAt: Timestamp.now(),
-      creatorIpHash: hashedIp,
     });
+
+    await recordUsage(
+      'created',
+      `createdExpiry${expiry}` as 'createdExpiry10m' | 'createdExpiry1h' | 'createdExpiry24h',
+      `createdViews${maxViews}` as 'createdViews1' | 'createdViews3' | 'createdViews5',
+      ...(email ? (['createdWithNotify'] as const) : [])
+    );
 
     return NextResponse.json({ secretId }, { status: 201 });
   } catch (error) {
     console.error('Error creating secret:', error);
-    const message = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
-      { error: `Failed to create secret: ${message}` },
+      { error: 'Failed to create secret. Please try again.' },
       { status: 500 }
     );
   }

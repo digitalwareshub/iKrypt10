@@ -8,6 +8,7 @@ import {
   encrypt,
   buildSecretUrl,
 } from '@/lib/crypto';
+import { MAX_PLAINTEXT_BYTES } from '@/lib/secretFormat';
 
 // Must match the key used in sent/page.tsx
 const SESSION_KEY = 'ikrypt_secret_url';
@@ -31,6 +32,11 @@ export default function SecretForm() {
 
     if (!secret.trim()) {
       setError('Please enter a secret to share');
+      return;
+    }
+
+    if (new TextEncoder().encode(secret).length > MAX_PLAINTEXT_BYTES) {
+      setError('This secret is too large. The limit is 64 KB of text.');
       return;
     }
 
@@ -58,11 +64,11 @@ export default function SecretForm() {
           iv,
           expiry,
           maxViews,
-          notifyEmail: enableNotify ? notifyEmail : null,
+          notifyEmail: enableNotify ? notifyEmail.trim() : null,
         }),
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to create secret');

@@ -1,14 +1,21 @@
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
+import { isEmulatorMode } from '@/lib/runtimeEnv';
 
-// Initialize Redis client (only if env vars are set)
+// Upstash is skipped in local emulator mode so tests never write to the
+// production Redis instance (see src/lib/runtimeEnv.ts).
 const redis =
-  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+  !isEmulatorMode() && process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
     ? new Redis({
         url: process.env.UPSTASH_REDIS_REST_URL,
         token: process.env.UPSTASH_REDIS_REST_TOKEN,
       })
     : null;
+
+if (!redis && process.env.VERCEL_ENV === 'production') {
+  // Fails open (requests are allowed) but makes the misconfiguration visible.
+  console.error('Rate limiting is DISABLED in production: Upstash env vars are missing.');
+}
 
 // Rate limiter for secret creation: 10 secrets per hour per IP
 export const createSecretLimiter = redis
@@ -28,7 +35,7 @@ export const emailNotifyLimiter = redis
     })
   : null;
 
-// Rate limiter for viewing secrets: 30 views per minute per IP (generous)
+// Rate limiter for status checks and reveals: 30 per minute per IP
 export const viewSecretLimiter = redis
   ? new Ratelimit({
       redis,
@@ -43,7 +50,7 @@ export async function checkRateLimit(
   identifier: string
 ): Promise<{ success: boolean; remaining?: number; reset?: number }> {
   if (!limiter) {
-    // If no rate limiter configured, allow all requests (dev mode)
+    // No limiter configured (local development / emulator tests).
     return { success: true };
   }
 
@@ -55,35 +62,26 @@ export async function checkRateLimit(
   };
 }
 
-// Get IP from request headers
+/**
+ * Client IP for rate limiting.
+ *
+ * Prefers headers that Vercel's edge sets itself and that clients cannot
+ * spoof. NOTE: ikrypt.com is currently proxied through Cloudflare, in which
+ * case Vercel may see a Cloudflare edge IP rather than the visitor's IP, so
+ * many visitors could share one bucket. Trusting `cf-connecting-ip` instead
+ * would be spoofable by anyone reaching Vercel directly, so it is not used.
+ * The recommended remedy is DNS-only (unproxied) Cloudflare records; see
+ * docs/FIREBASE-AND-INFRA-VERIFICATION.md.
+ */
 export function getClientIp(headers: Headers): string {
-  // Try various headers that might contain the real IP
-  const forwardedFor = headers.get('x-forwarded-for');
-  if (forwardedFor) {
-    return forwardedFor.split(',')[0].trim();
-  }
+  const vercelIp = headers.get('x-vercel-forwarded-for');
+  if (vercelIp) return vercelIp.split(',')[0].trim();
 
   const realIp = headers.get('x-real-ip');
-  if (realIp) {
-    return realIp;
-  }
+  if (realIp) return realIp.trim();
 
-  // Vercel specific
-  const vercelIp = headers.get('x-vercel-forwarded-for');
-  if (vercelIp) {
-    return vercelIp.split(',')[0].trim();
-  }
+  const forwardedFor = headers.get('x-forwarded-for');
+  if (forwardedFor) return forwardedFor.split(',')[0].trim();
 
-  // Fallback
   return 'unknown';
-}
-
-// Hash IP for storage (privacy)
-export async function hashIp(ip: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const salt = process.env.UPSTASH_REDIS_REST_TOKEN || 'ikrypt-default-salt';
-  const data = encoder.encode(ip + salt);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 }

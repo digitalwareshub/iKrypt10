@@ -1,21 +1,28 @@
 import { Resend } from 'resend';
+import { isEmulatorMode } from '@/lib/runtimeEnv';
 
-const resend = process.env.RESEND_API_KEY
-  ? new Resend(process.env.RESEND_API_KEY)
-  : null;
+// Resend is skipped in local emulator mode so tests never send real email.
+const resend =
+  !isEmulatorMode() && process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 interface SecretViewedEmailParams {
   to: string;
   secretId: string;
   accessedAt: Date;
+  viewsRemaining: number;
 }
 
 export async function sendSecretViewedEmail({
   to,
   secretId,
   accessedAt,
+  viewsRemaining,
 }: SecretViewedEmailParams): Promise<{ success: boolean; error?: string }> {
   if (!resend) {
+    if (isEmulatorMode()) {
+      console.info(`[emulator] Would send reveal notification for secret ${secretId}`);
+      return { success: true };
+    }
     console.warn('Resend not configured, skipping email');
     return { success: false, error: 'Email service not configured' };
   }
@@ -26,11 +33,16 @@ export async function sendSecretViewedEmail({
     timeZone: 'UTC',
   });
 
+  const statusLine =
+    viewsRemaining === 0
+      ? 'That was the final allowed view. The encrypted data has been deleted.'
+      : `${viewsRemaining} view${viewsRemaining === 1 ? '' : 's'} remaining before the link stops working.`;
+
   try {
     await resend.emails.send({
       from: 'iKrypt <notifications@ikrypt.com>',
       to: [to],
-      subject: 'Your secret link was opened',
+      subject: 'Your iKrypt secret was revealed',
       html: `
         <!DOCTYPE html>
         <html>
@@ -41,11 +53,11 @@ export async function sendSecretViewedEmail({
         <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #0a0a0a; color: #fafafa; padding: 40px 20px; margin: 0;">
           <div style="max-width: 480px; margin: 0 auto; background-color: #1f1f1f; border-radius: 12px; padding: 32px;">
             <h1 style="font-size: 20px; font-weight: 600; margin: 0 0 24px 0; color: #fafafa;">
-              🔓 Your secret was accessed
+              Your secret was revealed
             </h1>
 
             <p style="font-size: 14px; color: #a1a1aa; margin: 0 0 8px 0;">
-              Link opened at
+              Revealed at
             </p>
             <p style="font-size: 16px; color: #fafafa; margin: 0 0 24px 0; font-weight: 500;">
               ${formattedTime} UTC
@@ -61,8 +73,9 @@ export async function sendSecretViewedEmail({
             <hr style="border: none; border-top: 1px solid #2a2a2a; margin: 24px 0;">
 
             <p style="font-size: 12px; color: #71717a; margin: 0;">
-              This is an automated notification from iKrypt.<br>
-              The secret has been destroyed and cannot be viewed again.
+              ${statusLine}<br><br>
+              This is an automated notification from iKrypt. It means someone with the
+              full link pressed “Reveal”. It cannot confirm who that person was.
             </p>
           </div>
 
@@ -73,13 +86,15 @@ export async function sendSecretViewedEmail({
         </body>
         </html>
       `,
-      text: `Your secret was accessed
+      text: `Your iKrypt secret was revealed
 
-Link opened at: ${formattedTime} UTC
+Revealed at: ${formattedTime} UTC
 Secret ID: ${secretId}
 
-This is an automated notification from iKrypt.
-The secret has been destroyed and cannot be viewed again.
+${statusLine}
+
+This is an automated notification from iKrypt. It means someone with the
+full link pressed "Reveal". It cannot confirm who that person was.
 
 ---
 iKrypt — Send secrets safely. Once.
@@ -120,8 +135,8 @@ export function isDisposableEmail(email: string): boolean {
   return domain ? DISPOSABLE_DOMAINS.has(domain) : false;
 }
 
-export function isValidEmail(email: string): boolean {
-  // Basic email validation
+export function isValidEmail(email: unknown): email is string {
+  if (typeof email !== 'string' || email.length > 254) return false;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }

@@ -1,5 +1,6 @@
 import { cert, getApps, initializeApp, type App } from 'firebase-admin/app';
 import { getFirestore, type Firestore } from 'firebase-admin/firestore';
+import { EMULATOR_PROJECT_ID, isEmulatorMode } from '@/lib/runtimeEnv';
 
 // Server-only Firebase Admin SDK client.
 // Uses a service account, so it authenticates with elevated privilege and
@@ -13,6 +14,14 @@ let app: App | null = null;
 
 function getAdminApp(): App {
   if (app) return app;
+
+  if (isEmulatorMode()) {
+    app =
+      getApps().length === 0
+        ? initializeApp({ projectId: EMULATOR_PROJECT_ID })
+        : getApps()[0];
+    return app;
+  }
 
   const projectId = process.env.FIREBASE_ADMIN_PROJECT_ID;
   const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;

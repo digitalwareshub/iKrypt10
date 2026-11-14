@@ -1,333 +1,263 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { extractKeyFromHash, importKey, decrypt } from '@/lib/crypto';
+import {
+  decrypt,
+  extractKeyFromHash,
+  importKey,
+  stripKeyFromAddressBar,
+} from '@/lib/crypto';
+import { isValidKeyString } from '@/lib/secretFormat';
 
-type Status = 'loading' | 'missing_key' | 'error' | 'success' | 'expired';
+type Phase =
+  | { kind: 'checking' }
+  | { kind: 'missing_key' }
+  | { kind: 'invalid_key' }
+  | { kind: 'ready'; viewsRemaining: number; maxViews: number; expiresAt: string }
+  | { kind: 'revealing'; viewsRemaining: number; maxViews: number; expiresAt: string }
+  | { kind: 'revealed'; secret: string; viewCount: number; maxViews: number }
+  | { kind: 'unavailable' }
+  | { kind: 'error'; message: string };
 
-interface SecretState {
-  status: Status;
-  secret: string | null;
-  error: string | null;
-  viewCount: number | null;
-  maxViews: number | null;
+function formatExpiry(iso: string): string {
+  const ms = new Date(iso).getTime() - Date.now();
+  if (ms <= 0) return 'expires now';
+  const minutes = Math.round(ms / 60000);
+  if (minutes < 60) return `expires in ${minutes} minute${minutes === 1 ? '' : 's'}`;
+  const hours = Math.round(minutes / 60);
+  return `expires in ${hours} hour${hours === 1 ? '' : 's'}`;
 }
 
 export default function ViewSecretPage() {
   const params = useParams();
   const secretId = params.id as string;
 
-  const [state, setState] = useState<SecretState>({
-    status: 'loading',
-    secret: null,
-    error: null,
-    viewCount: null,
-    maxViews: null,
-  });
-
+  // The key is read once from the URL fragment, kept only in memory, and the
+  // fragment is removed from the address bar and browser history.
+  const keyRef = useRef<string | null>(null);
+  const [phase, setPhase] = useState<Phase>({ kind: 'checking' });
   const [copied, setCopied] = useState(false);
-  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
-    const fetchAndDecrypt = async () => {
-      const keyString = extractKeyFromHash();
+    const keyString = extractKeyFromHash();
+    stripKeyFromAddressBar();
 
-      if (!keyString) {
-        setState({
-          status: 'missing_key',
-          secret: null,
-          error: 'Missing encryption key. The URL may be incomplete.',
-          viewCount: null,
-          maxViews: null,
-        });
-        return;
-      }
+    if (!keyString) {
+      setPhase({ kind: 'missing_key' });
+      return;
+    }
+    if (!isValidKeyString(keyString)) {
+      // Validate before contacting the server so a truncated link never
+      // uses up a view.
+      setPhase({ kind: 'invalid_key' });
+      return;
+    }
+    keyRef.current = keyString;
 
+    // Non-consuming status check: does NOT use up a view.
+    (async () => {
       try {
-        const response = await fetch(`/api/secrets/${secretId}`);
-        const data = await response.json();
-
-        if (!response.ok) {
-          setState({
-            status:
-              data.reason === 'expired' || data.reason === 'max_views_reached'
-                ? 'expired'
-                : 'error',
-            secret: null,
-            error: data.error || 'Failed to retrieve secret',
-            viewCount: null,
-            maxViews: null,
-          });
+        const response = await fetch(`/api/secrets/${encodeURIComponent(secretId)}`, {
+          cache: 'no-store',
+        });
+        const data = await response.json().catch(() => ({}));
+        if (response.status === 404 || response.status === 410) {
+          setPhase({ kind: 'unavailable' });
           return;
         }
-
-        const key = await importKey(keyString);
-        const plaintext = await decrypt(data.ciphertext, data.iv, key);
-
-        setState({
-          status: 'success',
-          secret: plaintext,
-          error: null,
-          viewCount: data.viewCount,
+        if (!response.ok) {
+          setPhase({ kind: 'error', message: data.error || 'Could not check this secret.' });
+          return;
+        }
+        setPhase({
+          kind: 'ready',
+          viewsRemaining: data.viewsRemaining,
           maxViews: data.maxViews,
+          expiresAt: data.expiresAt,
         });
-      } catch (err) {
-        console.error('Decryption error:', err);
-        setState({
-          status: 'error',
-          secret: null,
-          error: 'Failed to decrypt secret. The key may be invalid.',
-          viewCount: null,
-          maxViews: null,
-        });
+      } catch {
+        setPhase({ kind: 'error', message: 'Network error. Please check your connection.' });
       }
-    };
-
-    fetchAndDecrypt();
+    })();
   }, [secretId]);
 
-  const handleCopy = async () => {
-    if (!state.secret) return;
+  const handleReveal = async () => {
+    if (phase.kind !== 'ready' || !keyRef.current) return;
+    setPhase({ ...phase, kind: 'revealing' });
+
+    let data: { ciphertext?: string; iv?: string; viewCount?: number; maxViews?: number; error?: string };
+    try {
+      const response = await fetch(`/api/secrets/${encodeURIComponent(secretId)}`, {
+        method: 'POST',
+        cache: 'no-store',
+      });
+      data = await response.json().catch(() => ({}));
+      if (response.status === 404 || response.status === 410) {
+        setPhase({ kind: 'unavailable' });
+        return;
+      }
+      if (!response.ok || !data.ciphertext || !data.iv) {
+        setPhase({ kind: 'error', message: data.error || 'Could not retrieve this secret.' });
+        return;
+      }
+    } catch {
+      setPhase({ kind: 'error', message: 'Network error. Please check your connection.' });
+      return;
+    }
 
     try {
-      await navigator.clipboard.writeText(state.secret);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
+      const key = await importKey(keyRef.current);
+      const secret = await decrypt(data.ciphertext, data.iv, key);
+      keyRef.current = null;
+      setPhase({
+        kind: 'revealed',
+        secret,
+        viewCount: data.viewCount ?? 1,
+        maxViews: data.maxViews ?? 1,
+      });
+    } catch {
+      setPhase({
+        kind: 'error',
+        message:
+          'The secret could not be decrypted. The link may have been altered. Ask the sender for a new link.',
+      });
     }
   };
 
-  if (state.status === 'loading') {
+  const handleCopy = async () => {
+    if (phase.kind !== 'revealed') return;
+    try {
+      await navigator.clipboard.writeText(phase.secret);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard can be blocked by browser permissions; the text stays selectable.
+    }
+  };
+
+  if (phase.kind === 'checking') {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-muted-foreground">Decrypting secret...</p>
-        </div>
-      </div>
+      <Centered>
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-muted-foreground" role="status">Checking secret…</p>
+      </Centered>
     );
   }
 
-  if (state.status === 'missing_key') {
+  if (phase.kind === 'missing_key' || phase.kind === 'invalid_key') {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-md text-center">
-          <div className="w-16 h-16 rounded-full bg-accent-danger/20 flex items-center justify-center mx-auto mb-6">
-            <svg
-              className="w-8 h-8 text-accent-danger"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-              />
-            </svg>
-          </div>
+      <Message
+        title={phase.kind === 'missing_key' ? 'Missing decryption key' : 'Incomplete link'}
+        body={
+          phase.kind === 'missing_key'
+            ? 'This link has no decryption key. Open the original link again, making sure the part after the # symbol is included. Nothing has been used up.'
+            : 'The decryption key in this link is incomplete or damaged, often because the link was cut off when copied. Nothing has been used up. Ask the sender to resend the complete link.'
+        }
+      />
+    );
+  }
 
-          <h1 className="text-2xl font-bold mb-2 text-foreground">
-            Missing encryption key
-          </h1>
+  if (phase.kind === 'unavailable') {
+    return (
+      <Message
+        title="Secret no longer available"
+        body="This secret has expired or has already been viewed the maximum number of times. Ask the sender to create a new link if you still need it."
+        cta
+      />
+    );
+  }
 
+  if (phase.kind === 'error') {
+    return <Message title="Something went wrong" body={phase.message} />;
+  }
+
+  if (phase.kind === 'ready' || phase.kind === 'revealing') {
+    const isLast = phase.viewsRemaining === 1;
+    return (
+      <Centered>
+        <div className="max-w-md w-full">
+          <h1 className="text-2xl font-bold mb-2 text-foreground">Someone sent you a secret</h1>
           <p className="text-muted-foreground mb-6">
-            The URL appears to be incomplete. Make sure you copied the entire
-            link, including the part after the # symbol.
+            It is encrypted and will be decrypted in this browser only when you press Reveal.{' '}
+            {isLast
+              ? 'This is a one-time secret: once revealed, it is deleted and the link stops working.'
+              : `Revealing uses 1 of ${phase.viewsRemaining} remaining views.`}{' '}
+            The link {formatExpiry(phase.expiresAt)}.
           </p>
-
-          <Link
-            href="/"
-            className="text-primary hover:text-primary-hover transition-colors"
+          <button
+            type="button"
+            onClick={handleReveal}
+            disabled={phase.kind === 'revealing'}
+            className="w-full py-3 px-6 bg-primary hover:bg-primary-hover disabled:opacity-60 rounded-lg text-white font-medium transition-colors"
           >
-            Go to homepage
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  if (state.status === 'expired') {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-md text-center">
-          <div className="w-16 h-16 rounded-full bg-muted/20 flex items-center justify-center mx-auto mb-6">
-            <svg
-              className="w-8 h-8 text-muted"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-
-          <h1 className="text-2xl font-bold mb-2 text-foreground">
-            Secret no longer available
-          </h1>
-
-          <p className="text-muted-foreground mb-6">
-            This secret has either expired or reached its maximum view count, and is no longer
-            accessible. The encrypted data is automatically deleted shortly after.
+            {phase.kind === 'revealing' ? 'Decrypting…' : 'Reveal secret'}
+          </button>
+          <p className="mt-4 text-xs text-muted-foreground">
+            Make sure nobody is looking at your screen before revealing.
           </p>
-
-          <Link
-            href="/"
-            className="inline-block py-2 px-6 bg-primary hover:bg-primary-hover rounded-lg text-white font-medium transition-colors"
-          >
-            Create a new secret
-          </Link>
         </div>
-      </div>
+      </Centered>
     );
   }
 
-  if (state.status === 'error') {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-md text-center">
-          <div className="w-16 h-16 rounded-full bg-accent-danger/20 flex items-center justify-center mx-auto mb-6">
-            <svg
-              className="w-8 h-8 text-accent-danger"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              />
-            </svg>
-          </div>
-
-          <h1 className="text-2xl font-bold mb-2 text-foreground">
-            Something went wrong
-          </h1>
-
-          <p className="text-muted-foreground mb-6">{state.error}</p>
-
-          <Link
-            href="/"
-            className="text-primary hover:text-primary-hover transition-colors"
-          >
-            Go to homepage
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  const viewsRemaining =
-    state.viewCount !== null && state.maxViews !== null
-      ? state.maxViews - state.viewCount
-      : null;
-
+  // revealed
+  const viewsRemaining = phase.maxViews - phase.viewCount;
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="py-6 px-4">
-        <div className="max-w-4xl mx-auto">
-          <Link href="/" className="text-xl font-bold text-foreground">
-            iKrypt
+    <Centered>
+      <div className="max-w-xl w-full">
+        <h1 className="text-2xl font-bold mb-2 text-foreground text-center">Secret revealed</h1>
+        <p className="text-sm text-muted-foreground text-center mb-6">
+          {viewsRemaining === 0
+            ? 'This was the final view. The encrypted data has been deleted from our servers.'
+            : `View ${phase.viewCount} of ${phase.maxViews}. ${viewsRemaining} view${viewsRemaining === 1 ? '' : 's'} remaining.`}
+        </p>
+        <pre className="bg-secondary border border-zinc-200 rounded-lg p-4 mb-4 text-sm text-foreground font-mono whitespace-pre-wrap break-all max-h-96 overflow-y-auto">
+          {phase.secret}
+        </pre>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="w-full py-3 px-6 rounded-lg font-medium text-white bg-primary hover:bg-primary-hover transition-colors"
+        >
+          {copied ? 'Copied' : 'Copy to clipboard'}
+        </button>
+        <p className="mt-4 text-xs text-muted-foreground" aria-live="polite">
+          Decrypted in your browser. Copied text stays on your clipboard until you copy something else,
+          and clipboard managers or sync may keep a copy. Store it somewhere safe, then close this tab.
+        </p>
+        <div className="mt-8 text-center">
+          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">
+            Create your own secret link →
           </Link>
         </div>
-      </header>
+      </div>
+    </Centered>
+  );
+}
 
-      <main className="flex-1 flex items-center justify-center px-4">
-        <div className="max-w-xl w-full">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-6">
-              <svg
-                className="w-8 h-8 text-primary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
-                />
-              </svg>
-            </div>
+function Centered({ children }: { children: React.ReactNode }) {
+  return <div className="min-h-screen flex items-center justify-center px-4 text-center">{children}</div>;
+}
 
-            <h1 className="text-2xl font-bold mb-2 text-foreground">
-              Secret revealed
-            </h1>
-
-            {state.viewCount !== null && state.maxViews !== null && (
-              <p className="text-sm text-muted-foreground">
-                View {state.viewCount} of {state.maxViews} •{' '}
-                {viewsRemaining === 0
-                  ? 'This was the final view'
-                  : `${viewsRemaining} view${viewsRemaining === 1 ? '' : 's'} remaining`}
-              </p>
-            )}
-          </div>
-
-          <div className="bg-secondary border border-zinc-200 rounded-lg overflow-hidden mb-4">
-            {revealed ? (
-              <pre className="p-4 text-sm text-foreground font-mono whitespace-pre-wrap break-all max-h-96 overflow-y-auto">
-                {state.secret}
-              </pre>
-            ) : (
-              <div className="p-8 text-center">
-                <p className="text-muted-foreground mb-4">
-                  Click below to reveal the secret
-                </p>
-                <button
-                  onClick={() => setRevealed(true)}
-                  className="py-2 px-6 bg-primary hover:bg-primary-hover rounded-lg text-white font-medium transition-colors"
-                >
-                  Reveal secret
-                </button>
-              </div>
-            )}
-          </div>
-
-          {revealed && (
-            <div className="flex gap-3">
-              <button
-                onClick={handleCopy}
-                className={`flex-1 py-3 px-6 rounded-lg font-medium text-white transition-all ${
-                  copied ? 'bg-accent' : 'bg-primary hover:bg-primary-hover'
-                }`}
-              >
-                {copied ? '✓ Copied' : 'Copy to clipboard'}
-              </button>
-            </div>
-          )}
-
-          <div className="mt-6 bg-accent-warning/10 border border-accent-warning/20 rounded-lg p-4">
-            <p className="text-sm text-accent-warning">
-              <strong>Note:</strong> This secret was decrypted in your browser.
-              The encryption key was never sent to our servers.
-              {viewsRemaining === 0 &&
-                ' This was the final view, so the encrypted data has now been deleted.'}
-            </p>
-          </div>
-
-          <div className="mt-8 text-center">
-            <Link
-              href="/"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Create your own secret →
-            </Link>
-          </div>
-        </div>
-      </main>
-    </div>
+function Message({ title, body, cta = false }: { title: string; body: string; cta?: boolean }) {
+  return (
+    <Centered>
+      <div className="max-w-md">
+        <h1 className="text-2xl font-bold mb-2 text-foreground">{title}</h1>
+        <p className="text-muted-foreground mb-6">{body}</p>
+        <Link
+          href="/"
+          className={
+            cta
+              ? 'inline-block py-2 px-6 bg-primary hover:bg-primary-hover rounded-lg text-white font-medium'
+              : 'text-primary hover:text-primary-hover'
+          }
+        >
+          {cta ? 'Create a new secret' : 'Go to homepage'}
+        </Link>
+      </div>
+    </Centered>
   );
 }

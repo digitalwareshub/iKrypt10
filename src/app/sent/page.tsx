@@ -86,8 +86,8 @@ function SentContent() {
           </h1>
 
           <p className="text-muted-foreground mb-8">
-            Share this link with your recipient. It will self-destruct after
-            being viewed.
+            Share this link with your recipient. It self-destructs after the
+            view limit is reached or when it expires, whichever comes first.
           </p>
 
           <div className="bg-secondary border border-zinc-200 rounded-lg p-4 mb-4 text-left">
@@ -122,8 +122,8 @@ function SentContent() {
               <li className="flex items-start gap-2">
                 <span className="text-accent mt-1">•</span>
                 <span>
-                  When your recipient opens the link, the secret is decrypted
-                  in their browser — never on our servers
+                  Opening the link does not use it up. The secret is only decrypted, in
+                  their browser, when your recipient presses Reveal
                 </span>
               </li>
 
@@ -138,8 +138,8 @@ function SentContent() {
               <li className="flex items-start gap-2">
                 <span className="text-accent mt-1">•</span>
                 <span>
-                  If the link is never opened, it becomes inaccessible after it expires and
-                  the encrypted data is automatically deleted shortly after
+                  If it is never revealed, the link stops working at expiry and the encrypted
+                  data is then removed by automatic cleanup
                 </span>
               </li>
 
@@ -147,7 +147,7 @@ function SentContent() {
                 <span className="text-accent mt-1">•</span>
                 <span>
                   If you enabled notifications, you&apos;ll receive an email
-                  when the link is first opened
+                  when the secret is first revealed
                 </span>
               </li>
             </ul>

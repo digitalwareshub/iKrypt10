@@ -125,19 +125,34 @@ export function generateSecretId(): string {
   return arrayBufferToBase64Url(bytes.buffer);
 }
 
-// Extract key from URL fragment
+// Extract key from URL fragment (#k=...). Returns null if absent.
 export function extractKeyFromHash(): string | null {
   if (typeof window === 'undefined') return null;
 
   const hash = window.location.hash;
-  if (!hash || !hash.includes('#k=')) return null;
+  if (!hash || hash.length < 2) return null;
 
   const params = new URLSearchParams(hash.slice(1));
   return params.get('k');
 }
 
-// Build shareable URL with key in fragment
+/**
+ * Removes the key fragment from the address bar and from this history entry,
+ * so it is not kept in browser history or visible to anything that reads
+ * `location.href` later. The key is held in memory only.
+ */
+export function stripKeyFromAddressBar(): void {
+  if (typeof window === 'undefined' || !window.location.hash) return;
+  const { pathname, search } = window.location;
+  window.history.replaceState(window.history.state, '', pathname + search);
+}
+
+// Build shareable URL with key in fragment. Uses the current origin so links
+// created on preview or local deployments point back to the same deployment.
 export function buildSecretUrl(secretId: string, key: string): string {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ikrypt.com';
+  const baseUrl =
+    typeof window !== 'undefined'
+      ? window.location.origin
+      : process.env.NEXT_PUBLIC_SITE_URL || 'https://ikrypt.com';
   return `${baseUrl}/s/${secretId}#k=${key}`;
 }
