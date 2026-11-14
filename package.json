@@ -15,7 +15,8 @@
     "test:unit": "tsx --test tests/unit/*.test.ts",
     "test:e2e": "NEXT_DIST_DIR=.next-e2e next build && NEXT_DIST_DIR=.next-e2e firebase emulators:exec --config firebase.test.json --only firestore --project demo-ikrypt \"playwright test\"",
     "typecheck": "tsc --noEmit",
-    "dev:local": "firebase emulators:exec --only firestore --project demo-ikrypt \"next dev\""
+    "dev:local": "firebase emulators:exec --only firestore --project demo-ikrypt \"next dev\"",
+    "email:test": "tsx --env-file=.env.local scripts/send-test-email.ts"
   },
   "dependencies": {
     "@upstash/ratelimit": "^2.2.1",

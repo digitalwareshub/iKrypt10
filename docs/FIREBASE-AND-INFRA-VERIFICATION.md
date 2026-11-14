@@ -9,6 +9,21 @@ Audit references: S4, S5, S8 and §18 in
 
 ---
 
+## 0. Which Firebase project production uses
+
+**Very likely `ikrypt-95f1d` (high confidence, not yet conclusive).** Evidence, 14 Nov 2026:
+- Local `.env.local` sets `FIREBASE_ADMIN_PROJECT_ID=ikrypt-95f1d`.
+- The `NEXT_PUBLIC_FIREBASE_API_KEY` value in Vercel (All Environments) is identical to the local one, which belongs to `ikrypt-95f1d`.
+- A service-account key file for `ikrypt-95f1d` is referenced in `.gitignore` from the 4 July Admin SDK migration, the same date the Vercel `FIREBASE_ADMIN_*` variables were added.
+- The `FIREBASE_ADMIN_*` values are Sensitive in Vercel and cannot be displayed, so they were not read directly.
+
+Conclusive check: Firebase console → `ikrypt-95f1d` → Firestore → **Usage**, then create a test secret on ikrypt.com and confirm a write appears.
+
+Notes from the Vercel environment-variable screen:
+- `FIREBASE_ADMIN_*` apply to **Production and Preview**, so branch previews write to the production database. *(Owner decision: separate Preview project, or avoid creating secrets on previews.)*
+- `RESEND_API_KEY` and `UPSTASH_REDIS_REST_TOKEN` show "Needs Attention": not marked Sensitive. *(Owner action: Edit → mark Sensitive.)*
+- `NEXT_PUBLIC_FIREBASE_*` are no longer used by any code (the browser Firebase SDK was removed) and can be deleted after this branch is in production.
+
 ## 1. Firestore TTL policy on `secrets.expiresAt` (S4)
 
 The site says expired secrets are removed by automatic cleanup. Confirm it exists.
@@ -66,9 +81,9 @@ If open, *change, needs owner approval*:
 ## 4. Actual usage (audit §18, item 1)
 
 New in this branch: once deployed, daily aggregate counters are written to
-`usageStats/{YYYY-MM-DD}` (fields `created`, `revealed`, `finalViewDeleted`,
-`unavailableExpired`, `unavailableMaxViews`, `unavailableNotFound`; no IDs, IPs
-or content).
+`usageStats/{YYYY-MM-DD}`: totals only (`created`, settings chosen such as `createdExpiry24h` /
+`createdViews1` / `createdWithNotify`, `revealed`, `finalViewDeleted`, `rejectedInvalid`,
+`rejectedRateLimited`, `unavailable*`). No IDs, IPs, emails or content.
 
 For **historical** usage before this change:
 1. **Firestore Database → Data → `secrets`**. The document count shown is the
@@ -105,5 +120,34 @@ visitors can share one rate-limit bucket.
 
 ## 7. Hosting plan (audit §18, item 5)
 
-Vercel → Settings → **Billing**. Hobby plans are for non-commercial use under
-Vercel's terms. Anything you charge for would need Pro.
+**Confirmed 14 Nov 2026:** the Vercel team "Digiwares" is on **Pro**, so commercial use is permitted. No action needed.
+
+## 8. Resend: reveal-notification emails (currently NOT delivering)
+
+Checked 14 Nov 2026 via the Resend API (read-only) and public DNS:
+
+- The domain `ikrypt.com` exists in Resend (created 14 Nov 2026) with status **`not_started`**.
+- A real send through the production code path to Resend's test address returned
+  *"The ikrypt.com domain is not verified."* No notification email can be delivered until this is fixed.
+  (Before this branch, the code treated that error as success and logged nothing.)
+
+| Record | Name | Value | Current DNS |
+|---|---|---|---|
+| DKIM (TXT) | `resend._domainkey` | `p=MIGfMA0G…` (as shown in Resend) | ✅ present and matching |
+| SPF / return path (CNAME) | `send` | `send.forge.rmta.net` | ❌ missing. An old TXT `v=spf1 include:amazonses.com ~all` sits on `send` |
+| SPF / return path (CNAME) | `rsend` | `rsend-apne1.forge.rmta.net` | ❌ missing |
+
+*Change, needs owner approval*, in **Cloudflare → ikrypt.com → DNS**:
+1. Delete the old **TXT** record on `send` (`v=spf1 include:amazonses.com ~all`) and any old **MX** record on `send`. A CNAME cannot coexist with other records on the same name.
+2. Add **CNAME** `send` → `send.forge.rmta.net`, **Proxy status: DNS only** (grey cloud).
+3. Add **CNAME** `rsend` → `rsend-apne1.forge.rmta.net`, **DNS only**.
+4. Keep the existing DKIM TXT `resend._domainkey`.
+5. Optional but recommended: a DMARC record, TXT `_dmarc` → `v=DMARC1; p=none; rua=mailto:<your address>`.
+6. In **Resend → Domains → ikrypt.com**, click **Verify DNS records**. Wait for *Verified*.
+
+Always copy the values from the Resend dashboard; it is the source of truth if they differ from the table above.
+
+Then confirm delivery end to end (sends exactly one email):
+```
+npm run email:test -- you@example.com
+```

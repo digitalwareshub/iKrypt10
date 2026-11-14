@@ -186,8 +186,12 @@ export default function SecretForm() {
               placeholder="your@email.com"
               autoComplete="email"
               disabled={isLoading}
+              aria-describedby="notify-help"
               className="w-full rounded-xl border border-line-strong bg-background px-4 py-3 text-sm text-foreground placeholder:text-[#7C83A6] focus:border-primary focus:outline-none"
             />
+            <p id="notify-help" className="mt-2 text-xs leading-relaxed text-muted">
+              We email you once, when the secret is first revealed. The address is stored only with this secret.
+            </p>
           </div>
         )}
       </div>
