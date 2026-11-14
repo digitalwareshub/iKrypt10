@@ -11,7 +11,7 @@ Audit references: S4, S5, S8 and §18 in
 
 ## 0. Which Firebase project production uses
 
-**Very likely `ikrypt-95f1d` (high confidence, not yet conclusive).** Evidence, 14 Nov 2026:
+**`ikrypt-95f1d` (high confidence).** The TTL policy for the `secrets` collection, which only the current code uses, exists in this project (§1). Evidence, 14 Nov 2026:
 - Local `.env.local` sets `FIREBASE_ADMIN_PROJECT_ID=ikrypt-95f1d`.
 - The `NEXT_PUBLIC_FIREBASE_API_KEY` value in Vercel (All Environments) is identical to the local one, which belongs to `ikrypt-95f1d`.
 - A service-account key file for `ikrypt-95f1d` is referenced in `.gitignore` from the 4 July Admin SDK migration, the same date the Vercel `FIREBASE_ADMIN_*` variables were added.
@@ -24,7 +24,16 @@ Notes from the Vercel environment-variable screen:
 - `RESEND_API_KEY` and `UPSTASH_REDIS_REST_TOKEN` show "Needs Attention": not marked Sensitive. *(Owner action: Edit → mark Sensitive.)*
 - `NEXT_PUBLIC_FIREBASE_*` are no longer used by any code (the browser Firebase SDK was removed) and can be deleted after this branch is in production.
 
-## 1. Firestore TTL policy on `secrets.expiresAt` (S4)
+## 1. Firestore TTL policy on `secrets.expiresAt` (S4) ✅ VERIFIED 14 Nov 2026
+
+**Confirmed by the owner in the Google Cloud console (project `ikrypt-95f1d`, database `(default)`):**
+collection group `secrets`, timestamp field `expiresAt`, status **Serving**, expiry offset 0 s.
+
+Related observations from the same console session:
+- No `secrets` collection is currently visible. That is consistent with TTL plus delete-on-final-view leaving it empty at low traffic.
+- **Legacy collections `one-time-messages` and `chat-rooms` still exist** (from the earlier product; e.g. a message that expired on 2025-12-06 still present). The TTL policy does not cover them and no current code uses them. *Recommended, owner decision:* export if needed for records, then delete both collections.
+
+The original instructions follow for reference.
 
 The site says expired secrets are removed by automatic cleanup. Confirm it exists.
 
