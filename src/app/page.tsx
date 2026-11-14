@@ -2,405 +2,362 @@ import Link from 'next/link';
 import SecretForm from '@/components/SecretForm';
 import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
+import Mesh from '@/components/Mesh';
+import { Eyebrow, SectionHeading, CheckIcon, CrossIcon } from '@/components/ui';
 
 // Rendered per request so the middleware's CSP nonce is applied (see src/middleware.ts).
 export const dynamic = 'force-dynamic';
 
 const GITHUB_REPO_URL = 'https://github.com/digitalwareshub/iKrypt10';
 
+// Single source for the visible FAQ and its structured data.
+const FAQS = [
+  {
+    q: 'Can iKrypt read my secrets?',
+    a: 'No. We store only encrypted data. The decryption key is in the part of the link after #, which browsers don’t send to servers.',
+  },
+  {
+    q: 'What if an email scanner opens the link first?',
+    a: 'Nothing is used up. Opening a link only checks that the secret exists; a view counts only when someone presses Reveal.',
+  },
+  {
+    q: 'What can I share with iKrypt?',
+    a: 'Passwords, API keys, .env values, login credentials, SSH keys and other short text secrets up to 64 KB.',
+  },
+  {
+    q: 'What happens when a link expires?',
+    a: 'It stops working immediately, and the encrypted record is removed by automatic cleanup.',
+  },
+  {
+    q: 'Is it free?',
+    a: 'Yes. Creating and sharing secret links is free and needs no account.',
+  },
+];
+
 const faqJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   '@id': 'https://ikrypt.com/#faq',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'Can iKrypt read my secrets?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'No. iKrypt stores only encrypted ciphertext. The decryption key stays in the URL fragment and is not sent to iKrypt servers.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What can I share with iKrypt?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'iKrypt is useful for sharing passwords, API keys, .env values, login credentials, SSH keys, and other temporary secrets.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What happens after a secret expires?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Expired secrets become inaccessible immediately. The encrypted data is removed by automatic cleanup after expiry.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Is iKrypt free?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes. Basic one-time secret sharing is free and does not require an account.',
-      },
-    },
-  ],
+  mainEntity: FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
 };
 
-const trustBadges = [
-  'Encrypted in your browser',
-  'Key never reaches server',
-  'No account required',
-  'Public source code',
-  'No analytics on secret pages',
-];
-
-const howItWorks = [
+const STEPS = [
   {
-    step: '1',
-    title: 'Paste your secret',
-    desc: 'Add a password, API key, .env value, or temporary credential.',
+    title: 'Encrypt locally',
+    desc: 'Your browser generates a fresh 256-bit key and encrypts the secret. Only the scrambled result is uploaded.',
   },
   {
-    step: '2',
-    title: 'Choose limits',
-    desc: 'Pick an expiry time and how many times the link can be viewed.',
-  },
-  {
-    step: '3',
     title: 'Share the link',
-    desc: 'Send the encrypted one-time link through email, Slack, chat, or a ticket.',
+    desc: 'Send it by email, Slack or ticket. Previews and security scanners can open it without using it up.',
   },
   {
-    step: '4',
-    title: 'It self-destructs',
-    desc: 'The secret becomes inaccessible after the final view or expiry.',
+    title: 'Reveal, then it’s deleted',
+    desc: 'Your recipient presses Reveal. After the last allowed view, the encrypted data is deleted on the spot.',
   },
 ];
 
-const securityPoints = [
+const STORED: [string, string, string?][] = [
+  ['ciphertext', '7mQ0x…kP2w', '(unreadable without the key)'],
+  ['iv', 'random, per secret'],
+  ['expiresAt', 'timestamp'],
+  ['maxViews / viewCount', 'numbers'],
+  ['notifyEmail', 'only if you ask for it'],
+];
+
+const NEVER_SEEN = [
+  'Your secret in readable form',
+  'The decryption key',
+  'Your IP address alongside the secret',
+  'Analytics on pages where secrets are typed or shown',
+];
+
+const PROTECTS = [
+  'Secrets sitting forever in Slack, email or DMs',
+  'A link being used more times than you allowed',
+  'Readable secrets on our servers or in our database',
+  'Link scanners using up a one-time link',
+];
+
+const DOES_NOT_PROTECT = [
+  'Malware or extensions on either device',
+  'Someone forwarding the full link',
+  'Screenshots or copies after reveal',
+  'A compromised website delivering altered code',
+];
+
+const GUIDES = [
   {
-    title: 'Encrypted before upload',
-    desc: 'Your secret is encrypted in the browser before it leaves your device.',
+    href: '/share-password-securely',
+    title: 'Share a password securely',
+    desc: 'Hand over a login without leaving it in chat history.',
   },
   {
-    title: 'Only ciphertext is stored',
-    desc: 'iKrypt stores encrypted data, expiry settings, and view limits — not plaintext.',
+    href: '/send-api-key-securely',
+    title: 'Send an API key',
+    desc: 'Give a teammate or contractor a token they can use once.',
   },
   {
-    title: 'Key stays in the link fragment',
-    desc: 'The decryption key lives after the # in the URL, which is not sent to the server in normal HTTP requests.',
+    href: '/share-env-file-securely',
+    title: 'Share .env values',
+    desc: 'Move environment variables without emailing a file.',
   },
   {
-    title: 'One-time viewing is server-enforced',
-    desc: 'View limits are enforced with Firestore transactions, so concurrent requests cannot over-deliver a one-view secret.',
-  },
-  {
-    title: 'Expired secrets are blocked immediately',
-    desc: 'Once a secret expires, the API blocks access. Expired encrypted data is then removed by automatic cleanup.',
-  },
-  {
-    title: 'Secret pages stay clean',
-    desc: 'The pages where secrets are created or viewed do not load any analytics or third-party scripts.',
+    href: '/one-time-secret-link',
+    title: 'One-time secret links',
+    desc: 'How self-destructing links work, and when to use them.',
   },
 ];
 
-const useCases = [
-  'API keys',
-  'Passwords',
-  'Login credentials',
-  'SSH keys',
-  '.env values',
-  'Client access',
-  'Contractor handoffs',
-  'Temporary notes',
-];
-
-const protectsAgainst = [
-  'Secrets sitting forever in Slack, email, or DM history',
-  'Plaintext credentials being accidentally forwarded',
-  'A secret being accessed more times than intended',
-  'Plaintext secrets being stored on iKrypt servers',
-];
-
-const doesNotProtectAgainst = [
-  'A compromised sender or recipient device',
-  'Malicious browser extensions reading page content',
-  'Someone forwarding the full link including the key after #',
-  'Screenshots or copy/paste after the secret is revealed',
-];
-
-const faqs = [
-  {
-    q: 'Can iKrypt read my secrets?',
-    a: 'No. iKrypt only stores encrypted ciphertext. The decryption key stays in the URL fragment and is not sent to our servers.',
-  },
-  {
-    q: 'What can I share with iKrypt?',
-    a: 'iKrypt is useful for passwords, API keys, .env values, login credentials, SSH keys, and other short-lived secrets.',
-  },
-  {
-    q: 'What happens after the link expires?',
-    a: 'The secret becomes inaccessible immediately after expiry. The encrypted data is then removed by automatic cleanup after expiry.',
-  },
-  {
-    q: 'Is it free?',
-    a: 'Yes. Basic one-time secret sharing is free and does not require an account.',
-  },
-];
-
-function CheckIcon({ className = 'w-4 h-4' }: { className?: string }) {
+function LockIcon() {
   return (
-    <svg className={className} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-      <path
-        fillRule="evenodd"
-        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
-function XIcon({ className = 'w-4 h-4' }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-    </svg>
-  );
-}
-
-function LockIcon({ className = 'w-8 h-8' }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-      />
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A5B4FC" strokeWidth="1.8" aria-hidden="true">
+      <rect x="4" y="10" width="16" height="11" rx="2" />
+      <path d="M8 10V7a4 4 0 0 1 8 0v3" />
     </svg>
   );
 }
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col pattern-bg">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <SiteHeader />
 
-      <main className="flex-1">
-        <section className="hero-gradient relative px-4 pt-14 pb-20 md:pt-20 md:pb-24">
-          <div className="mx-auto max-w-6xl">
-            <div className="mx-auto max-w-3xl text-center">
-              <a
-                href={GITHUB_REPO_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white/70 px-4 py-2 text-sm font-medium text-primary shadow-sm backdrop-blur transition-colors hover:border-primary/35 hover:bg-white"
-              >
-                <span className="h-2 w-2 rounded-full bg-primary" />
-                Public source code — inspect it on GitHub
-              </a>
+      <main id="content" className="relative isolate overflow-hidden">
+        <Mesh />
 
-              <div className="pulse-glow mx-auto mt-8 mb-7 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-primary/15">
-                <LockIcon className="h-8 w-8" />
-              </div>
-
-              <h1 className="mx-auto max-w-4xl text-balance text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-                <span className="gradient-text">
-                  Share passwords, API keys, and secrets with one-time encrypted links
-                </span>
-              </h1>
-
-              <p className="mx-auto mt-5 max-w-2xl text-balance text-lg text-muted-foreground md:text-xl">
-                Stop DM&apos;ing passwords. Send a secret once — the key never touches our servers.
-              </p>
-
-              <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground">
-                Built for developers, freelancers, agencies, and small teams. Free forever, no account required.
-              </p>
-            </div>
-
-            <div className="mx-auto mt-10 max-w-2xl">
-              <div className="card-glow rounded-2xl p-4 md:p-5">
-                <SecretForm />
-              </div>
-            </div>
-
-            <div className="mx-auto mt-8 grid max-w-5xl grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
-              {trustBadges.map((label) => (
-                <div
-                  key={label}
-                  className="trust-card flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-center text-sm font-medium text-foreground"
-                >
-                  <CheckIcon className="h-4 w-4 flex-shrink-0 text-primary" />
-                  <span>{label}</span>
-                </div>
-              ))}
-            </div>
-
-            <p className="mx-auto mt-7 max-w-3xl text-center text-sm text-muted-foreground">
-              Expired secrets become inaccessible immediately and are removed by automatic cleanup afterwards.
+        {/* HERO: on phones the form follows the headline; trust points come after it. */}
+        <section className="mx-auto grid max-w-site grid-cols-1 gap-x-14 gap-y-9 px-4 pb-16 pt-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] lg:pb-20 lg:pt-[88px]">
+          <div className="min-w-0 lg:pt-6">
+            <Eyebrow>One-time encrypted links</Eyebrow>
+            <h1 className="font-display text-[46px] leading-[0.98] tracking-[-0.02em] text-heading sm:text-6xl lg:text-[76px]">
+              Send a secret once.
+              <br />
+              <span className="italic text-primary">Then it’s gone.</span>
+            </h1>
+            <p className="mt-7 max-w-[500px] text-lg leading-relaxed text-muted-foreground">
+              Share passwords, API keys and <code className="font-mono text-base text-[#C9CDE3]">.env</code> values
+              through a link that works a set number of times, then self-destructs. It’s encrypted in your
+              browser, and the key never reaches our servers.
             </p>
           </div>
+
+          <div className="min-w-0 rounded-[18px] border border-line-strong bg-surface p-5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] sm:p-7 lg:row-span-2">
+            <SecretForm />
+          </div>
+
+          <ul className="flex flex-col gap-3.5 text-[15px] text-[#C9CDE3]">
+            <li className="flex items-center gap-3">
+              <LockIcon />
+              AES-256-GCM, performed by your browser
+            </li>
+            <li className="flex items-center gap-3">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A5B4FC" strokeWidth="1.8" aria-hidden="true">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" />
+                <path d="M3 3l18 18" />
+              </svg>
+              No account, no tracking on secret pages
+            </li>
+            <li className="flex items-center gap-3">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A5B4FC" strokeWidth="1.8" aria-hidden="true">
+                <path d="M8 6l-6 6 6 6" />
+                <path d="M16 6l6 6-6 6" />
+              </svg>
+              <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
+                Public source code on GitHub
+              </a>
+            </li>
+          </ul>
         </section>
 
-        <section id="how-it-works" className="px-4 py-16 md:py-20">
-          <div className="mx-auto max-w-6xl">
-            <div className="mx-auto mb-12 max-w-2xl text-center">
-              <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
-                Simple by design
-              </p>
-              <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                Create a secure handoff in seconds
-              </h2>
-              <p className="mt-4 text-muted-foreground">
-                iKrypt is for the quick moments when you need to send one sensitive value without leaving it
-                permanently in someone&apos;s inbox or chat history.
-              </p>
-            </div>
+        {/* LINK ANATOMY */}
+        <section aria-labelledby="anatomy" className="border-y border-line bg-band">
+          <div className="mx-auto max-w-site px-4 py-16 sm:px-6 sm:py-[88px]">
+            <Eyebrow>Anatomy of a link</Eyebrow>
+            <h2
+              id="anatomy"
+              className="max-w-[720px] font-display text-[34px] leading-[1.05] tracking-[-0.015em] text-heading sm:text-[52px]"
+            >
+              The key lives in the one part of a URL <span className="italic">browsers never send.</span>
+            </h2>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-              {howItWorks.map((item) => (
-                <div key={item.step} className="card-glow rounded-2xl p-6">
-                  <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                    {item.step}
-                  </div>
-                  <h3 className="mb-2 font-semibold text-foreground">{item.title}</h3>
-                  <p className="text-sm leading-6 text-muted-foreground">{item.desc}</p>
-                </div>
-              ))}
+            <div className="mt-12 flex flex-col gap-1 font-mono text-base leading-none sm:mt-14 md:flex-row md:items-stretch md:gap-0 md:text-[22px]">
+              <div>
+                <span className="block break-all py-[18px] text-[#7C83A6]">https://ikrypt.com/s/</span>
+              </div>
+              <div className="flex flex-col gap-[18px]">
+                <span className="block break-all border-b-2 border-[#4B5170] py-[18px] text-[#C9CDE3]">
+                  q7Rk2mW9xLpA4nZe
+                </span>
+                <p className="max-w-[240px] font-sans text-sm leading-normal text-muted-foreground">
+                  <strong className="font-semibold text-foreground">Secret ID.</strong> Sent to our server to find the
+                  encrypted data. Useless without the key.
+                </p>
+              </div>
+              <div className="mt-4 flex flex-col gap-[18px] md:ml-1 md:mt-0">
+                <span className="block break-all rounded-t-lg border-b-2 border-primary bg-primary-strong/10 px-3.5 py-[18px] text-primary">
+                  #k=Vb3xQ…9TfE
+                </span>
+                <p className="max-w-[300px] pl-3.5 font-sans text-sm leading-normal text-muted-foreground">
+                  <strong className="font-semibold text-foreground">Decryption key.</strong> Everything after{' '}
+                  <span className="font-mono">#</span> stays in the browser. It is never included in requests to
+                  iKrypt or anyone else, and our pages strip it from the address bar once read.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        <section id="security" className="px-4 py-16 md:py-20">
-          <div className="mx-auto max-w-6xl">
-            <div className="mx-auto mb-12 max-w-3xl text-center">
-              <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
-                Trust-first architecture
-              </p>
-              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-                <span className="gradient-text">Encrypted before it leaves your browser</span>
+        {/* HOW IT WORKS */}
+        <section id="how-it-works" aria-labelledby="how-h" className="mx-auto max-w-site scroll-mt-20 px-4 py-16 sm:px-6 sm:py-24">
+          <SectionHeading id="how-h" className="mb-12">
+            Three steps. No account.
+          </SectionHeading>
+          <ol className="grid gap-5 md:grid-cols-3">
+            {STEPS.map((step, i) => (
+              <li key={step.title} className="border-t border-line-strong pt-[22px]">
+                <p className="font-mono text-[13px] text-primary">{String(i + 1).padStart(2, '0')}</p>
+                <h3 className="mb-2 mt-3 text-[19px] font-semibold text-foreground">{step.title}</h3>
+                <p className="text-[15px] leading-relaxed text-muted-foreground">{step.desc}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        {/* WHAT WE STORE */}
+        <section id="what-we-store" aria-labelledby="store-h" className="mx-auto max-w-site scroll-mt-20 px-4 pb-16 sm:px-6 sm:pb-24">
+          <div className="grid gap-5 md:grid-cols-2">
+            <div className="rounded-[18px] border border-line bg-surface p-6 sm:p-8">
+              <h2 id="store-h" className="text-xl font-semibold text-foreground">
+                What our database holds
               </h2>
-              <p className="mt-4 text-muted-foreground">
-                The server stores encrypted data only. The key is part of the link fragment and is not sent
-                to iKrypt servers in normal requests.
+              <p className="mb-6 mt-1.5 text-sm text-muted">
+                One record per secret, until it’s revealed or cleaned up after expiry.
+              </p>
+              <dl className="grid grid-cols-1 gap-x-4 gap-y-1 font-mono text-[13.5px] sm:grid-cols-[170px_1fr] sm:gap-y-3">
+                {STORED.map(([key, value, note]) => (
+                  <div key={key} className="contents">
+                    <dt className="text-primary">{key}</dt>
+                    <dd className="mb-3 text-muted-foreground sm:mb-0">
+                      {value} {note && <span className="font-sans text-muted">{note}</span>}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            <div className="rounded-[18px] border border-dashed border-line-strong p-6 sm:p-8">
+              <h2 className="text-xl font-semibold text-foreground">What we never see</h2>
+              <p className="mb-6 mt-1.5 text-sm text-muted">Not stored, not logged, not sent to us at any point.</p>
+              <ul className="flex flex-col gap-3.5 text-[15px] text-[#C9CDE3]">
+                {NEVER_SEEN.map((item) => (
+                  <li key={item} className="flex items-center gap-3">
+                    <CrossIcon />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* HONEST LIMITS */}
+        <section aria-labelledby="limits-h" className="border-t border-line bg-band">
+          <div className="mx-auto flex max-w-site flex-wrap gap-14 px-4 py-16 sm:px-6 sm:py-[88px]">
+            <div className="min-w-0 flex-[1_1_340px]">
+              <SectionHeading id="limits-h">Honest about the limits.</SectionHeading>
+              <p className="mt-[18px] text-base leading-relaxed text-muted-foreground">
+                Encryption protects the secret in transit and at rest. It can’t protect a device that’s already
+                compromised.{' '}
+                <Link href="/security" className="text-primary hover:text-primary-hover">
+                  Read the security details →
+                </Link>
               </p>
             </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {securityPoints.map((item) => (
-                <div key={item.title} className="card-glow rounded-2xl p-6">
-                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <CheckIcon className="h-5 w-5" />
-                  </div>
-                  <h3 className="mb-2 font-semibold text-foreground">{item.title}</h3>
-                  <p className="text-sm leading-6 text-muted-foreground">{item.desc}</p>
-                </div>
-              ))}
+            <div className="grid min-w-0 flex-[2_1_560px] gap-8 sm:grid-cols-2">
+              <div>
+                <h3 className="mb-4 font-mono text-[13px] uppercase tracking-[0.06em] text-primary">Protects against</h3>
+                <ul className="flex flex-col gap-2.5 text-[15px] leading-normal text-[#C9CDE3]">
+                  {PROTECTS.map((item) => (
+                    <li key={item} className="flex gap-3">
+                      <CheckIcon />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 className="mb-4 font-mono text-[13px] uppercase tracking-[0.06em] text-muted">
+                  Doesn’t protect against
+                </h3>
+                <ul className="flex flex-col gap-2.5 text-[15px] leading-normal text-muted-foreground">
+                  {DOES_NOT_PROTECT.map((item) => (
+                    <li key={item} className="flex gap-3">
+                      <CrossIcon />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
+          </div>
+        </section>
 
-            <div className="mt-8 text-center">
+        {/* GUIDES */}
+        <section id="guides" aria-labelledby="guides-h" className="mx-auto max-w-site scroll-mt-20 px-4 py-16 sm:px-6 sm:py-24">
+          <SectionHeading id="guides-h" className="mb-8">
+            Guides for common handoffs
+          </SectionHeading>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {GUIDES.map((guide) => (
               <Link
-                href="/security"
-                className="inline-flex items-center rounded-full border border-primary/20 bg-white/70 px-5 py-2.5 text-sm font-medium text-primary shadow-sm transition-colors hover:border-primary/35 hover:bg-white"
+                key={guide.href}
+                href={guide.href}
+                className="group block rounded-[14px] border border-line bg-surface p-6 transition-colors hover:border-line-strong hover:bg-raised"
               >
-                Read the full security architecture →
+                <span className="block text-[17px] font-semibold text-foreground">{guide.title}</span>
+                <span className="mt-2 block text-sm leading-relaxed text-muted-foreground">{guide.desc}</span>
+                <span className="mt-[18px] block text-sm text-primary group-hover:text-primary-hover">Read guide →</span>
               </Link>
-            </div>
+            ))}
           </div>
         </section>
 
-        <section className="px-4 py-16 md:py-20">
-          <div className="mx-auto max-w-6xl">
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              <div className="card-glow rounded-2xl p-6 md:p-8">
-                <h2 className="mb-6 text-2xl font-bold text-foreground">
-                  What iKrypt protects against
-                </h2>
-
-                <ul className="space-y-4">
-                  {protectsAgainst.map((item) => (
-                    <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
-                      <CheckIcon className="mt-1 h-4 w-4 flex-shrink-0 text-green-500" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="card-glow rounded-2xl p-6 md:p-8">
-                <h2 className="mb-6 text-2xl font-bold text-foreground">
-                  What it does not protect against
-                </h2>
-
-                <ul className="space-y-4">
-                  {doesNotProtectAgainst.map((item) => (
-                    <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
-                      <XIcon className="mt-1 h-4 w-4 flex-shrink-0 text-red-500" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="px-4 py-16 md:py-20">
-          <div className="mx-auto max-w-6xl">
-            <div className="mx-auto mb-10 max-w-2xl text-center">
-              <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
-                Common use cases
-              </p>
-              <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                Useful for quick, sensitive handoffs
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {useCases.map((label) => (
-                <div key={label} className="trust-card rounded-2xl px-4 py-5 text-center">
-                  <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <LockIcon className="h-5 w-5" />
-                  </div>
-                  <p className="text-sm font-medium text-foreground">{label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="faq" className="px-4 py-16 md:py-20">
-          <div className="mx-auto max-w-4xl">
-            <div className="mx-auto mb-10 max-w-2xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                Frequently asked questions
-              </h2>
-              <p className="mt-4 text-muted-foreground">
-                Plain answers about what iKrypt does, what it stores, and where the trust boundary is.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              {faqs.map((item) => (
-                <div key={item.q} className="card-glow rounded-2xl p-6">
-                  <h3 className="mb-2 font-semibold text-foreground">{item.q}</h3>
-                  <p className="text-sm leading-6 text-muted-foreground">{item.a}</p>
-                </div>
-              ))}
-            </div>
+        {/* FAQ */}
+        <section id="faq" aria-labelledby="faq-h" className="border-t border-line">
+          <div className="mx-auto max-w-[860px] px-4 py-16 sm:px-6 sm:py-24">
+            <SectionHeading id="faq-h" className="mb-8">
+              Questions
+            </SectionHeading>
+            {FAQS.map((faq, i) => (
+              <details key={faq.q} open={i === 0} className="group border-b border-line py-5">
+                <summary className="flex min-h-[28px] cursor-pointer list-none items-center justify-between gap-4 text-[17px] font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+                  {faq.q}
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className="shrink-0 text-muted transition-transform group-open:rotate-45"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </summary>
+                <p className="mt-3 text-[15px] leading-[1.65] text-muted-foreground">{faq.a}</p>
+              </details>
+            ))}
           </div>
         </section>
       </main>
 
       <Footer />
-    </div>
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { Timestamp } from 'firebase-admin/firestore';
+import AxeBuilder from '@axe-core/playwright';
 import { USAGE_FIELDS } from '../../src/lib/usageStats';
 import {
   PLAINTEXT_MARKER,
@@ -11,6 +12,12 @@ import {
   splitLink,
 } from './helpers';
 
+async function expectAccessible(page: import('@playwright/test').Page, label: string) {
+  const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
+  const serious = axe.violations.filter((v) => ['serious', 'critical'].includes(v.impact ?? ''));
+  expect(serious.map((v) => `${v.id}: ${v.nodes.length} — ${v.help}`), `axe: ${label}`).toEqual([]);
+}
+
 test.describe('create → share → reveal', () => {
   test('one-time secret: opening does not consume, Reveal does, second open is unavailable', async ({
     page,
@@ -21,6 +28,7 @@ test.describe('create → share → reveal', () => {
     const createRequests = recordRequests(page);
     const link = await createSecretViaUi(page);
     const { id, key, path } = splitLink(link);
+    await expectAccessible(page, '/sent with link');
 
     // Sender side: nothing sensitive left the browser.
     assertNoLeaks(createRequests, baseURL!, [key, PLAINTEXT_MARKER]);
@@ -44,8 +52,10 @@ test.describe('create → share → reveal', () => {
     await expect(recipient.getByRole('button', { name: /reveal secret/i })).toBeVisible();
     // Key removed from the address bar and history entry.
     expect(new URL(recipient.url()).hash).toBe('');
+    await expectAccessible(recipient, 'reveal: ready state');
     await recipient.getByRole('button', { name: /reveal secret/i }).click();
     await expect(recipient.locator('pre')).toHaveText(PLAINTEXT_MARKER);
+    await expectAccessible(recipient, 'reveal: revealed state');
     await expect(recipient.getByText(/final view/i)).toBeVisible();
     assertNoLeaks(recipientRequests, baseURL!, [key, PLAINTEXT_MARKER]);
 
@@ -183,12 +193,12 @@ test.describe('API hardening', () => {
 
     // 1 three-view secret with notification, revealed 3 times, then a 4th attempt.
     await page.goto('/');
-    await page.getByPlaceholder(/paste your secret/i).fill(PLAINTEXT_MARKER);
-    await page.getByRole('radio', { name: '3 views' }).check();
+    await page.getByPlaceholder(/paste a password/i).fill(PLAINTEXT_MARKER);
+    await page.getByRole('radio', { name: '3 times' }).check();
     await page.getByRole('radio', { name: '1 hour' }).check();
     await page.getByRole('checkbox').check();
     await page.getByPlaceholder('your@email.com').fill('owner@example.com');
-    await page.getByRole('button', { name: /create secret link/i }).click();
+    await page.getByRole('button', { name: /create link/i }).click();
     await page.waitForURL('**/sent');
     const link = (await page.locator('code').first().textContent())!.trim();
     const { path, id } = splitLink(link);

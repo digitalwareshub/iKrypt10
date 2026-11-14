@@ -40,11 +40,11 @@ export async function createSecretViaUi(
   { text = PLAINTEXT_MARKER, views = 1 }: { text?: string; views?: 1 | 3 | 5 } = {}
 ): Promise<string> {
   await page.goto('/');
-  await page.getByPlaceholder(/paste your secret/i).fill(text);
+  await page.getByPlaceholder(/paste a password/i).fill(text);
   if (views !== 1) {
-    await page.getByRole('radio', { name: `${views} views` }).check();
+    await page.getByRole('radio', { name: `${views} times` }).check();
   }
-  await page.getByRole('button', { name: /create secret link/i }).click();
+  await page.getByRole('button', { name: /create link/i }).click();
   await page.waitForURL('**/sent');
   const link = (await page.locator('code').first().textContent())?.trim() ?? '';
   expect(link).toMatch(/\/s\/[A-Za-z0-9_-]{16}#k=[A-Za-z0-9_-]{43}$/);

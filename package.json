@@ -11,9 +11,9 @@
     "lint": "next lint",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx}\"",
-    "test:concurrency": "firebase emulators:exec --only firestore --project demo-ikrypt \"tsx scripts/test-concurrent-view.ts\"",
+    "test:concurrency": "firebase emulators:exec --config firebase.test.json --only firestore --project demo-ikrypt \"tsx scripts/test-concurrent-view.ts\"",
     "test:unit": "tsx --test tests/unit/*.test.ts",
-    "test:e2e": "NEXT_DIST_DIR=.next-e2e next build && NEXT_DIST_DIR=.next-e2e firebase emulators:exec --only firestore --project demo-ikrypt \"playwright test\"",
+    "test:e2e": "NEXT_DIST_DIR=.next-e2e next build && NEXT_DIST_DIR=.next-e2e firebase emulators:exec --config firebase.test.json --only firestore --project demo-ikrypt \"playwright test\"",
     "typecheck": "tsc --noEmit",
     "dev:local": "firebase emulators:exec --only firestore --project demo-ikrypt \"next dev\""
   },

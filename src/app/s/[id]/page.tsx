@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import FlowShell, { FlowEyebrow, FlowTitle, primaryButton, secondaryButton } from '@/components/FlowShell';
 import {
   decrypt,
   extractKeyFromHash,
@@ -139,10 +140,12 @@ export default function ViewSecretPage() {
 
   if (phase.kind === 'checking') {
     return (
-      <Centered>
-        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-muted-foreground" role="status">Checking secret…</p>
-      </Centered>
+      <FlowShell>
+        <div className="flex items-center gap-3 text-muted-foreground" role="status">
+          <span className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" aria-hidden="true" />
+          Checking secret…
+        </div>
+      </FlowShell>
     );
   }
 
@@ -175,89 +178,80 @@ export default function ViewSecretPage() {
 
   if (phase.kind === 'ready' || phase.kind === 'revealing') {
     const isLast = phase.viewsRemaining === 1;
+    const rows: [string, string][] = [
+      ['Views', isLast ? (phase.maxViews === 1 ? 'One-time' : 'Last view') : `${phase.viewsRemaining} of ${phase.maxViews} left`],
+      ['Link expires', formatExpiry(phase.expiresAt).replace('expires ', '')],
+      ['After reveal', isLast ? 'Deleted from server' : 'Uses 1 view'],
+    ];
     return (
-      <Centered>
-        <div className="max-w-md w-full">
-          <h1 className="text-2xl font-bold mb-2 text-foreground">Someone sent you a secret</h1>
-          <p className="text-muted-foreground mb-6">
-            It is encrypted and will be decrypted in this browser only when you press Reveal.{' '}
-            {isLast
-              ? 'This is a one-time secret: once revealed, it is deleted and the link stops working.'
-              : `Revealing uses 1 of ${phase.viewsRemaining} remaining views.`}{' '}
-            The link {formatExpiry(phase.expiresAt)}.
-          </p>
-          <button
-            type="button"
-            onClick={handleReveal}
-            disabled={phase.kind === 'revealing'}
-            className="w-full py-3 px-6 bg-primary hover:bg-primary-hover disabled:opacity-60 rounded-lg text-white font-medium transition-colors"
-          >
-            {phase.kind === 'revealing' ? 'Decrypting…' : 'Reveal secret'}
-          </button>
-          <p className="mt-4 text-xs text-muted-foreground">
-            Make sure nobody is looking at your screen before revealing.
-          </p>
-        </div>
-      </Centered>
+      <FlowShell>
+        <FlowEyebrow>Encrypted message</FlowEyebrow>
+        <FlowTitle>Someone sent you a secret.</FlowTitle>
+        <p className="mt-5 text-base leading-relaxed text-muted-foreground">
+          It will be decrypted on this device only when you press Reveal.
+          {isLast && ' Once revealed, it is deleted and this link stops working.'}
+        </p>
+
+        <dl className="mt-8 rounded-[14px] border border-line-strong bg-surface">
+          {rows.map(([label, value], i) => (
+            <div key={label} className={`flex justify-between gap-4 px-[18px] py-[15px] text-sm ${i > 0 ? 'border-t border-line' : ''}`}>
+              <dt className="text-muted">{label}</dt>
+              <dd className="font-medium text-foreground">{value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <button type="button" onClick={handleReveal} disabled={phase.kind === 'revealing'} className={`${primaryButton} mt-10`}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          {phase.kind === 'revealing' ? 'Decrypting…' : 'Reveal secret'}
+        </button>
+        <p className="mt-3.5 text-center text-[13px] text-muted">Make sure nobody can see your screen.</p>
+      </FlowShell>
     );
   }
 
   // revealed
   const viewsRemaining = phase.maxViews - phase.viewCount;
   return (
-    <Centered>
-      <div className="max-w-xl w-full">
-        <h1 className="text-2xl font-bold mb-2 text-foreground text-center">Secret revealed</h1>
-        <p className="text-sm text-muted-foreground text-center mb-6">
-          {viewsRemaining === 0
-            ? 'This was the final view. The encrypted data has been deleted from our servers.'
-            : `View ${phase.viewCount} of ${phase.maxViews}. ${viewsRemaining} view${viewsRemaining === 1 ? '' : 's'} remaining.`}
-        </p>
-        <pre className="bg-secondary border border-zinc-200 rounded-lg p-4 mb-4 text-sm text-foreground font-mono whitespace-pre-wrap break-all max-h-96 overflow-y-auto">
-          {phase.secret}
-        </pre>
-        <button
-          type="button"
-          onClick={handleCopy}
-          className="w-full py-3 px-6 rounded-lg font-medium text-white bg-primary hover:bg-primary-hover transition-colors"
-        >
-          {copied ? 'Copied' : 'Copy to clipboard'}
-        </button>
-        <p className="mt-4 text-xs text-muted-foreground" aria-live="polite">
-          Decrypted in your browser. Copied text stays on your clipboard until you copy something else,
-          and clipboard managers or sync may keep a copy. Store it somewhere safe, then close this tab.
-        </p>
-        <div className="mt-8 text-center">
-          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">
-            Create your own secret link →
-          </Link>
-        </div>
-      </div>
-    </Centered>
-  );
-}
+    <FlowShell>
+      <FlowEyebrow>Decrypted on this device</FlowEyebrow>
+      <FlowTitle>Secret revealed.</FlowTitle>
+      <p className="mt-5 text-sm text-muted-foreground">
+        {viewsRemaining === 0
+          ? 'This was the final view. The encrypted data has been deleted from our servers.'
+          : `View ${phase.viewCount} of ${phase.maxViews}. ${viewsRemaining} view${viewsRemaining === 1 ? '' : 's'} remaining.`}
+      </p>
 
-function Centered({ children }: { children: React.ReactNode }) {
-  return <div className="min-h-screen flex items-center justify-center px-4 text-center">{children}</div>;
+      <pre className="mt-7 max-h-96 overflow-y-auto whitespace-pre-wrap break-all rounded-[14px] border border-line-strong bg-surface p-4 font-mono text-[14px] leading-relaxed text-foreground">
+        {phase.secret}
+      </pre>
+
+      <button type="button" onClick={handleCopy} className={`${primaryButton} mt-4`}>
+        {copied ? 'Copied' : 'Copy to clipboard'}
+      </button>
+      <p className="mt-4 text-[13px] leading-relaxed text-muted" aria-live="polite">
+        Copied text stays on your clipboard until you copy something else, and clipboard managers may keep a
+        copy. Store it somewhere safe, then close this tab.
+      </p>
+
+      <Link href="/" className={`${secondaryButton} mt-10`}>
+        Create your own secret link
+      </Link>
+    </FlowShell>
+  );
 }
 
 function Message({ title, body, cta = false }: { title: string; body: string; cta?: boolean }) {
   return (
-    <Centered>
-      <div className="max-w-md">
-        <h1 className="text-2xl font-bold mb-2 text-foreground">{title}</h1>
-        <p className="text-muted-foreground mb-6">{body}</p>
-        <Link
-          href="/"
-          className={
-            cta
-              ? 'inline-block py-2 px-6 bg-primary hover:bg-primary-hover rounded-lg text-white font-medium'
-              : 'text-primary hover:text-primary-hover'
-          }
-        >
-          {cta ? 'Create a new secret' : 'Go to homepage'}
-        </Link>
-      </div>
-    </Centered>
+    <FlowShell>
+      <h1 className="font-display text-[36px] leading-[1.05] tracking-[-0.015em] text-heading sm:text-[44px]">{title}</h1>
+      <p className="mt-5 text-base leading-relaxed text-muted-foreground">{body}</p>
+      <Link href="/" className={`${cta ? primaryButton : secondaryButton} mt-8`}>
+        {cta ? 'Create a new secret' : 'Go to iKrypt'}
+      </Link>
+    </FlowShell>
   );
 }

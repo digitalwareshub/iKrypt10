@@ -11,6 +11,8 @@ const MARKETING_PAGES = [
   '/contact',
   '/blog',
   '/blog/password-sharing-mistakes',
+  '/blog/how-to-send-password-via-email-securely',
+  '/blog/why-you-should-never-share-passwords-in-slack',
   '/share-password-securely',
   '/send-api-key-securely',
   '/share-env-file-securely',
@@ -36,6 +38,9 @@ test.describe('secret pages', () => {
       expect(scripts.filter((s) => s.includes('/_vercel/'))).toEqual([]);
       expect(scripts.every((s) => new URL(s).origin === new URL(page.url()).origin)).toBe(true);
       expect(violations).toEqual([]);
+      const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
+      const serious = axe.violations.filter((v) => ['serious', 'critical'].includes(v.impact ?? ''));
+      expect(serious.map((v) => `${v.id}: ${v.nodes.length} node(s) — ${v.help}`), `axe on ${path}`).toEqual([]);
     });
   }
 });

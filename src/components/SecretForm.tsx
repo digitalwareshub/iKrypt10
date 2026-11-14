@@ -16,6 +16,18 @@ const SESSION_KEY = 'ikrypt_secret_url';
 type ExpiryOption = '10m' | '1h' | '24h';
 type ViewsOption = 1 | 3 | 5;
 
+const EXPIRY_OPTIONS: { value: ExpiryOption; label: string }[] = [
+  { value: '10m', label: '10 min' },
+  { value: '1h', label: '1 hour' },
+  { value: '24h', label: '24 hours' },
+];
+
+const VIEW_OPTIONS: { value: ViewsOption; label: string }[] = [
+  { value: 1, label: 'Once' },
+  { value: 3, label: '3 times' },
+  { value: 5, label: '5 times' },
+];
+
 export default function SecretForm() {
   const router = useRouter();
   const [secret, setSecret] = useState('');
@@ -91,128 +103,120 @@ export default function SecretForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-xl mx-auto">
-      {/* Secret Input */}
-      <div className="mb-6">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-[22px]" aria-describedby="form-note">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="secret" className="text-[13px] font-medium text-[#C9CDE3]">
+          Your secret
+        </label>
         <textarea
+          id="secret"
+          name="secret"
+          rows={6}
           value={secret}
           onChange={(e) => setSecret(e.target.value)}
-          placeholder="Paste your secret here... (password, API key, etc.)"
-          className="w-full h-40 px-4 py-3 bg-secondary border border-zinc-300 rounded-lg text-foreground placeholder-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-mono text-sm"
+          placeholder="Paste a password, API key or .env value…"
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
           disabled={isLoading}
+          className="w-full rounded-xl border border-line-strong bg-background px-4 py-3.5 font-mono text-sm leading-relaxed text-foreground placeholder:text-[#7C83A6] focus:border-primary focus:outline-none focus-visible:outline-none disabled:opacity-60"
         />
       </div>
 
-      {/* Options Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        {/* Expiry Options */}
-        <div>
-          <label className="block text-sm text-muted-foreground mb-3">
-            Expires after
-          </label>
-          <div className="flex gap-3">
-            {[
-              { value: '10m', label: '10 min' },
-              { value: '1h', label: '1 hour' },
-              { value: '24h', label: '24 hours' },
-            ].map((option) => (
-              <label
-                key={option.value}
-                className="flex items-center gap-2 cursor-pointer"
-              >
+      <div className="flex flex-wrap gap-[18px]">
+        <fieldset className="min-w-[200px] flex-1" disabled={isLoading}>
+          <legend className="mb-2 text-[13px] font-medium text-[#C9CDE3]">Expires after</legend>
+          <div className="segmented">
+            {EXPIRY_OPTIONS.map((option) => (
+              <label key={option.value}>
                 <input
                   type="radio"
                   name="expiry"
                   value={option.value}
                   checked={expiry === option.value}
-                  onChange={(e) => setExpiry(e.target.value as ExpiryOption)}
-                  disabled={isLoading}
+                  onChange={() => setExpiry(option.value)}
                 />
-                <span className="text-sm">{option.label}</span>
+                {option.label}
               </label>
             ))}
           </div>
-        </div>
+        </fieldset>
 
-        {/* View Limit Options */}
-        <div>
-          <label className="block text-sm text-muted-foreground mb-3">
-            Views allowed
-          </label>
-          <div className="flex gap-3">
-            {[
-              { value: 1, label: '1 view' },
-              { value: 3, label: '3 views' },
-              { value: 5, label: '5 views' },
-            ].map((option) => (
-              <label
-                key={option.value}
-                className="flex items-center gap-2 cursor-pointer"
-              >
+        <fieldset className="min-w-[200px] flex-1" disabled={isLoading}>
+          <legend className="mb-2 text-[13px] font-medium text-[#C9CDE3]">Can be viewed</legend>
+          <div className="segmented">
+            {VIEW_OPTIONS.map((option) => (
+              <label key={option.value}>
                 <input
                   type="radio"
                   name="maxViews"
                   value={option.value}
                   checked={maxViews === option.value}
-                  onChange={(e) =>
-                    setMaxViews(parseInt(e.target.value) as ViewsOption)
-                  }
-                  disabled={isLoading}
+                  onChange={() => setMaxViews(option.value)}
                 />
-                <span className="text-sm">{option.label}</span>
+                {option.label}
               </label>
             ))}
           </div>
-        </div>
+        </fieldset>
       </div>
 
-      {/* Email Notification */}
-      <div className="mb-6">
-        <label className="flex items-center gap-3 cursor-pointer mb-3">
+      <div className="flex flex-col gap-3">
+        <label className="flex min-h-[28px] cursor-pointer items-center gap-2.5 text-sm text-muted-foreground">
           <input
             type="checkbox"
             checked={enableNotify}
             onChange={(e) => setEnableNotify(e.target.checked)}
             disabled={isLoading}
           />
-          <span className="text-sm">Notify me when the link is opened</span>
+          Email me when it’s revealed
         </label>
 
         {enableNotify && (
-          <input
-            type="email"
-            value={notifyEmail}
-            onChange={(e) => setNotifyEmail(e.target.value)}
-            placeholder="your@email.com"
-            className="w-full px-4 py-2 bg-secondary border border-zinc-300 rounded-lg text-foreground placeholder-muted focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm"
-            disabled={isLoading}
-          />
+          <div>
+            <label htmlFor="notify-email" className="sr-only">
+              Email address for the reveal notification
+            </label>
+            <input
+              id="notify-email"
+              type="email"
+              value={notifyEmail}
+              onChange={(e) => setNotifyEmail(e.target.value)}
+              placeholder="your@email.com"
+              autoComplete="email"
+              disabled={isLoading}
+              className="w-full rounded-xl border border-line-strong bg-background px-4 py-3 text-sm text-foreground placeholder:text-[#7C83A6] focus:border-primary focus:outline-none"
+            />
+          </div>
         )}
       </div>
 
-      {/* Error Message */}
       {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+        <p role="alert" className="rounded-xl border border-accent-danger/40 bg-accent-danger/10 px-4 py-3 text-sm text-[#FCA5A5]">
           {error}
-        </div>
+        </p>
       )}
 
-      {/* Submit Button */}
       <button
         type="submit"
         disabled={isLoading || !secret.trim()}
-        className={`w-full py-3 px-6 rounded-lg font-medium text-white transition-all ${
-          isLoading || !secret.trim()
-            ? 'bg-zinc-300 cursor-not-allowed'
-            : 'bg-primary hover:bg-primary-hover'
-        } ${isLoading ? 'btn-loading' : ''}`}
+        className={`flex h-[52px] items-center justify-center gap-2.5 rounded-xl bg-primary text-base font-semibold text-primary-foreground transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50 ${
+          isLoading ? 'btn-loading' : ''
+        }`}
       >
-        Create Secret Link
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <rect x="4" y="10" width="16" height="11" rx="2" />
+          <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+        </svg>
+        Encrypt and create link
       </button>
 
-      {/* Trust Message */}
-      <p className="mt-4 text-center text-xs text-muted">
-        🔐 The encryption key never leaves your browser
+      <p id="form-note" className="text-center text-[12.5px] text-muted">
+        Encrypted on this device before upload.{' '}
+        <a href="#what-we-store" className="text-primary hover:text-primary-hover">
+          What we store →
+        </a>
       </p>
     </form>
   );

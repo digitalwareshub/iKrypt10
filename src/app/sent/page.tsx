@@ -1,187 +1,108 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import FlowShell, { FlowEyebrow, FlowTitle, primaryButton, secondaryButton } from '@/components/FlowShell';
 
+// Must match the key used in components/SecretForm.tsx
 const SESSION_KEY = 'ikrypt_secret_url';
 
-function SentContent() {
-  const [secretUrl, setSecretUrl] = useState<string | null>(null);
+export default function SentPage() {
+  // undefined = still reading sessionStorage; null = nothing there.
+  const [secretUrl, setSecretUrl] = useState<string | null | undefined>(undefined);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const url = sessionStorage.getItem(SESSION_KEY);
-
-    if (url) {
-      setSecretUrl(url);
-      sessionStorage.removeItem(SESSION_KEY);
-    }
+    sessionStorage.removeItem(SESSION_KEY);
+    setSecretUrl((current) => current ?? url);
   }, []);
 
   const handleCopy = async () => {
     if (!secretUrl) return;
-
     try {
       await navigator.clipboard.writeText(secretUrl);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      // Clipboard blocked: the link stays selectable on screen.
     }
   };
 
-  if (!secretUrl) {
+  if (secretUrl === undefined) {
+    return <FlowShell>{null}</FlowShell>;
+  }
+
+  if (secretUrl === null) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4 text-foreground">
-            No secret URL found
-          </h1>
-
-          <p className="text-muted-foreground mb-6">
-            This page is only accessible immediately after creating a secret.
-          </p>
-
-          <Link
-            href="/"
-            className="text-primary hover:text-primary-hover transition-colors"
-          >
-            Create a new secret
-          </Link>
-        </div>
-      </div>
+      <FlowShell>
+        <FlowTitle>No link to show.</FlowTitle>
+        <p className="mt-5 text-base leading-relaxed text-muted-foreground">
+          A new link is shown only once, straight after it’s created, and isn’t stored anywhere, not even
+          in this browser. If you lost it, create a new secret.
+        </p>
+        <Link href="/" className={`${primaryButton} mt-8`}>
+          Create a new secret
+        </Link>
+      </FlowShell>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="py-6 px-4">
-        <div className="max-w-4xl mx-auto">
-          <Link href="/" className="text-xl font-bold text-foreground">
-            iKrypt
-          </Link>
-        </div>
-      </header>
+    <FlowShell>
+      <FlowEyebrow>Link created</FlowEyebrow>
+      <FlowTitle>Your secret link is ready.</FlowTitle>
+      <p className="mt-5 text-base leading-relaxed text-muted-foreground">
+        Send it to your recipient. It stops working when the view limit is reached or when it expires,
+        whichever comes first.
+      </p>
 
-      <main className="flex-1 flex items-center justify-center px-4">
-        <div className="max-w-xl w-full text-center">
-          <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-6">
-            <svg
-              className="w-8 h-8 text-accent"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-          </div>
-
-          <h1 className="text-2xl font-bold mb-2 text-foreground">
-            Secret link created
-          </h1>
-
-          <p className="text-muted-foreground mb-8">
-            Share this link with your recipient. It self-destructs after the
-            view limit is reached or when it expires, whichever comes first.
-          </p>
-
-          <div className="bg-secondary border border-zinc-200 rounded-lg p-4 mb-4 text-left">
-            <code className="text-sm text-foreground break-all font-mono">
-              {secretUrl}
-            </code>
-          </div>
-
-          <button
-            onClick={handleCopy}
-            className={`w-full py-3 px-6 rounded-lg font-medium text-white transition-all mb-6 ${
-              copied ? 'bg-accent' : 'bg-primary hover:bg-primary-hover'
-            }`}
-          >
-            {copied ? '✓ Copied to clipboard' : 'Copy link'}
-          </button>
-
-          <div className="bg-accent-warning/10 border border-accent-warning/20 rounded-lg p-4 mb-8">
-            <p className="text-sm text-accent-warning">
-              <strong>Important:</strong> This is the only time you&apos;ll see
-              this link. The encryption key is embedded in the URL and is not
-              stored anywhere — not even by us.
-            </p>
-          </div>
-
-          <div className="text-left bg-secondary/50 rounded-lg p-4 border border-zinc-200">
-            <h3 className="font-medium mb-3 text-foreground text-sm">
-              🔐 What happens next
-            </h3>
-
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li className="flex items-start gap-2">
-                <span className="text-accent mt-1">•</span>
-                <span>
-                  Opening the link does not use it up. The secret is only decrypted, in
-                  their browser, when your recipient presses Reveal
-                </span>
-              </li>
-
-              <li className="flex items-start gap-2">
-                <span className="text-accent mt-1">•</span>
-                <span>
-                  After the view limit is reached, the link becomes inaccessible immediately
-                  and the encrypted data is deleted
-                </span>
-              </li>
-
-              <li className="flex items-start gap-2">
-                <span className="text-accent mt-1">•</span>
-                <span>
-                  If it is never revealed, the link stops working at expiry and the encrypted
-                  data is then removed by automatic cleanup
-                </span>
-              </li>
-
-              <li className="flex items-start gap-2">
-                <span className="text-accent mt-1">•</span>
-                <span>
-                  If you enabled notifications, you&apos;ll receive an email
-                  when the secret is first revealed
-                </span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="mt-8">
-            <Link
-              href="/"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              ← Create another secret
-            </Link>
-          </div>
-        </div>
-      </main>
-    </div>
-  );
-}
-
-function LoadingFallback() {
-  return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="text-center">
-        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-muted-foreground">Loading...</p>
+      <div className="mt-8 rounded-[14px] border border-line-strong bg-surface p-4">
+        <code className="block break-all font-mono text-[13.5px] leading-relaxed text-foreground">{secretUrl}</code>
       </div>
-    </div>
-  );
-}
 
-export default function SentPage() {
-  return (
-    <Suspense fallback={<LoadingFallback />}>
-      <SentContent />
-    </Suspense>
+      <button type="button" onClick={handleCopy} className={`${primaryButton} mt-4`}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          {copied ? (
+            <path d="M5 12.5l4.5 4.5L19 7" />
+          ) : (
+            <>
+              <rect x="9" y="9" width="12" height="12" rx="2" />
+              <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+            </>
+          )}
+        </svg>
+        {copied ? 'Copied' : 'Copy link'}
+      </button>
+      <p className="sr-only" aria-live="polite">
+        {copied ? 'Link copied to clipboard' : ''}
+      </p>
+
+      <div className="mt-6 rounded-[14px] border border-accent-warning/30 bg-accent-warning/[0.07] p-4 text-sm leading-relaxed text-[#FCD34D]">
+        <strong className="font-semibold">This is the only time you’ll see this link.</strong> The key is part
+        of the link and isn’t stored anywhere, so we can’t show it again.
+      </div>
+
+      <h2 className="mb-3 mt-10 text-sm font-semibold text-foreground">What happens next</h2>
+      <ul className="flex flex-col gap-3 text-sm leading-relaxed text-muted-foreground">
+        <li className="flex gap-3">
+          <span className="font-mono text-primary">01</span>
+          Opening the link doesn’t use it up, so email scanners and link previews are harmless.
+        </li>
+        <li className="flex gap-3">
+          <span className="font-mono text-primary">02</span>
+          The secret is decrypted in your recipient’s browser only when they press Reveal.
+        </li>
+        <li className="flex gap-3">
+          <span className="font-mono text-primary">03</span>
+          After the last allowed view the encrypted data is deleted. If it’s never revealed, it’s cleaned up
+          after expiry.
+        </li>
+      </ul>
+
+      <Link href="/" className={`${secondaryButton} mt-10`}>
+        Create another secret
+      </Link>
+    </FlowShell>
   );
 }
