@@ -24,7 +24,7 @@ const CATEGORIES: FooterCategory[] = [
     links: [
       { label: 'Create a secret', href: '/' },
       { label: 'Security architecture', href: '/security' },
-      { label: 'Open source on GitHub', href: GITHUB_REPO_URL, external: true },
+      { label: 'Source code on GitHub', href: GITHUB_REPO_URL, external: true },
     ],
   },
   {

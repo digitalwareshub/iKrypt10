@@ -70,7 +70,7 @@ const thirdParties = [
   },
   {
     name: 'Vercel',
-    purpose: 'Provides hosting, CDN, edge caching, and server-side infrastructure for the website and API routes.',
+    purpose: 'Provides hosting, CDN, and server-side infrastructure. Vercel Web Analytics and Speed Insights provide aggregate page counts and performance data on guide, blog and information pages only.',
   },
   {
     name: 'Upstash',
@@ -83,10 +83,6 @@ const thirdParties = [
   {
     name: 'Formspree',
     purpose: 'Handles messages submitted through the contact form.',
-  },
-  {
-    name: 'Ahrefs Analytics',
-    purpose: 'May be used on public marketing/content pages for aggregate traffic analytics. It is not loaded on secret creation or secret viewing pages.',
   },
 ];
 
@@ -275,8 +271,8 @@ export default function PrivacyPage() {
                     <p>
                       When the final allowed view is consumed, the encrypted record is deleted as
                       part of that server-side transaction. For secrets that expire without being
-                      viewed, the encrypted record is removed automatically by a Firestore TTL
-                      policy, typically within 24 hours of expiry.
+                      viewed, the encrypted record is removed by an automatic
+                      cleanup policy after expiry.
                     </p>
                   </div>
                 </section>
@@ -286,15 +282,22 @@ export default function PrivacyPage() {
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>
-                      The pages where secrets are created or viewed do not load third-party
-                      analytics scripts. That includes the homepage secret form and individual
-                      secret viewing pages.
+                      The pages where secrets are created, linked or viewed (the homepage, the
+                      confirmation page and every secret link) load no analytics and no
+                      third-party scripts.
                     </p>
 
                     <p>
-                      Public marketing and content pages may use limited aggregate analytics, such
-                      as Ahrefs Analytics, to understand traffic patterns. We do not link analytics
-                      data to individual secret contents.
+                      Guide, blog and information pages use Vercel Web Analytics and Speed
+                      Insights for aggregate page counts and performance. They do not use cookies,
+                      and we remove the query string and anything after # from every page
+                      address before it is recorded.
+                    </p>
+
+                    <p>
+                      To understand whether iKrypt is used, our server keeps daily totals (for
+                      example, how many secrets were created and revealed that day). These totals
+                      contain no secret IDs, IP addresses, email addresses or content.
                     </p>
 
                     <p>
@@ -340,7 +343,7 @@ export default function PrivacyPage() {
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
                     <p>
                       If you choose to provide an email address for view notifications, we use it
-                      only to notify you when the secret link is accessed.
+                      only to notify you when the secret is first revealed.
                     </p>
 
                     <p>
@@ -350,9 +353,9 @@ export default function PrivacyPage() {
                     </p>
 
                     <p>
-                      A notification means the link was accessed. It does not guarantee that a
-                      specific human read the secret, because link scanners or automated tools may
-                      sometimes access links.
+                      A notification means someone with the full link pressed Reveal. Opening the
+                      link alone (for example by an email security scanner) does not reveal the
+                      secret or trigger a notification. We cannot confirm who pressed Reveal.
                     </p>
                   </div>
                 </section>

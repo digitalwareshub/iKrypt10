@@ -202,7 +202,7 @@ const faqs = [
   },
   {
     q: 'What happens after expiry?',
-    a: 'After expiry, the API blocks access immediately. Expired encrypted records are removed automatically by Firestore TTL, typically within 24 hours.',
+    a: 'After expiry, the API blocks access immediately. Expired encrypted records are removed by automatic cleanup.',
   },
   {
     q: 'Is iKrypt a password manager or secrets manager?',

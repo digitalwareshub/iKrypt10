@@ -65,7 +65,7 @@ const faqJsonLd = {
       name: 'What happens after the password link expires?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'After expiry or the final allowed view, the secret becomes inaccessible. Expired encrypted records are removed automatically by Firestore TTL, typically within 24 hours.',
+        text: 'After expiry or the final allowed view, the secret becomes inaccessible. Expired encrypted records are removed by automatic cleanup.',
       },
     },
   ],
@@ -146,7 +146,7 @@ const faqs = [
   },
   {
     q: 'What happens after the password link expires?',
-    a: 'The secret becomes inaccessible immediately after expiry or final view. Expired encrypted records are removed automatically by Firestore TTL, typically within 24 hours.',
+    a: 'The secret becomes inaccessible immediately after expiry or final view. Expired encrypted records are removed by automatic cleanup.',
   },
 ];
 

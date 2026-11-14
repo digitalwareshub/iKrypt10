@@ -301,7 +301,7 @@ export default function TermsPage() {
 
                     <p>
                       For secrets that expire without being viewed, encrypted records are removed by
-                      Firestore&apos;s time-to-live policy, typically within 24 hours of expiry.
+                      an automatic cleanup policy after expiry.
                       During this period, the API still blocks access after expiry.
                     </p>
 

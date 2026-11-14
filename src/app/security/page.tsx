@@ -52,7 +52,7 @@ const architectureSteps = [
   {
     number: '04',
     title: 'View limits are enforced server-side',
-    desc: 'When a secret is opened, iKrypt uses a Firestore transaction to reserve the view, update the view count, or delete the record on the final allowed view.',
+    desc: 'Opening a link only checks availability. When the recipient presses Reveal, iKrypt uses a Firestore transaction to reserve the view, update the view count, or delete the record on the final allowed view.',
   },
 ];
 
@@ -83,11 +83,11 @@ const protections = [
   },
   {
     title: 'Expired secrets are blocked immediately',
-    desc: 'Once a secret expires, the API rejects access immediately, even if the encrypted database record has not yet been physically removed by TTL cleanup.',
+    desc: 'Once a secret expires, the API rejects access immediately, even if the encrypted database record has not yet been physically removed by automatic cleanup.',
   },
   {
     title: 'No analytics on secret pages',
-    desc: 'The pages where secrets are created or viewed do not load third-party analytics scripts.',
+    desc: 'The pages where secrets are created or viewed do not load any analytics or third-party scripts.',
   },
 ];
 
@@ -205,7 +205,7 @@ export default function SecurityPage() {
                       ['Analytics and scripts', '#analytics'],
                       ['Limitations', '#limitations'],
                       ['Recommended usage', '#recommended-usage'],
-                      ['Open source', '#open-source'],
+                      ['Public source code', '#open-source'],
                     ].map(([label, href]) => (
                       <a
                         key={href}
@@ -349,7 +349,7 @@ export default function SecurityPage() {
 
                     <p>
                       For secrets that expire without being viewed, encrypted records are removed by
-                      Firestore&apos;s TTL policy, typically within 24 hours of expiry.
+                      an automatic cleanup policy after expiry.
                     </p>
                   </div>
                 </section>
@@ -417,7 +417,7 @@ export default function SecurityPage() {
 
                 <section id="open-source" className="card-glow scroll-mt-24 rounded-2xl p-8 text-center md:p-10">
                   <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
-                    Open source
+                    Public source code
                   </p>
 
                   <h2 className="text-2xl font-bold tracking-tight text-foreground">

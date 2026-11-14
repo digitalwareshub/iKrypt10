@@ -18,7 +18,7 @@ const availableToday = [
   'One-time or limited-view encrypted links',
   'Expiry-based access limits',
   'No account required for the current product',
-  'Open-source codebase',
+  'Public source code',
   'No third-party analytics on secret creation or viewing pages',
 ];
 

@@ -9,7 +9,7 @@ const X_URL = 'https://x.com/bydigiwares';
 export const metadata: Metadata = {
   title: 'About iKrypt — One-Time Encrypted Secret Sharing',
   description:
-    'Learn why iKrypt was built: a simple, open-source way to share passwords, API keys, .env values, and temporary secrets with one-time encrypted links.',
+    'Learn why iKrypt was built: a simple, source-available way to share passwords, API keys, .env values, and temporary secrets with one-time encrypted links.',
   alternates: {
     canonical: 'https://ikrypt.com/about',
   },
@@ -25,7 +25,7 @@ const principles = [
     desc: 'Secrets are encrypted in your browser before upload. The server stores encrypted ciphertext, not plaintext.',
   },
   {
-    title: 'Open source',
+    title: 'Public source code',
     desc: 'Security tools should be inspectable. The iKrypt codebase is public so developers can review how the encryption and sharing flow works.',
   },
   {
