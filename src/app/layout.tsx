@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
-import AhrefsAnalytics from '@/components/AhrefsAnalytics';
+import SiteAnalytics from '@/components/SiteAnalytics';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -165,13 +163,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <main className="min-h-screen">{children}</main>
 
-        {/* Vercel Analytics */}
-        <Analytics />
-        <SpeedInsights />
-
-        {/* Ahrefs Analytics — only loads when configured, and never on
-            pages where a secret is created, typed, or displayed */}
-        <AhrefsAnalytics />
+        {/* First-party analytics: allow-listed marketing pages only, every
+            event redacted. Never loads on /, /sent or /s/[id].
+            See src/lib/analyticsPolicy.ts. */}
+        <SiteAnalytics />
       </body>
     </html>
   );
