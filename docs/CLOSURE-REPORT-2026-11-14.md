@@ -18,7 +18,7 @@ Status key: **Fixed + verified** (code changed and an automated test proves it) 
 | Concurrency (Firestore emulator) | **3 / 3 passed** | 20 simultaneous reveals of a one-time secret → exactly 1 succeeds; 3-view → exactly 3; expired → rejected and deleted |
 | Lint / typecheck | Clean | |
 | `npm audit --omit=dev` | **0 vulnerabilities** (was 24: 3 critical, 9 high) | |
-| Real Resend call (test address `delivered@resend.dev`) | **Fails as diagnosed**: "ikrypt.com domain is not verified" | Confirms why notifications never arrived (see S9) |
+| Real Resend call (test address `delivered@resend.dev`) | Before DNS fix: rejected, "domain not verified". **After fix: delivered** | Confirms the diagnosis and the fix (see S9) |
 
 Run them yourself: `npm run test:unit`, `npm run test:e2e`, `npm run test:concurrency` (need a JDK, for example `brew install openjdk`). CI runs all of them on every push and pull request.
 
@@ -34,7 +34,7 @@ Run them yourself: `npm run test:unit`, `npm run test:e2e`, `npm run test:concur
 | **S6** | Outdated dependencies | **Fixed + verified** | Next 15.5.29, firebase-admin 14, resend 6.38, PostCSS override; unused `firebase` SDK removed; Dependabot added | `npm audit`: 0 |
 | **S7** | `unsafe-inline` CSP | **Fixed on secret pages + verified** | Per-request nonce CSP with `strict-dynamic` on `/`, `/sent`, `/s/[id]`. Marketing pages keep `unsafe-inline` so they stay static (no secrets there) | Secret-page CSP tests, 0 violations |
 | **S8** | Rate-limit IP behind Cloudflare | **Partly fixed; Unverified** | Vercel-set headers preferred (unspoofable). Whether Vercel sees Cloudflare IPs needs a dashboard check | **Owner check**, verification doc §6 |
-| **S9** | Notification email may not send | **Fixed + verified (code); delivery blocked by DNS** | Uses `after()`; Resend `error` now detected and logged (previously ignored, so every failure looked like success); new email template; accurate copy | Unit tests; real send fails with "domain not verified". **Owner action:** DNS, verification doc §8 |
+| **S9** | Notification email may not send | **Fixed + verified, delivering** | Uses `after()`; Resend `error` now detected and logged (previously ignored, so every failure looked like success); new email template; accurate copy. Domain verified in Resend after the owner's DNS fix | Unit tests; real send via the production code path: `last_event: delivered` (14 Nov 2026) |
 | **S10** | No payload validation | **Fixed + verified** | Type, format and size checks (64 KB cap, also client-side) | "rejects malformed, oversized and mistyped payloads" |
 | **S11** | Internal errors returned to clients | **Fixed + verified** | Generic messages only | Same test asserts no internals leak |
 | **S12** | Invalid key burns the view | **Fixed + verified** | Key format checked before any request | "truncated key is rejected before anything is consumed" |
@@ -69,7 +69,7 @@ No page scrolls horizontally at 390 px or 1440 px. All text colours measure at l
 ## 4. Before merging: owner checklist
 
 **Must do before or right after merge**
-1. **Resend DNS** (verification doc §8): replace the old SPF TXT on `send.ikrypt.com` with two CNAMEs, click Verify in Resend, then run `npm run email:test -- you@example.com`. Until then, notification emails silently never arrive, as they don't today.
+1. ~~Resend DNS~~ **Done 14 Nov 2026**: domain verified, test email delivered. Optional: add DMARC TXT `_dmarc` → `v=DMARC1; p=none;`.
 2. **Storage rules** (§3): check the live rules. If they're open, deploy deny-all.
 3. **TTL policy** (§1): confirm it exists on `secrets.expiresAt`, or create it.
 

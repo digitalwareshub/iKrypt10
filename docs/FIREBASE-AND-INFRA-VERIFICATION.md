@@ -122,7 +122,15 @@ visitors can share one rate-limit bucket.
 
 **Confirmed 14 Nov 2026:** the Vercel team "Digiwares" is on **Pro**, so commercial use is permitted. No action needed.
 
-## 8. Resend: reveal-notification emails (currently NOT delivering)
+## 8. Resend: reveal-notification emails ✅ RESOLVED 14 Nov 2026
+
+**Outcome:** the owner ran Resend's Cloudflare auto-configure, deleted the conflicting TXT
+`v=spf1 include:amazonses.com ~all` on `send`, and Resend verified the domain at 19:42 local time.
+A test through the production code path (`npm run email:test -- delivered@resend.dev`)
+was **delivered** (`last_event: delivered`, from `iKrypt <notifications@ikrypt.com>`).
+Remaining optional item: the DMARC TXT `_dmarc` → `v=DMARC1; p=none;` was not yet visible in DNS.
+
+The original diagnosis follows for the record.
 
 Checked 14 Nov 2026 via the Resend API (read-only) and public DNS:
 
