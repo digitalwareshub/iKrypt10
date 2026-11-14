@@ -1,22 +1,12 @@
 rules_version = '2';
+
+// iKrypt does not use Cloud Storage. The legacy `encrypted-files/` upload
+// feature was removed; its old rules allowed public reads and unauthenticated
+// writes. Deny everything. Deploying these rules (firebase deploy --only
+// storage) closes any bucket left open by an earlier deployment.
+// See docs/FIREBASE-AND-INFRA-VERIFICATION.md, section 3.
 service firebase.storage {
   match /b/{bucket}/o {
-    // Encrypted files storage
-    match /encrypted-files/{fileName} {
-      // Allow read - files are encrypted client-side
-      // Security relies on knowing the file path and having the decryption key
-      allow read: if true;
-
-      // Allow write with strict validation
-      allow write: if request.resource.size > 0
-                  && request.resource.size < 10 * 1024 * 1024  // 10MB limit
-                  && request.resource.contentType == 'application/octet-stream';  // Only encrypted binary data
-
-      // No deletes - files expire based on metadata
-      allow delete: if false;
-    }
-
-    // Deny all other paths by default
     match /{allPaths=**} {
       allow read, write: if false;
     }
