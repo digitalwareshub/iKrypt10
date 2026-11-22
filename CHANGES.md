@@ -1,0 +1,66 @@
+# CHANGES
+
+Everything implemented, changed, deleted, deployed, verified or configured, newest first.
+Code-level detail is in the git history; this file is the human-readable log.
+
+## 2026-11-22
+
+- **Deployed to production.** Merged `modernize/2026-11` into `main` (fast-forward, 21 commits,
+  `a870fcb..83e6069`); Vercel production deploy succeeded. Branch deleted locally and on GitHub.
+- **First CI run on GitHub passed** on the merge commit (lint, typecheck, unit, audit, concurrency, e2e).
+- **Live verification on ikrypt.com** (real browser):
+  - Strict nonce CSP and `no-store` on `/` and `/s/*`; no Ahrefs; Formspree allowed; new design and title live.
+  - Real create → scanner-open → reveal: scanner did not consume the link; key stripped from the
+    address bar; no request carried the key or plaintext; secret deleted after reveal (API `404`).
+  - Reveal notification sent from production to Resend's test address: **delivered**.
+  - **New finding:** Cloudflare injects its Web Analytics (RUM) script at the edge, and it runs on
+    secret pages. Added to TO-DO.md.
+- **Header made consistent across all pages.** The header "danced" between pages: each page rendered
+  its own copy, the homepage variant lacked the "Create a secret" button (6 px shorter, links jumped
+  162 px), and 11 pages had a second sticky breadcrumb bar sliding under it. Now one fixed-height header
+  in the root layout, the same on every page; breadcrumbs inside pages, aligned with the logo;
+  `scrollbar-gutter: stable`.
+- **Fixed:** the "On this page" side menus on Privacy, Terms and Security no longer stuck
+  (`overflow-hidden` on `<main>`, now `overflow-clip`).
+- **Added tests:** `tests/e2e/layout-consistency.spec.ts` (header identical on 14 pages, single sticky
+  bar, breadcrumbs aligned, sticky side menus). Suite: 65 e2e passing.
+- **Added** CLAUDE.md (project rules), this CHANGES.md and TO-DO.md.
+- **Dependabot activated** (config arrived with the merge): opened 9 upgrade PRs (#2–#10).
+
+## 2026-11-14
+
+- **Audit:** `docs/IKRYPT_CODEBASE_SECURITY_AND_REVENUE_AUDIT_2026-11-14.md` (security, product, revenue).
+- **Security and correctness** (branch `modernize/2026-11`):
+  - Analytics no longer receive decryption keys (allow-listed routes + redaction); Ahrefs removed.
+  - Reveal-on-click: opening a link no longer consumes it (email scanners can't burn secrets).
+  - Strict nonce CSP on secret pages; contact form unblocked (Formspree in `connect-src`).
+  - API input validation, generic errors, `no-store`; truncated keys rejected before any request.
+  - Creator IP hash no longer stored; IP taken from Vercel-set headers.
+  - Dependencies upgraded (Next 15.5.29, firebase-admin 14, resend 6.38): 24 → 0 production advisories.
+  - Unused `firebase` client SDK removed; `storage.rules` replaced with deny-all.
+- **Usage metrics:** daily aggregate counters in Firestore `usageStats/{date}`.
+- **Email:** Resend errors were silently ignored; now detected and logged; new email design; sent on
+  reveal; `npm run email:test`.
+- **Claims corrected:** "Open source" → "Public source code"; TTL timing no longer promised; privacy
+  policy updated; invented statistics and "real cases" removed from blog posts and a blog image.
+- **Redesign ("Midnight Fragment")** after mockup approval: homepage, Security page, secret flow, and
+  all content pages; new share image; SEO metadata fixed (titles, descriptions, canonicals, OG images).
+- **Tests and CI:** Playwright e2e (desktop + mobile, axe accessibility), unit tests, concurrency test,
+  GitHub Actions CI, Dependabot.
+- **Owner configuration, verified together:**
+  - Resend: Cloudflare auto-configure added the `send`/`rsend` CNAMEs; the conflicting old SPF TXT on
+    `send` was deleted; domain verified; test email delivered.
+  - Firebase console: deny-all Firestore rules live (since 4 Jul); TTL on `secrets.expiresAt` Serving;
+    Storage and Realtime Database never created.
+  - Vercel: team on Pro.
+- Docs: `docs/CLOSURE-REPORT-2026-11-14.md`, `docs/FIREBASE-AND-INFRA-VERIFICATION.md`.
+
+## Earlier (summary from git history)
+
+- **2026-07-04:** Admin SDK + Firestore transaction (closed one-time-view race), deny-all Firestore
+  rules, honest `/healthcare` page, Google Analytics removed, light "Encrypted Mesh" redesign, four
+  long-tail SEO pages, IndexNow on deploy. CSP `unsafe-inline` restored after a hotfix.
+- **2026-04-28:** Codex audit.
+- **2026-01-09 → 01-23:** Pivot from a multi-tool site to a focused one-time secret product; blog,
+  about, contact pages; Ahrefs added.
+- **2025-05:** Original iKrypt multi-tool site (chat rooms, one-time messages and other tools).
