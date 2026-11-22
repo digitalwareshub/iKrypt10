@@ -1,18 +1,11 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Instrument_Serif, JetBrains_Mono } from 'next/font/google';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import SiteAnalytics from '@/components/SiteAnalytics';
 import SiteHeader from '@/components/SiteHeader';
 import './globals.css';
 
 // Self-hosted at build time by next/font: no requests to Google at runtime.
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
-const display = Instrument_Serif({
-  subsets: ['latin'],
-  weight: '400',
-  style: ['normal', 'italic'],
-  variable: '--font-display',
-  display: 'swap',
-});
 const mono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400', '500'],
@@ -173,7 +166,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${display.variable} ${mono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${mono.variable}`}>
       <head>
         <script
           type="application/ld+json"

@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
-import Mesh from '@/components/Mesh';
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -68,7 +67,7 @@ export default function ContactPage() {
     <div className="min-h-screen flex flex-col pattern-bg">
 
       <nav aria-label="Breadcrumb" className="pt-8">
-        <div className="mx-auto max-w-site px-4 sm:px-6">
+        <div className="editorial-container">
           <ol className="flex flex-wrap items-center gap-2 text-[13px] text-muted">
             <li>
               <Link href="/" className="transition-colors hover:text-foreground">
@@ -81,15 +80,15 @@ export default function ContactPage() {
         </div>
       </nav>
 
-      <main id="content" className="relative isolate flex-1 overflow-clip px-4 pb-14 pt-8 md:pb-20 md:pt-10">
-        <Mesh variant="right" />
-        <div className="mx-auto max-w-6xl">
-          <section className="mx-auto max-w-3xl text-center">
+      <main id="content" className="editorial-page flex-1">
+
+        <div className="editorial-container">
+          <section className="editorial-intro">
             <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
               Contact
             </p>
 
-            <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] text-balance">
+            <h1 className="editorial-title text-balance">
               Questions, feedback, or security concerns?
             </h1>
 
@@ -108,13 +107,13 @@ export default function ContactPage() {
           <section className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="space-y-4">
               {contactReasons.map((item) => (
-                <div key={item.title} className="card-glow rounded-2xl p-6">
+                <div key={item.title} className="editorial-block">
                   <h2 className="font-semibold text-heading tracking-[-0.01em]">{item.title}</h2>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.desc}</p>
                 </div>
               ))}
 
-              <div className="card-glow rounded-2xl p-6">
+              <div className="editorial-block">
                 <h2 className="font-semibold text-heading tracking-[-0.01em]">Other ways to follow</h2>
 
                 <div className="mt-4 flex flex-wrap gap-3">
@@ -122,7 +121,7 @@ export default function ContactPage() {
                     href={X_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                    className="rounded-xl border border-line bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                   >
                     @bydigiwares on X
                   </a>
@@ -131,7 +130,7 @@ export default function ContactPage() {
                     href={GITHUB_REPO_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                    className="rounded-xl border border-line bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                   >
                     GitHub
                   </a>
@@ -139,7 +138,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="card-glow rounded-2xl p-5 md:p-8">
+            <div className="rounded-2xl border border-line-strong bg-surface p-5 md:p-8">
               {status === 'success' ? (
                 <div className="py-10 text-center">
                   <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-line">
@@ -168,7 +167,7 @@ export default function ContactPage() {
 
                   <button
                     onClick={() => setStatus('idle')}
-                    className="mt-7 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+                    className="mt-7 editorial-action"
                   >
                     Send another message
                   </button>
@@ -249,7 +248,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={status === 'submitting'}
-                    className="w-full rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
+                    className="editorial-action w-full disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {status === 'submitting' ? 'Sending...' : 'Send message'}
                   </button>

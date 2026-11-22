@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
-import Mesh from '@/components/Mesh';
 import { PageHero, CheckIcon, CrossIcon } from '@/components/ui';
 
 const GITHUB_REPO_URL = 'https://github.com/digitalwareshub/iKrypt10';
@@ -78,7 +77,7 @@ export default function SecurityPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
       <main id="content" className="relative isolate overflow-clip">
-        <Mesh variant="right" />
+
         <PageHero
           crumbs={[{ href: '/', label: 'Home' }, { label: 'Security' }]}
           eyebrow="Security architecture"
@@ -89,7 +88,7 @@ export default function SecurityPage() {
           <p className="mt-5 text-[13px] text-muted">Last reviewed {LAST_REVIEWED}</p>
         </PageHero>
 
-        <div className="mx-auto flex max-w-site flex-wrap items-start gap-14 px-4 pb-24 sm:px-6">
+        <div className="editorial-container flex flex-wrap items-start gap-14 border-t border-line pb-24 pt-12">
           <aside className="sticky top-24 hidden max-w-[240px] flex-[1_1_200px] lg:block">
             <nav aria-label="On this page" className="flex flex-col gap-3 border-l border-line-strong pl-[18px] text-sm">
               {TOC.map(([id, label]) => (
@@ -108,18 +107,11 @@ export default function SecurityPage() {
                 built-in Web Crypto API. Each secret gets a fresh random 256-bit key and a random 96-bit IV. GCM also
                 authenticates the data, so a tampered ciphertext fails to decrypt instead of producing garbage.
               </p>
-              <dl className="mt-6 grid gap-3 sm:grid-cols-3">
-                {[
-                  ['Cipher', 'AES-256-GCM'],
-                  ['Key', '256-bit, random'],
-                  ['Where', 'Your browser'],
-                ].map(([label, value]) => (
-                  <div key={label} className="rounded-xl border border-line bg-surface p-4">
-                    <dt className="text-xs text-muted">{label}</dt>
-                    <dd className="mt-1.5 font-mono text-[15px] text-foreground">{value}</dd>
-                  </div>
-                ))}
-              </dl>
+              <ol aria-label="Secret sharing from sender to recipient" className="security-path">
+                <li><strong>Sender’s browser</strong><span>Encrypts with a fresh key</span></li>
+                <li><strong>iKrypt server</strong><span>Stores the encrypted record</span></li>
+                <li><strong>Recipient’s browser</strong><span>Unlocks with the link key</span></li>
+              </ol>
             </section>
 
             <section id="key" aria-labelledby="key-h" className="scroll-mt-24">

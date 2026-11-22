@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
-import Mesh from '@/components/Mesh';
 
 export const metadata: Metadata = {
   title: 'Share .env Values Securely with a One-Time Link',
@@ -217,7 +216,7 @@ export default function ShareEnvFileSecurelyPage() {
       <div className="min-h-screen flex flex-col pattern-bg">
 
         <nav aria-label="Breadcrumb" className="pt-8">
-          <div className="mx-auto max-w-site px-4 sm:px-6">
+          <div className="editorial-container">
             <ol className="flex flex-wrap items-center gap-2 text-[13px] text-muted">
               <li>
                 <Link href="/" className="transition-colors hover:text-foreground">
@@ -230,15 +229,15 @@ export default function ShareEnvFileSecurelyPage() {
           </div>
         </nav>
 
-        <main id="content" className="relative isolate flex-1 overflow-clip px-4 pb-14 pt-8 md:pb-20 md:pt-10">
-        <Mesh variant="right" />
-          <div className="mx-auto max-w-6xl">
-            <section className="mx-auto max-w-3xl text-center">
+        <main id="content" className="editorial-page flex-1">
+
+          <div className="editorial-container">
+            <section className="editorial-intro">
               <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                 Secure .env sharing
               </p>
 
-              <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] text-balance">
+              <h1 className="editorial-title text-balance">
                 Share .env values securely without emailing files or pasting secrets into chat.
               </h1>
 
@@ -248,17 +247,17 @@ export default function ShareEnvFileSecurelyPage() {
                 and the decryption key never reaches iKrypt&apos;s servers in normal requests.
               </p>
 
-              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link
-                  href="/"
-                  className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+                  href="/#create"
+                  className="editorial-action"
                 >
                   Create an encrypted link
                 </Link>
 
                 <Link
                   href="/security"
-                  className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                  className="rounded-xl border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                 >
                   Read security architecture
                 </Link>
@@ -286,7 +285,7 @@ export default function ShareEnvFileSecurelyPage() {
                   desc: 'Use expiry and view limits so config secrets are not available forever.',
                 },
               ].map((item) => (
-                <div key={item.title} className="card-glow rounded-2xl p-6">
+                <div key={item.title} className="editorial-block">
                   <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <CheckIcon className="h-5 w-5" />
                   </div>
@@ -297,7 +296,7 @@ export default function ShareEnvFileSecurelyPage() {
             </section>
 
             <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-              <div className="card-glow rounded-2xl p-6 md:p-8">
+              <div className="editorial-block">
                 <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">
                   Why .env files need extra care
                 </h2>
@@ -323,7 +322,7 @@ export default function ShareEnvFileSecurelyPage() {
                 </div>
               </div>
 
-              <div className="card-glow rounded-2xl p-6 md:p-8">
+              <div className="editorial-block">
                 <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">
                   Common .env sharing mistakes
                 </h2>
@@ -345,7 +344,7 @@ export default function ShareEnvFileSecurelyPage() {
                   Examples
                 </p>
 
-                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
+                <h2 className="editorial-heading">
                   Environment variables people accidentally overshare
                 </h2>
 
@@ -373,7 +372,7 @@ export default function ShareEnvFileSecurelyPage() {
                   Workflow
                 </p>
 
-                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
+                <h2 className="editorial-heading">
                   How to share .env values securely with iKrypt
                 </h2>
 
@@ -384,7 +383,7 @@ export default function ShareEnvFileSecurelyPage() {
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                 {steps.map((item) => (
-                  <div key={item.number} className="card-glow rounded-2xl p-6">
+                  <div key={item.number} className="editorial-block">
                     <div className="mb-5 text-sm font-bold text-primary">{item.number}</div>
                     <h3 className="font-semibold text-foreground">{item.title}</h3>
                     <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.desc}</p>
@@ -394,7 +393,7 @@ export default function ShareEnvFileSecurelyPage() {
             </section>
 
             <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
-              <div className="card-glow rounded-2xl p-6 md:p-8">
+              <div className="editorial-block">
                 <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">
                   Better .env sharing practices
                 </h2>
@@ -414,7 +413,7 @@ export default function ShareEnvFileSecurelyPage() {
                 </ul>
               </div>
 
-              <div className="card-glow rounded-2xl p-6 md:p-8">
+              <div className="editorial-block">
                 <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">
                   When iKrypt is not enough
                 </h2>
@@ -441,7 +440,7 @@ export default function ShareEnvFileSecurelyPage() {
                   Use cases
                 </p>
 
-                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
+                <h2 className="editorial-heading">
                   When to share .env values with a one-time link
                 </h2>
               </div>
@@ -464,7 +463,7 @@ export default function ShareEnvFileSecurelyPage() {
                   Related guides
                 </p>
 
-                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
+                <h2 className="editorial-heading">
                   More secure secret-sharing workflows
                 </h2>
               </div>
@@ -485,14 +484,14 @@ export default function ShareEnvFileSecurelyPage() {
 
             <section id="faq" className="mt-16">
               <div className="mx-auto mb-10 max-w-3xl text-center">
-                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
+                <h2 className="editorial-heading">
                   Frequently asked questions
                 </h2>
               </div>
 
               <div className="mx-auto max-w-4xl space-y-4">
                 {faqs.map((item) => (
-                  <div key={item.q} className="card-glow rounded-2xl p-6">
+                  <div key={item.q} className="editorial-block">
                     <h3 className="font-semibold text-foreground">{item.q}</h3>
                     <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.a}</p>
                   </div>
@@ -501,12 +500,12 @@ export default function ShareEnvFileSecurelyPage() {
             </section>
 
             <section className="mt-16">
-              <div className="card-glow rounded-3xl p-8 text-center md:p-10">
+              <div className="editorial-callout">
                 <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                   Create a temporary config handoff
                 </p>
 
-                <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
+                <h2 className="editorial-heading">
                   Share .env values without sending a plaintext file.
                 </h2>
 
@@ -515,17 +514,17 @@ export default function ShareEnvFileSecurelyPage() {
                   intended recipient. No account required.
                 </p>
 
-                <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <div className="mt-7 flex flex-wrap items-center gap-3">
                   <Link
-                    href="/"
-                    className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+                    href="/#create"
+                    className="editorial-action"
                   >
                     Create encrypted link
                   </Link>
 
                   <Link
                     href="/one-time-secret-link"
-                    className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                    className="rounded-xl border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                   >
                     Next: one-time secret links
                   </Link>

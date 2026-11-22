@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
-import Mesh from '@/components/Mesh';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -109,7 +108,7 @@ export default function PrivacyPage() {
       <div className="min-h-screen flex flex-col pattern-bg">
 
         <nav aria-label="Breadcrumb" className="pt-8">
-          <div className="mx-auto max-w-site px-4 sm:px-6">
+          <div className="editorial-container">
             <ol className="flex flex-wrap items-center gap-2 text-[13px] text-muted">
               <li>
                 <Link href="/" className="transition-colors hover:text-foreground">
@@ -122,15 +121,15 @@ export default function PrivacyPage() {
           </div>
         </nav>
 
-        <main id="content" className="relative isolate flex-1 overflow-clip px-4 pb-14 pt-8 md:pb-20 md:pt-10">
-        <Mesh variant="right" />
-          <div className="mx-auto max-w-6xl">
-            <section className="mx-auto max-w-3xl text-center">
+        <main id="content" className="editorial-page flex-1">
+
+          <div className="editorial-container">
+            <section className="editorial-intro">
               <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                 Privacy Policy
               </p>
 
-              <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] text-balance">
+              <h1 className="editorial-title text-balance">
                 Privacy-first secret sharing, explained plainly.
               </h1>
 
@@ -145,7 +144,7 @@ export default function PrivacyPage() {
 
             <section className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-3">
               {summaryCards.map((item) => (
-                <div key={item.title} className="card-glow rounded-2xl p-6">
+                <div key={item.title} className="editorial-block">
                   <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <CheckIcon className="h-5 w-5" />
                   </div>
@@ -186,7 +185,7 @@ export default function PrivacyPage() {
               </aside>
 
               <div className="space-y-6">
-                <section id="privacy-model" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="privacy-model" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Our privacy model</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -213,7 +212,7 @@ export default function PrivacyPage() {
                   </div>
                 </section>
 
-                <section id="cannot-access" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="cannot-access" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">What we cannot access</h2>
 
                   <ul className="mt-6 space-y-3">
@@ -226,7 +225,7 @@ export default function PrivacyPage() {
                   </ul>
                 </section>
 
-                <section id="what-we-store" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="what-we-store" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">What we store</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
@@ -250,7 +249,7 @@ export default function PrivacyPage() {
                   </p>
                 </section>
 
-                <section id="deletion" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="deletion" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Deletion and expiry</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -277,7 +276,7 @@ export default function PrivacyPage() {
                   </div>
                 </section>
 
-                <section id="analytics" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="analytics" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Analytics and scripts</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -308,7 +307,7 @@ export default function PrivacyPage() {
                   </div>
                 </section>
 
-                <section id="cookies" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="cookies" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Cookies and local storage</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -326,7 +325,7 @@ export default function PrivacyPage() {
                   </div>
                 </section>
 
-                <section id="rate-limiting" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="rate-limiting" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Rate limiting and abuse prevention</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
@@ -337,7 +336,7 @@ export default function PrivacyPage() {
                   </p>
                 </section>
 
-                <section id="email-notifications" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="email-notifications" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Email notifications</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -360,7 +359,7 @@ export default function PrivacyPage() {
                   </div>
                 </section>
 
-                <section id="contact-forms" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="contact-forms" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Contact forms</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -377,7 +376,7 @@ export default function PrivacyPage() {
                   </div>
                 </section>
 
-                <section id="third-parties" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="third-parties" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Third-party services</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
@@ -399,7 +398,7 @@ export default function PrivacyPage() {
                   </div>
                 </section>
 
-                <section id="your-rights" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="your-rights" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Your rights and choices</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -422,7 +421,7 @@ export default function PrivacyPage() {
                   </div>
                 </section>
 
-                <section id="changes" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="changes" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Changes to this policy</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
@@ -432,7 +431,7 @@ export default function PrivacyPage() {
                   </p>
                 </section>
 
-                <section id="contact" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="contact" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Contact</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">

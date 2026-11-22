@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
-import Mesh from '@/components/Mesh';
 
 export const metadata: Metadata = {
   title: '7 Password Sharing Mistakes and How to Avoid Them',
@@ -28,7 +27,7 @@ export default function BlogPost() {
 
       {/* Breadcrumbs */}
       <nav aria-label="Breadcrumb" className="pt-8">
-        <div className="mx-auto max-w-site px-4 sm:px-6">
+        <div className="editorial-container">
           <ol className="flex flex-wrap items-center gap-2 text-[13px] text-muted">
             <li>
               <Link href="/" className="hover:text-foreground transition-colors">
@@ -48,9 +47,21 @@ export default function BlogPost() {
       </nav>
 
       {/* Article */}
-      <main id="content" className="relative isolate flex-1 overflow-clip px-4 pb-12 pt-8">
-        <Mesh variant="right" />
+      <main id="content" className="flex-1 px-5 pb-16 pt-10 sm:px-9">
+
         <article className="mx-auto max-w-3xl">
+          {/* Article Header */}
+          <header className="mb-8">
+            <h1 className="editorial-title mb-4">
+              The 7 Biggest Password Sharing Mistakes (And How to Avoid Them)
+            </h1>
+            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+              <time dateTime="2026-01-16">January 16, 2026</time>
+              <span>&middot;</span>
+              <span>7 min read</span>
+            </div>
+          </header>
+
           {/* Hero Image */}
           <div className="relative aspect-[1200/630] w-full rounded-xl overflow-hidden mb-8">
             <Image
@@ -61,18 +72,6 @@ export default function BlogPost() {
               priority
             />
           </div>
-
-          {/* Article Header */}
-          <header className="mb-8">
-            <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] mb-4">
-              The 7 Biggest Password Sharing Mistakes (And How to Avoid Them)
-            </h1>
-            <div className="flex items-center gap-3 text-sm text-muted-foreground">
-              <time dateTime="2026-01-16">January 16, 2026</time>
-              <span>&middot;</span>
-              <span>7 min read</span>
-            </div>
-          </header>
 
           {/* Article Content */}
           <div className="prose-ikrypt max-w-none">

@@ -61,7 +61,7 @@ export function PageHero({
   children?: ReactNode;
 }) {
   return (
-    <section className="mx-auto max-w-site px-4 pb-12 pt-8 sm:px-6 sm:pb-14">
+    <section className="editorial-container pb-12 pt-8 sm:pb-16">
       <nav aria-label="Breadcrumb" className="mb-10 text-[13px] text-muted">
         <ol className="flex flex-wrap items-center gap-2">
           {crumbs.map((crumb, i) => (
@@ -81,12 +81,12 @@ export function PageHero({
         </ol>
       </nav>
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      <h1 className="max-w-[880px] font-sans text-[40px] font-semibold leading-[1.08] tracking-[-0.045em] text-heading sm:text-[56px] lg:text-[64px]">
+      <h1 className="editorial-title max-w-[950px]">
         {title}
         {accent && (
           <>
             {' '}
-            <span className="italic text-primary">{accent}</span>
+            <span className="text-muted-foreground">{accent}</span>
           </>
         )}
       </h1>

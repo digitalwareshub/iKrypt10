@@ -341,3 +341,76 @@ main dd a:hover {
 @media (prefers-reduced-motion: reduce) {
   .ikrypt-product-window { transition: none; }
 }
+
+/* Shared layout for information pages, articles, and product guides. */
+.editorial-container {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+.editorial-page { padding-block: clamp(36px, 4vw, 64px) 80px; }
+.editorial-intro { max-width: 950px; }
+.editorial-intro > p { max-width: 68ch; }
+.editorial-title, .flow-title, .editorial-heading {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-weight: 500;
+  line-height: 1.07;
+  letter-spacing: -.052em;
+  color: var(--fg);
+  overflow-wrap: break-word;
+}
+.editorial-title { font-size: clamp(2.5rem, 4.5vw, 4.5rem); }
+.flow-title { font-size: clamp(2.375rem, 4vw, 3.25rem); }
+.editorial-heading { font-size: clamp(1.875rem, 3vw, 2.75rem); }
+.editorial-block, .editorial-callout {
+  border-top: 1px solid var(--line);
+  padding-block: 24px;
+  min-width: 0;
+}
+.editorial-block > p { max-width: 68ch; }
+.editorial-block > .bg-primary\/10:first-child {
+  background: transparent;
+  justify-content: flex-start;
+  height: auto;
+}
+.editorial-callout {
+  padding-block: clamp(32px, 4vw, 64px);
+  text-align: left;
+}
+.editorial-callout > p { max-width: 65ch; margin-inline: 0; }
+.editorial-action {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: #f2f2f4;
+  color: #151519;
+  font-size: 15px;
+  font-weight: 600;
+}
+.editorial-action:hover { background: white; }
+.security-path {
+  display: grid;
+  margin-top: 24px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #141419;
+  padding: 6px 20px;
+}
+.security-path li { padding: 18px 0; }
+.security-path li + li { border-top: 1px solid var(--line); }
+.security-path strong, .security-path span { display: block; }
+.security-path strong { color: var(--fg); font-weight: 500; }
+.security-path span { margin-top: 5px; font-size: 14px; color: var(--muted); }
+@media (min-width: 640px) {
+  .editorial-container { padding-inline: 36px; }
+  .security-path { grid-template-columns: repeat(3, 1fr); padding: 20px 6px; }
+  .security-path li { padding: 2px 16px; }
+  .security-path li + li { border-top: 0; border-left: 1px solid var(--line); }
+}
+@media (min-width: 1024px) {
+  .editorial-container { padding-inline: 48px; }
+}

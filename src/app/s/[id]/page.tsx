@@ -247,7 +247,7 @@ export default function ViewSecretPage() {
 function Message({ title, body, cta = false }: { title: string; body: string; cta?: boolean }) {
   return (
     <FlowShell>
-      <h1 className="font-display text-[36px] leading-[1.05] tracking-[-0.015em] text-heading sm:text-[44px]">{title}</h1>
+      <h1 className="flow-title">{title}</h1>
       <p className="mt-5 text-base leading-relaxed text-muted-foreground">{body}</p>
       <Link href="/" className={`${cta ? primaryButton : secondaryButton} mt-8`}>
         {cta ? 'Create a new secret' : 'Go to iKrypt'}

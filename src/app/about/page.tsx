@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
-import Mesh from '@/components/Mesh';
 
 const GITHUB_REPO_URL = 'https://github.com/digitalwareshub/iKrypt10';
 const X_URL = 'https://x.com/bydigiwares';
@@ -48,7 +47,7 @@ export default function AboutPage() {
     <div className="min-h-screen flex flex-col pattern-bg">
 
       <nav aria-label="Breadcrumb" className="pt-8">
-        <div className="mx-auto max-w-site px-4 sm:px-6">
+        <div className="editorial-container">
           <ol className="flex flex-wrap items-center gap-2 text-[13px] text-muted">
             <li>
               <Link href="/" className="transition-colors hover:text-foreground">
@@ -61,15 +60,15 @@ export default function AboutPage() {
         </div>
       </nav>
 
-      <main id="content" className="relative isolate flex-1 overflow-clip px-4 pb-14 pt-8 md:pb-20 md:pt-10">
-        <Mesh variant="right" />
-        <div className="mx-auto max-w-6xl">
-          <section className="mx-auto max-w-3xl text-center">
+      <main id="content" className="editorial-page flex-1">
+
+        <div className="editorial-container">
+          <section className="editorial-intro">
             <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
               About iKrypt
             </p>
 
-            <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] text-balance">
+            <h1 className="editorial-title text-balance">
               A simple way to share secrets without leaving them in chat history forever.
             </h1>
 
@@ -80,17 +79,17 @@ export default function AboutPage() {
               email, WhatsApp, or a shared document.
             </p>
 
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
-                href="/"
-                className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+                href="/#create"
+                className="editorial-action"
               >
                 Create a secret
               </Link>
 
               <Link
                 href="/security"
-                className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                className="rounded-xl border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
               >
                 Read security architecture
               </Link>
@@ -98,7 +97,7 @@ export default function AboutPage() {
           </section>
 
           <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.1fr]">
-            <div className="card-glow rounded-2xl p-6 md:p-8">
+            <div className="editorial-block">
               <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Why iKrypt exists</h2>
 
               <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -120,7 +119,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="card-glow rounded-2xl p-6 md:p-8">
+            <div className="editorial-block">
               <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">What you can share</h2>
 
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -146,14 +145,14 @@ export default function AboutPage() {
               <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                 Principles
               </p>
-              <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
+              <h2 className="editorial-heading">
                 Built to stay simple and inspectable
               </h2>
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
               {principles.map((item) => (
-                <div key={item.title} className="card-glow rounded-2xl p-6">
+                <div key={item.title} className="editorial-block">
                   <h3 className="font-semibold text-foreground">{item.title}</h3>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.desc}</p>
                 </div>
@@ -162,7 +161,7 @@ export default function AboutPage() {
           </section>
 
           <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div className="card-glow rounded-2xl p-6 md:p-8">
+            <div className="editorial-block">
               <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Built by Digiwares</h2>
 
               <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -187,7 +186,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="card-glow rounded-2xl p-6 md:p-8">
+            <div className="editorial-block">
               <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Get in touch</h2>
 
               <p className="mt-5 text-sm leading-7 text-muted-foreground">
@@ -198,7 +197,7 @@ export default function AboutPage() {
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   href="/contact"
-                  className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+                  className="editorial-action"
                 >
                   Contact us
                 </Link>
@@ -207,7 +206,7 @@ export default function AboutPage() {
                   href={X_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                  className="rounded-xl border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                 >
                   @bydigiwares
                 </a>
@@ -216,7 +215,7 @@ export default function AboutPage() {
                   href={GITHUB_REPO_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                  className="rounded-xl border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                 >
                   GitHub
                 </a>

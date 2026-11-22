@@ -12,3 +12,18 @@
 [Desktop and mobile comparison screenshots](design/hero-refinement/)
 
 - Approved homepage revision `eb977a5` for release on the production branch.
+
+## 2026-11-22 — Homepage below the hero
+
+- Simplified the creation section around the working form and aligned the section headings with the hero.
+- Combined link anatomy and security explanations in an annotated example that stacks on small screens.
+- Replaced guide cards with linked rows and added a creation-limit question to the FAQ and its structured data.
+- Verified the production build in Chrome at widths of 375, 390, 768, and 1440px. Checked horizontal overflow, hero CTA navigation, editable form input, notification toggling, submit availability, and the FAQ disclosure.
+- [Desktop and mobile section previews](design/homepage-details/)
+
+## 2026-11-22 — Supporting pages and hero restoration
+
+- Restored the approved homepage hero markup and stage geometry. The angled interface sits beneath the CTA in normal flow.
+- Applied shared sans-serif headings, left-aligned introductions, white primary actions, and section dividers across the guides, informational pages, and legal documents. Updated the contact form presentation and the confirmation, reveal, and missing-page typography.
+- Added a sender-to-recipient diagram on Security, made the blog index scannable with thumbnail rows, and placed article titles before cover images.
+- Lint and TypeScript passed and the production build completed. Verified 18 local routes at 1440px and 390px in Chrome, including hero placement, CTA navigation, a legal contents link, and page overflow. [Review screenshots](design/supporting-pages/)

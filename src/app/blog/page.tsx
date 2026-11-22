@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
-import Mesh from '@/components/Mesh';
 
 export const metadata: Metadata = {
   title: 'Blog — Guides to Sharing Secrets Safely',
@@ -124,7 +123,7 @@ export default function BlogPage() {
       <div className="min-h-screen flex flex-col pattern-bg">
 
         <nav aria-label="Breadcrumb" className="pt-8">
-          <div className="mx-auto max-w-site px-4 sm:px-6">
+          <div className="editorial-container">
             <ol className="flex flex-wrap items-center gap-2 text-[13px] text-muted">
               <li>
                 <Link href="/" className="transition-colors hover:text-foreground">
@@ -137,15 +136,15 @@ export default function BlogPage() {
           </div>
         </nav>
 
-        <main id="content" className="relative isolate flex-1 overflow-clip px-4 pb-14 pt-8 md:pb-20 md:pt-10">
-        <Mesh variant="right" />
-          <div className="mx-auto max-w-6xl">
-            <section className="mx-auto max-w-3xl text-center">
+        <main id="content" className="editorial-page flex-1">
+
+          <div className="editorial-container">
+            <section className="editorial-intro">
               <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                 iKrypt Blog
               </p>
 
-              <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] text-balance">
+              <h1 className="editorial-title text-balance">
                 Practical guides for sharing secrets more safely.
               </h1>
 
@@ -183,7 +182,7 @@ export default function BlogPage() {
                           <span>{featuredPost.readTime}</span>
                         </div>
 
-                        <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px] transition-colors group-hover:text-primary">
+                        <h2 className="editorial-heading transition-colors group-hover:text-primary">
                           {featuredPost.title}
                         </h2>
 
@@ -207,7 +206,7 @@ export default function BlogPage() {
                         <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-2">
                           More guides
                         </p>
-                        <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
+                        <h2 className="editorial-heading">
                           Secure sharing basics
                         </h2>
                       </div>
@@ -220,10 +219,10 @@ export default function BlogPage() {
                       </Link>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div className="divide-y divide-line border-y border-line">
                       {otherPosts.map((post) => (
-                        <article key={post.slug} className="card-glow overflow-hidden rounded-2xl">
-                          <Link href={`/blog/${post.slug}`} className="group block">
+                        <article key={post.slug} className="py-6">
+                          <Link href={`/blog/${post.slug}`} className="group grid items-center gap-5 sm:grid-cols-[180px_1fr] sm:gap-8">
                             <div className="relative aspect-[1200/630] w-full overflow-hidden">
                               <Image
                                 src={post.image}
@@ -233,7 +232,7 @@ export default function BlogPage() {
                               />
                             </div>
 
-                            <div className="p-6">
+                            <div>
                               <div className="mb-3 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
                                 <span className="rounded-full bg-primary/10 px-3 py-1 font-medium text-primary">
                                   {post.category}
@@ -264,12 +263,12 @@ export default function BlogPage() {
                 )}
 
                 <section className="mt-16">
-                  <div className="card-glow rounded-3xl p-8 text-center md:p-10">
+                  <div className="editorial-callout">
                     <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                       Create a secure handoff
                     </p>
 
-                    <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
+                    <h2 className="editorial-heading">
                       Need to share a password, API key, or temporary secret?
                     </h2>
 
@@ -278,17 +277,17 @@ export default function BlogPage() {
                       and no account required.
                     </p>
 
-                    <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                    <div className="mt-7 flex flex-wrap items-center gap-3">
                       <Link
-                        href="/"
-                        className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+                        href="/#create"
+                        className="editorial-action"
                       >
                         Create a secret
                       </Link>
 
                       <Link
                         href="/security"
-                        className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                        className="rounded-xl border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                       >
                         Read security architecture
                       </Link>

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
-import Mesh from '@/components/Mesh';
 
 export const metadata: Metadata = {
   title: 'Healthcare Credential Sharing (Interest Page)',
@@ -78,7 +77,7 @@ export default function HealthcarePage() {
     <div className="min-h-screen flex flex-col pattern-bg">
 
       <nav aria-label="Breadcrumb" className="pt-8">
-        <div className="mx-auto max-w-site px-4 sm:px-6">
+        <div className="editorial-container">
           <ol className="flex flex-wrap items-center gap-2 text-[13px] text-muted">
             <li>
               <Link href="/" className="transition-colors hover:text-foreground">
@@ -116,15 +115,15 @@ export default function HealthcarePage() {
       </div>
 
 
-      <main id="content" className="relative isolate flex-1 overflow-clip px-4 pb-14 pt-8 md:pb-20 md:pt-10">
-        <Mesh variant="right" />
-        <div className="mx-auto max-w-6xl">
-          <section className="mx-auto max-w-3xl text-center">
+      <main id="content" className="editorial-page flex-1">
+
+        <div className="editorial-container">
+          <section className="editorial-intro">
             <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
               Early interest only
             </p>
 
-            <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] text-balance">
+            <h1 className="editorial-title text-balance">
               Exploring whether healthcare teams need a safer way to hand off credentials.
             </h1>
 
@@ -134,17 +133,17 @@ export default function HealthcarePage() {
               been built yet.
             </p>
 
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 href="/contact"
-                className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+                className="editorial-action"
               >
                 Register interest
               </Link>
 
               <Link
                 href="/"
-                className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                className="rounded-xl border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
               >
                 Try current iKrypt
               </Link>
@@ -157,7 +156,7 @@ export default function HealthcarePage() {
           </section>
 
           <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div className="card-glow rounded-2xl p-6 md:p-8">
+            <div className="editorial-block">
               <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">What exists today</h2>
 
               <p className="mt-4 text-sm leading-7 text-muted-foreground">
@@ -175,7 +174,7 @@ export default function HealthcarePage() {
               </ul>
             </div>
 
-            <div className="card-glow rounded-2xl p-6 md:p-8">
+            <div className="editorial-block">
               <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">What does not exist today</h2>
 
               <p className="mt-4 text-sm leading-7 text-muted-foreground">
@@ -200,7 +199,7 @@ export default function HealthcarePage() {
                 Why this would need a separate product
               </p>
 
-              <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
+              <h2 className="editorial-heading">
                 Healthcare credential sharing needs more than encrypted links.
               </h2>
 
@@ -212,7 +211,7 @@ export default function HealthcarePage() {
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
               {healthcareNeeds.map((item) => (
-                <div key={item.title} className="card-glow rounded-2xl p-6">
+                <div key={item.title} className="editorial-block">
                   <h3 className="font-semibold text-foreground">{item.title}</h3>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.desc}</p>
                 </div>
@@ -221,7 +220,7 @@ export default function HealthcarePage() {
           </section>
 
           <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-            <div className="card-glow rounded-2xl p-6 md:p-8">
+            <div className="editorial-block">
               <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">What we are trying to learn</h2>
 
               <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -239,7 +238,7 @@ export default function HealthcarePage() {
               </div>
             </div>
 
-            <div className="card-glow rounded-2xl p-6 md:p-8">
+            <div className="editorial-block">
               <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">Before contacting us</h2>
 
               <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -257,12 +256,12 @@ export default function HealthcarePage() {
           </section>
 
           <section className="mt-16">
-            <div className="card-glow rounded-3xl p-8 text-center md:p-10">
+            <div className="editorial-callout">
               <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                 Interested in a healthcare-ready version?
               </p>
 
-              <h2 className="font-display text-[32px] font-normal leading-[1.08] tracking-[-0.01em] text-heading sm:text-[40px]">
+              <h2 className="editorial-heading">
                 Tell us what would actually be required.
               </h2>
 
@@ -272,17 +271,17 @@ export default function HealthcarePage() {
                 no compliance claims.
               </p>
 
-              <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <div className="mt-7 flex flex-wrap items-center gap-3">
                 <Link
                   href="/contact"
-                  className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+                  className="editorial-action"
                 >
                   Register interest
                 </Link>
 
                 <Link
                   href="/security"
-                  className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                  className="rounded-xl border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                 >
                   Read current security model
                 </Link>

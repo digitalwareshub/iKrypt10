@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
-import Mesh from '@/components/Mesh';
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
@@ -94,7 +93,7 @@ export default function TermsPage() {
       <div className="min-h-screen flex flex-col pattern-bg">
 
         <nav aria-label="Breadcrumb" className="pt-8">
-          <div className="mx-auto max-w-site px-4 sm:px-6">
+          <div className="editorial-container">
             <ol className="flex flex-wrap items-center gap-2 text-[13px] text-muted">
               <li>
                 <Link href="/" className="transition-colors hover:text-foreground">
@@ -107,15 +106,15 @@ export default function TermsPage() {
           </div>
         </nav>
 
-        <main id="content" className="relative isolate flex-1 overflow-clip px-4 pb-14 pt-8 md:pb-20 md:pt-10">
-        <Mesh variant="right" />
-          <div className="mx-auto max-w-6xl">
-            <section className="mx-auto max-w-3xl text-center">
+        <main id="content" className="editorial-page flex-1">
+
+          <div className="editorial-container">
+            <section className="editorial-intro">
               <p className="font-mono text-xs font-normal uppercase tracking-[0.08em] text-primary mb-3">
                 Terms of Service
               </p>
 
-              <h1 className="font-display text-[40px] font-normal leading-[1.04] tracking-[-0.02em] text-heading sm:text-[52px] text-balance">
+              <h1 className="editorial-title text-balance">
                 The rules for using iKrypt safely and responsibly.
               </h1>
 
@@ -129,7 +128,7 @@ export default function TermsPage() {
 
             <section className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-3">
               {summaryCards.map((item) => (
-                <div key={item.title} className="card-glow rounded-2xl p-6">
+                <div key={item.title} className="editorial-block">
                   <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <CheckIcon className="h-5 w-5" />
                   </div>
@@ -174,7 +173,7 @@ export default function TermsPage() {
               </aside>
 
               <div className="space-y-6">
-                <section id="acceptance" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="acceptance" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">1. Acceptance of these terms</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -190,7 +189,7 @@ export default function TermsPage() {
                   </div>
                 </section>
 
-                <section id="service" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="service" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">2. What iKrypt is</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -213,7 +212,7 @@ export default function TermsPage() {
                   </div>
                 </section>
 
-                <section id="responsibilities" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="responsibilities" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">3. Your responsibilities</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
@@ -230,7 +229,7 @@ export default function TermsPage() {
                   </ul>
                 </section>
 
-                <section id="acceptable-use" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="acceptable-use" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">4. Acceptable use</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
@@ -248,7 +247,7 @@ export default function TermsPage() {
                   </ul>
                 </section>
 
-                <section id="security-model" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="security-model" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">5. Security model</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -285,7 +284,7 @@ export default function TermsPage() {
                   </div>
                 </section>
 
-                <section id="deletion" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="deletion" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">6. Deletion and expiry</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -313,7 +312,7 @@ export default function TermsPage() {
                   </div>
                 </section>
 
-                <section id="no-vault" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="no-vault" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">
                     7. iKrypt is not a password vault
                   </h2>
@@ -332,7 +331,7 @@ export default function TermsPage() {
                   </div>
                 </section>
 
-                <section id="availability" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="availability" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">8. Availability and changes</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -354,7 +353,7 @@ export default function TermsPage() {
                   </div>
                 </section>
 
-                <section id="disclaimers" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="disclaimers" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">9. Disclaimers</h2>
 
                   <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
@@ -380,7 +379,7 @@ export default function TermsPage() {
                   </div>
                 </section>
 
-                <section id="liability" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="liability" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">10. Limitation of liability</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
@@ -392,7 +391,7 @@ export default function TermsPage() {
                   </p>
                 </section>
 
-                <section id="indemnity" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="indemnity" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">11. Your responsibility for misuse</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
@@ -403,7 +402,7 @@ export default function TermsPage() {
                   </p>
                 </section>
 
-                <section id="privacy" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="privacy" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">12. Privacy</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
@@ -419,7 +418,7 @@ export default function TermsPage() {
                   </p>
                 </section>
 
-                <section id="changes" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="changes" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">13. Changes to these terms</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
@@ -430,7 +429,7 @@ export default function TermsPage() {
                   </p>
                 </section>
 
-                <section id="contact" className="card-glow scroll-mt-24 rounded-2xl p-6 md:p-8">
+                <section id="contact" className="editorial-block scroll-mt-24">
                   <h2 className="text-2xl font-semibold text-heading tracking-[-0.01em]">14. Contact</h2>
 
                   <p className="mt-5 text-sm leading-7 text-muted-foreground">
