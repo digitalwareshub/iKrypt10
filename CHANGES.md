@@ -5,6 +5,11 @@ Code-level detail is in the git history; this file is the human-readable log.
 
 ## 2026-11-22
 
+- **Vercel (owner):** deleted the six unused `NEXT_PUBLIC_FIREBASE_*` environment variables (no code
+  references them since the browser Firebase SDK was removed). No redeploy needed. Remaining
+  variables: `FIREBASE_ADMIN_*` (3), `RESEND_API_KEY`, `UPSTASH_REDIS_REST_URL`/`_TOKEN`,
+  `NEXT_PUBLIC_SITE_URL`.
+- **Decision (owner):** Resend/Upstash keys will not be rotated.
 - **Deployed to production.** Merged `modernize/2026-11` into `main` (fast-forward, 21 commits,
   `a870fcb..83e6069`); Vercel production deploy succeeded. Branch deleted locally and on GitHub.
 - **First CI run on GitHub passed** on the merge commit (lint, typecheck, unit, audit, concurrency, e2e).
