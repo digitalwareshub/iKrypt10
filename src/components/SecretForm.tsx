@@ -103,7 +103,7 @@ export default function SecretForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-[22px]" aria-describedby="form-note">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5" aria-describedby="form-note">
       <div className="flex flex-col gap-2">
         <label htmlFor="secret" className="text-[13px] font-medium text-[#C9CDE3]">
           Your secret
@@ -111,7 +111,7 @@ export default function SecretForm() {
         <textarea
           id="secret"
           name="secret"
-          rows={6}
+          rows={5}
           value={secret}
           onChange={(e) => setSecret(e.target.value)}
           placeholder="Paste a password, API key or .env value…"
@@ -120,7 +120,7 @@ export default function SecretForm() {
           autoCapitalize="off"
           spellCheck={false}
           disabled={isLoading}
-          className="w-full rounded-xl border border-line-strong bg-background px-4 py-3.5 font-mono text-sm leading-relaxed text-foreground placeholder:text-[#7C83A6] focus:border-primary focus:outline-none focus-visible:outline-none disabled:opacity-60"
+          className="w-full rounded-xl border border-line-strong bg-background px-4 py-4 font-mono text-sm leading-relaxed text-foreground placeholder:text-[#7C83A6] focus:border-primary focus:outline-none focus-visible:outline-none disabled:opacity-60"
         />
       </div>
 
@@ -205,7 +205,7 @@ export default function SecretForm() {
       <button
         type="submit"
         disabled={isLoading || !secret.trim()}
-        className={`flex h-[52px] items-center justify-center gap-2.5 rounded-xl bg-primary text-base font-semibold text-primary-foreground transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50 ${
+        className={`flex h-[54px] items-center justify-center gap-2.5 rounded-xl bg-primary text-base font-semibold text-primary-foreground transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50 ${
           isLoading ? 'btn-loading' : ''
         }`}
       >
