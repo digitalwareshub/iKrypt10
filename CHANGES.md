@@ -5,6 +5,13 @@ Code-level detail is in the git history; this file is the human-readable log.
 
 ## 2026-11-22 (later)
 
+- **Fonts self-hosted** (`src/app/fonts`, Inter variable + JetBrains Mono 400/500, SIL OFL via
+  Fontsource 5.3.0) using `next/font/local`. Builds no longer download from Google Fonts, which had
+  been failing concurrent CI/Vercel builds ("Cannot read properties of null (reading '1')").
+  Verified pixel-identical: 29 homepage text elements match the live site exactly. 65/65 e2e.
+- **Dependabot:** major upgrades of `next`, `eslint-config-next` and `eslint` are no longer proposed
+  automatically; PRs #8 (ESLint 10) and #9 (Next 16) closed via `@dependabot ignore this major version`.
+
 - **Codex homepage redesign** (15 commits pushed directly to `main` as instructed by the owner, live).
   Owner approvals recorded at the time (moved here from the removed `docs/to-do.md`):
   homepage release ([screenshots](docs/design/hero-refinement/)), lower homepage revision

@@ -1,14 +1,24 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import SiteAnalytics from '@/components/SiteAnalytics';
 import SiteHeader from '@/components/SiteHeader';
 import './globals.css';
 
-// Self-hosted at build time by next/font: no requests to Google at runtime.
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
-const mono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
+// Font files live in the repo (src/app/fonts, SIL Open Font License), so
+// builds never download from Google Fonts. Concurrent builds used to fail
+// when Google throttled those downloads. No requests to Google at runtime either.
+const inter = localFont({
+  src: './fonts/inter-latin-variable.woff2',
+  weight: '100 900',
+  style: 'normal',
+  variable: '--font-sans',
+  display: 'swap',
+});
+const mono = localFont({
+  src: [
+    { path: './fonts/jetbrains-mono-latin-400.woff2', weight: '400', style: 'normal' },
+    { path: './fonts/jetbrains-mono-latin-500.woff2', weight: '500', style: 'normal' },
+  ],
   variable: '--font-mono',
   display: 'swap',
 });
