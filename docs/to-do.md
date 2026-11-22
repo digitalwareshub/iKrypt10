@@ -1,3 +1,3 @@
 # To do
 
-- [ ] Founder to review the [desktop and mobile hero screenshots](design/hero-refinement/) and approve the visual design.
+- [x] Founder authorized the homepage release. [Desktop and mobile screenshots](design/hero-refinement/)

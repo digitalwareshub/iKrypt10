@@ -10,3 +10,5 @@
 - Inspected screenshots at 1920 × 1080, 1440 × 900, 1366 × 768, 390 × 844, and 375 × 667. Verified zero horizontal overflow, CTA navigation to the creation section, editable form input, and an enabled submit button after entry at each size. Lint, TypeScript, and the production build passed.
 
 [Desktop and mobile comparison screenshots](design/hero-refinement/)
+
+- Approved homepage revision `eb977a5` for release on the production branch.
