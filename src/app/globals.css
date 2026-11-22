@@ -3,17 +3,17 @@
 @tailwind utilities;
 
 /*
- * "Midnight Fragment" theme. Colour tokens live in tailwind.config.ts;
+ * "Concept A Minimal Security" theme. Colour tokens live in tailwind.config.ts;
  * the few raw values below mirror them.
  */
 :root {
   color-scheme: dark;
-  --bg: #070a13;
-  --surface: #0d1220;
-  --fg: #e8eaf6;
-  --muted: #a3a9c7;
-  --line: rgba(165, 180, 252, 0.14);
-  --accent: #a5b4fc;
+  --bg: #09090b;
+  --surface: #15151b;
+  --fg: #f5f5f7;
+  --muted: #ababba;
+  --line: rgba(185, 190, 215, 0.13);
+  --accent: #a9b5ff;
 }
 
 html {
@@ -40,15 +40,15 @@ body {
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #070a13;
+  background: #09090b;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e2640;
+  background: #24242d;
   border-radius: 6px;
-  border: 2px solid #070a13;
+  border: 2px solid #09090b;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2b3556;
+  background: #353540;
 }
 
 /* Focus: always visible, high contrast */
@@ -59,7 +59,7 @@ body {
 }
 
 ::selection {
-  background: rgba(165, 180, 252, 0.28);
+  background: rgba(169, 181, 255, 0.24);
   color: #ffffff;
 }
 
@@ -73,9 +73,9 @@ input[type='checkbox'] {
   flex: none;
   width: 18px;
   height: 18px;
-  border: 1.5px solid rgba(165, 180, 252, 0.45);
+  border: 1.5px solid rgba(169, 181, 255, 0.45);
   border-radius: 5px;
-  background: #070a13;
+  background: #09090b;
   cursor: pointer;
   display: inline-grid;
   place-content: center;
@@ -88,7 +88,7 @@ input[type='checkbox']::after {
   transform: scale(0);
   transition: transform 0.12s ease;
   clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-  background: #070a13;
+  background: #09090b;
 }
 input[type='checkbox']:checked {
   background: var(--accent);
@@ -136,7 +136,7 @@ input[type='checkbox']:hover {
 }
 .segmented label:has(input:checked) {
   background: var(--accent);
-  color: #070a13;
+  color: #09090b;
   font-weight: 600;
 }
 .segmented label:has(input:focus-visible) {
@@ -157,7 +157,7 @@ input[type='checkbox']:hover {
   top: 50%;
   left: 50%;
   margin: -9px 0 0 -9px;
-  border: 2px solid #070a13;
+  border: 2px solid #09090b;
   border-radius: 50%;
   border-top-color: transparent;
   animation: spin 0.6s linear infinite;
@@ -201,7 +201,7 @@ input[type='checkbox']:hover {
   line-height: 1.75;
 }
 .prose-ikrypt h2 {
-  color: #f3f4fb;
+  color: #fafafc;
   font-size: 1.625rem;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -227,7 +227,7 @@ input[type='checkbox']:hover {
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
-  text-decoration-color: rgba(165, 180, 252, 0.4);
+  text-decoration-color: rgba(169, 181, 255, 0.4);
 }
 .prose-ikrypt a:hover {
   text-decoration-color: var(--accent);
@@ -235,7 +235,7 @@ input[type='checkbox']:hover {
 .prose-ikrypt code {
   font-family: var(--font-mono), monospace;
   font-size: 0.9em;
-  color: #c9cde3;
+  color: #d2d2dc;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -256,7 +256,7 @@ input[type='checkbox']:hover {
 main p a,
 main dd a {
   text-decoration: underline;
-  text-decoration-color: rgba(165, 180, 252, 0.45);
+  text-decoration-color: rgba(169, 181, 255, 0.45);
   text-underline-offset: 3px;
 }
 main p a:hover,
