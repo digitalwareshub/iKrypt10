@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import { Timestamp } from 'firebase-admin/firestore';
 import AxeBuilder from '@axe-core/playwright';
 import { USAGE_FIELDS } from '../../src/lib/usageStats';
+import { MAX_PLAINTEXT_BYTES, MAX_PLAINTEXT_LABEL } from '../../src/lib/secretFormat';
 import {
   PLAINTEXT_MARKER,
   assertNoLeaks,
@@ -13,6 +14,9 @@ import {
 } from './helpers';
 
 async function expectAccessible(page: import('@playwright/test').Page, label: string) {
+  // After client-side navigation Next.js applies the page <title> a moment
+  // after the content; wait for it so axe doesn't race the metadata update.
+  await page.waitForFunction(() => document.title.trim().length > 0);
   const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
   const serious = axe.violations.filter((v) => ['serious', 'critical'].includes(v.impact ?? ''));
   expect(serious.map((v) => `${v.id}: ${v.nodes.length} — ${v.help}`), `axe: ${label}`).toEqual([]);
@@ -138,6 +142,46 @@ test.describe('create → share → reveal', () => {
     await p.goto(`${url.pathname}#k=${tamperedKey}`);
     await p.getByRole('button', { name: /reveal secret/i }).click();
     await expect(p.getByText(/could not be decrypted/i)).toBeVisible();
+  });
+});
+
+test.describe('size limit', () => {
+  test('pasting oversized text warns immediately, disables the button and sends nothing', async ({ page }) => {
+    const posts: string[] = [];
+    page.on('request', (r) => {
+      if (r.method() === 'POST' && new URL(r.url()).pathname === '/api/secrets') posts.push(r.url());
+    });
+    await page.goto('/');
+    const box = page.getByPlaceholder(/paste a password/i);
+    const button = page.getByRole('button', { name: /create link/i });
+    const counter = page.getByTestId('secret-size-counter');
+    await expect(page.getByText(`Text only, up to ${MAX_PLAINTEXT_LABEL}.`)).toBeVisible();
+
+    // Exactly at the limit is allowed.
+    await box.click();
+    await page.keyboard.insertText('A'.repeat(MAX_PLAINTEXT_BYTES));
+    await expect(counter).toHaveText(`${MAX_PLAINTEXT_LABEL} / ${MAX_PLAINTEXT_LABEL}`);
+    await expect(button).toBeEnabled();
+    await expect(page.getByText(/too large to encrypt/i)).toHaveCount(0);
+
+    // One more byte, inserted the way a paste is, tips it over.
+    await page.keyboard.insertText('A');
+    await expect(page.getByText(/too large to encrypt/i)).toBeVisible();
+    await expect(box).toHaveAttribute('aria-invalid', 'true');
+    await expect(button).toBeDisabled();
+    await expectAccessible(page, 'home: over the size limit');
+
+    // A programmatic submit (bypassing the disabled button) is blocked too.
+    await page.locator('form').evaluate((f: HTMLFormElement) => f.requestSubmit());
+    await page.waitForTimeout(300);
+    expect(posts, 'no secret may be uploaded while over the limit').toEqual([]);
+    await expect(page).toHaveURL(/\/$/);
+
+    // Multi-byte characters count by their UTF-8 size, matching the server.
+    await box.fill('🔑'.repeat(MAX_PLAINTEXT_BYTES / 4 + 1));
+    await expect(button).toBeDisabled();
+    await box.fill('🔑'.repeat(MAX_PLAINTEXT_BYTES / 4));
+    await expect(button).toBeEnabled();
   });
 });
 

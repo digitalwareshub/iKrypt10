@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   generateKey,
@@ -8,7 +8,16 @@ import {
   encrypt,
   buildSecretUrl,
 } from '@/lib/crypto';
-import { MAX_PLAINTEXT_BYTES } from '@/lib/secretFormat';
+import { MAX_PLAINTEXT_BYTES, MAX_PLAINTEXT_LABEL } from '@/lib/secretFormat';
+
+const encoder = new TextEncoder();
+
+// Show sizes the way the limit is stated: whole KB, one decimal under 10 KB.
+function formatSize(bytes: number) {
+  if (bytes < 1024) return `${bytes} ${bytes === 1 ? 'byte' : 'bytes'}`;
+  const kb = bytes / 1024;
+  return `${kb < 10 ? kb.toFixed(1) : Math.round(kb)} KB`;
+}
 
 // Must match the key used in sent/page.tsx
 const SESSION_KEY = 'ikrypt_secret_url';
@@ -38,6 +47,12 @@ export default function SecretForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // UTF-8 size, which is what the limit measures (emoji and non-Latin
+  // characters take 2–4 bytes each).
+  const secretBytes = useMemo(() => encoder.encode(secret).length, [secret]);
+  const isOverLimit = secretBytes > MAX_PLAINTEXT_BYTES;
+  const isNearLimit = !isOverLimit && secretBytes >= MAX_PLAINTEXT_BYTES * 0.9;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -47,8 +62,9 @@ export default function SecretForm() {
       return;
     }
 
-    if (new TextEncoder().encode(secret).length > MAX_PLAINTEXT_BYTES) {
-      setError('This secret is too large. The limit is 64 KB of text.');
+    if (isOverLimit) {
+      // The button is disabled while over the limit; this guards Enter-key
+      // and scripted submits too.
       return;
     }
 
@@ -120,8 +136,31 @@ export default function SecretForm() {
           autoCapitalize="off"
           spellCheck={false}
           disabled={isLoading}
-          className="w-full rounded-xl border border-line-strong bg-background px-4 py-4 font-mono text-sm leading-relaxed text-foreground placeholder:text-[#7C83A6] focus:border-primary focus:outline-none focus-visible:outline-none disabled:opacity-60"
+          aria-invalid={isOverLimit || undefined}
+          aria-describedby="secret-size"
+          className={`w-full rounded-xl border bg-background px-4 py-4 font-mono text-sm leading-relaxed text-foreground placeholder:text-[#7C83A6] focus:border-primary focus:outline-none focus-visible:outline-none disabled:opacity-60 ${
+            isOverLimit ? 'border-accent-danger focus:border-accent-danger' : 'border-line-strong'
+          }`}
         />
+        <div id="secret-size" className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-xs">
+          <span className="text-muted">Text only, up to {MAX_PLAINTEXT_LABEL}.</span>
+          <span
+            data-testid="secret-size-counter"
+            className={`font-mono tabular-nums ${
+              isOverLimit ? 'text-[#FCA5A5]' : isNearLimit ? 'text-[#FCD34D]' : 'text-muted'
+            }`}
+          >
+            {formatSize(secretBytes)} / {MAX_PLAINTEXT_LABEL}
+          </span>
+        </div>
+        {/* Announced as soon as a paste or keystroke crosses the limit. */}
+        <p aria-live="polite" className="text-sm text-[#FCA5A5] empty:hidden">
+          {isOverLimit
+            ? `Too large to encrypt: ${formatSize(secretBytes)}. Remove ${formatSize(
+                secretBytes - MAX_PLAINTEXT_BYTES,
+              )} to get under the ${MAX_PLAINTEXT_LABEL} limit.`
+            : ''}
+        </p>
       </div>
 
       <div className="flex flex-wrap gap-[18px]">
@@ -204,7 +243,7 @@ export default function SecretForm() {
 
       <button
         type="submit"
-        disabled={isLoading || !secret.trim()}
+        disabled={isLoading || !secret.trim() || isOverLimit}
         className={`flex h-[54px] items-center justify-center gap-2.5 rounded-xl bg-primary text-base font-semibold text-primary-foreground transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50 ${
           isLoading ? 'btn-loading' : ''
         }`}

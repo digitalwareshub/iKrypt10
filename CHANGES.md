@@ -3,6 +3,27 @@
 Everything implemented, changed, deleted, deployed, verified or configured, newest first.
 Code-level detail is in the git history; this file is the human-readable log.
 
+## 2026-11-22 (evening)
+
+- **Secret size limit lowered from 64 KB to 16 KB** (`MAX_PLAINTEXT_BYTES` in `src/lib/secretFormat.ts`).
+  The server's ciphertext cap derives from it, so the API rejects anything larger. 16 KB still fits SSH
+  keys, certificates and typical `.env` files.
+- **Size limit shown and enforced as you type or paste** (`SecretForm`): a live "x KB / 16 KB" counter
+  under the box (amber from 90 %, red over), an immediate "Too large to encrypt… remove x KB" message
+  (announced to screen readers), the box marked `aria-invalid`, and the create button disabled while over.
+  Size is measured in UTF-8 bytes, the same as the server (emoji/non-Latin characters count 2–4).
+- **Limit stated where people look**, all derived from the one constant: under the text box, the homepage
+  FAQ ("What can I share…", also in the FAQ structured data) and the Security page (Storage and deletion).
+- **Page titles for the secret flow:** `/sent` is "Your secret link | iKrypt", `/s/[id]` is "Someone sent
+  you a secret | iKrypt" (both still noindex). The e2e axe helper now waits for the title after client
+  navigation; this fixes the intermittent `document-title` CI failure on `main` (`8c41875`).
+- **New e2e test** `size limit`: exactly 16 KB is accepted; one more byte inserted like a paste shows the
+  warning and disables the button; a forced form submit sends no `POST /api/secrets`; emoji are counted
+  by bytes; axe passes in the over-limit state.
+- **Verified locally:** typecheck, lint, 11/11 unit, 67/67 e2e (desktop + mobile, 1 skipped as before).
+- **Dependabot triage finished:** all PRs (#2–#10) merged or closed; only `main` remains on GitHub.
+  (Removed from TO-DO.md.)
+
 ## 2026-11-22 (later)
 
 - **Fonts self-hosted** (`src/app/fonts`, Inter variable + JetBrains Mono 400/500, SIL OFL via

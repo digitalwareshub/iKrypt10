@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
 import { PageHero, CheckIcon, CrossIcon } from '@/components/ui';
+import { MAX_PLAINTEXT_LABEL } from '@/lib/secretFormat';
 
 const GITHUB_REPO_URL = 'https://github.com/digitalwareshub/iKrypt10';
 const LAST_REVIEWED = '14 November 2026';
@@ -139,7 +140,8 @@ export default function SecurityPage() {
               <H2 id="storage">Storage and deletion</H2>
               <p className={`${body} mb-5`}>
                 We store the ciphertext, its IV, the expiry time, the view limit and count, and an email address only
-                if you ask to be notified. We do not store your IP address with the secret.
+                if you ask to be notified. We do not store your IP address with the secret. Secrets are limited to{' '}
+                {MAX_PLAINTEXT_LABEL} of text before encryption; the server rejects anything larger.
               </p>
               <div
                 className="overflow-x-auto rounded-[14px] border border-line"

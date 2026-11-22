@@ -3,6 +3,7 @@ import SecretForm from '@/components/SecretForm';
 import ProductStage from '@/components/ProductStage';
 import Footer from '@/components/Footer';
 import styles from './homepage.module.css';
+import { MAX_PLAINTEXT_BYTES, MAX_PLAINTEXT_LABEL } from '@/lib/secretFormat';
 
 // Rendered per request so the middleware's CSP nonce is applied (see src/middleware.ts).
 export const dynamic = 'force-dynamic';
@@ -19,7 +20,7 @@ const FAQS = [
   },
   {
     q: 'What can I share with iKrypt?',
-    a: 'Passwords, API keys, .env values, login credentials, SSH keys and other short text secrets up to 64 KB.',
+    a: `Passwords, API keys, .env values, login credentials, SSH keys and other text secrets up to ${MAX_PLAINTEXT_LABEL} (${MAX_PLAINTEXT_BYTES.toLocaleString('en-US')} plain English characters). Emoji and non-Latin characters take more space each. Files and images aren’t supported.`,
   },
   {
     q: 'What happens when a link expires?',

@@ -14,11 +14,6 @@ Owner = needs dashboard access or a decision; Dev = code work.
   (or "Disable" the site). Alternatively, switching DNS to DNS-only (next item) removes all edge
   injection. Then re-run the live check. If you prefer to keep Cloudflare's analytics, change the
   site's "no tracking on secret pages" wording instead.
-- [ ] **Dev: triage the 9 Dependabot PRs (#2–#10).** Several CI failures are a build-time
-  Google Fonts fetch failing under 9 simultaneous builds (`next/font` "Cannot read properties of null"),
-  not the upgrades themselves. Majors need real review before merging: Next 16 (#9), ESLint 10 (#8),
-  Speed Insights 2 (#7), `@types/node` 26 (#10), GitHub Actions v5–v7 (#2–#5). The minor/patch group is #6.
-
 ## Owner checklist (optional: the site works fine without these)
 
 - [ ] **Cloudflare proxy (finding S8):** `ikrypt.com` and `www` are orange-cloud proxied in front of

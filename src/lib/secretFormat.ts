@@ -2,8 +2,13 @@
  * Shared format rules for secrets, used by both the browser and the API.
  */
 
-// Largest plaintext accepted, in UTF-8 bytes (64 KiB).
-export const MAX_PLAINTEXT_BYTES = 64 * 1024;
+// Largest plaintext accepted, in UTF-8 bytes (16 KiB). Fits SSH keys,
+// certificates and typical .env files. Every limit shown to users is derived
+// from this constant, so change it only here.
+export const MAX_PLAINTEXT_BYTES = 16 * 1024;
+
+// Human-readable form of the limit, e.g. "16 KB".
+export const MAX_PLAINTEXT_LABEL = `${MAX_PLAINTEXT_BYTES / 1024} KB`;
 
 // AES-GCM adds a 16-byte tag; base64url encodes 3 bytes as 4 chars.
 export const MAX_CIPHERTEXT_LENGTH = Math.ceil(((MAX_PLAINTEXT_BYTES + 16) * 4) / 3);

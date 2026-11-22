@@ -2,6 +2,7 @@
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
+  title: 'Someone sent you a secret',
   robots: {
     index: false,
     follow: false,
