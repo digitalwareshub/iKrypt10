@@ -45,8 +45,8 @@ export default function SiteHeader() {
   if (FLOW_ROUTE.test(pathname)) return null;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-background/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-site items-center justify-between gap-6 px-4 sm:px-6">
+    <header className="sticky top-0 z-50 border-b border-line bg-background/90 backdrop-blur-xl">
+      <div className="mx-auto flex h-[72px] max-w-site items-center justify-between gap-6 px-4 sm:px-6">
         <Link href="/" aria-label="iKrypt home" className="flex items-center gap-2.5 rounded-lg">
           <LogoMark size={30} />
           <span className="text-lg font-semibold tracking-tight text-foreground">iKrypt</span>
