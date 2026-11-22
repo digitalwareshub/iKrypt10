@@ -18,8 +18,6 @@ Owner = needs dashboard access or a decision; Dev = code work.
   Google Fonts fetch failing under 9 simultaneous builds (`next/font` "Cannot read properties of null"),
   not the upgrades themselves. Majors need real review before merging: Next 16 (#9), ESLint 10 (#8),
   Speed Insights 2 (#7), `@types/node` 26 (#10), GitHub Actions v5–v7 (#2–#5). The minor/patch group is #6.
-- [ ] **Dev: self-host the fonts** (`next/font/local` with the woff2 files in the repo) so builds never
-  depend on Google Fonts. This fixes the CI flake above.
 
 ## Owner checklist (optional: the site works fine without these)
 
