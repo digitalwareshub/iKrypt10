@@ -45,14 +45,14 @@ export default function SiteHeader() {
   if (FLOW_ROUTE.test(pathname)) return null;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-background/90 backdrop-blur-xl">
-      <div className="mx-auto flex h-[72px] max-w-site items-center justify-between gap-6 px-4 sm:px-6">
+    <header className="sticky top-0 z-50 border-b border-[#27272C] bg-[#09090B]/95 backdrop-blur-xl">
+      <div className="mx-auto flex h-[76px] max-w-[1320px] items-center justify-between gap-8 px-5 sm:px-9 lg:px-12">
         <Link href="/" aria-label="iKrypt home" className="flex items-center gap-2.5 rounded-lg">
           <LogoMark size={30} />
           <span className="text-lg font-semibold tracking-tight text-foreground">iKrypt</span>
         </Link>
 
-        <nav aria-label="Main" className="hidden items-center gap-7 text-sm md:flex">
+        <nav aria-label="Main" className="hidden items-center gap-8 text-[15px] md:flex">
           {NAV_LINKS.map((link) => {
             const active = pathname === link.href;
             return (
@@ -77,7 +77,7 @@ export default function SiteHeader() {
           </a>
           <Link
             href="/#create"
-            className="rounded-[10px] bg-primary px-4 py-2 font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+            className="rounded-[10px] bg-[#F2F2F4] px-5 py-2.5 font-semibold text-[#151519] transition-colors hover:bg-white"
           >
             Create a secret
           </Link>
