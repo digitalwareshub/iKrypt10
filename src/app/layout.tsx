@@ -21,7 +21,7 @@ const mono = JetBrains_Mono({
 });
 
 export const viewport: Viewport = {
-  themeColor: '#070A13',
+  themeColor: '#09090B',
   colorScheme: 'dark',
 };
 
