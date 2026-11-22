@@ -3,6 +3,16 @@
 Everything implemented, changed, deleted, deployed, verified or configured, newest first.
 Code-level detail is in the git history; this file is the human-readable log.
 
+## 2026-11-22 (later)
+
+- **Codex homepage redesign reviewed** (15 commits pushed directly to `main`, live): Inter-only,
+  near-black, angled product illustration, form below the hero. CI was failing on it (axe colour
+  contrast on 12 px grey text in the illustration: 4.22:1).
+- **Fixed on branch `fix/og-image-and-ci`:** illustration grey `#777985` → `#9393A6` (6.05:1);
+  "Open source" → "Public source" in the illustration (repo has no licence, per owner decision).
+- **New share image** (`public/og-image.png`) matching the new homepage look.
+- Full suite green again: 65 e2e, 11 unit, lint clean.
+
 ## 2026-11-22
 
 - **Vercel (owner):** deleted the six unused `NEXT_PUBLIC_FIREBASE_*` environment variables (no code

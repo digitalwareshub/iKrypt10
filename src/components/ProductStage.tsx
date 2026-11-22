@@ -21,12 +21,12 @@ export default function ProductStage() {
         </div>
         <div className="ikrypt-product-body">
           <aside className="ikrypt-product-sidebar">
-            <div className="mb-9 text-xs font-medium uppercase tracking-[0.16em] text-[#777985]">Workspace</div>
+            <div className="mb-9 text-xs font-medium uppercase tracking-[0.16em] text-[#9393A6]">Workspace</div>
             <div className="rounded-lg bg-[#25262D] px-4 py-3 text-[#F3F3F5]">◇ &nbsp; Create a secret</div>
             <div className="px-4 py-3 text-[#9B9CA9]">⌁ &nbsp; How it works</div>
             <div className="px-4 py-3 text-[#9B9CA9]">⌗ &nbsp; Security</div>
-            <div className="mt-12 border-t border-[#2C2D33] pt-6 text-xs leading-6 text-[#777985]">
-              Browser-based encryption<br />Open source · No sign-up
+            <div className="mt-12 border-t border-[#2C2D33] pt-6 text-xs leading-6 text-[#9393A6]">
+              Browser-based encryption<br />Public source · No sign-up
             </div>
           </aside>
           <div className="ikrypt-product-main">

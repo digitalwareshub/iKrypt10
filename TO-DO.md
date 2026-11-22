@@ -41,6 +41,13 @@ Owner = needs dashboard access or a decision; Dev = code work.
 
 ## Design
 
+- [ ] **Homepage (Codex version) follow-ups:** the real form sits below a non-interactive product
+  illustration (on phones well below the fold); class/comment names refer to "Linear" (rename and make
+  sure the composition is our own, not a copy of linear.app); hero says "Once viewed. Gone forever."
+  although 3- and 5-view links exist; `docs/to-do.md` duplicates this file.
+- [ ] **Content depth:** About (≈360 words) needs real who/why/how; Blog index (≈190) needs an intro;
+  the four guides (720–880 words, ~10–14% shared text) would benefit from concrete, unique how-tos.
+
 - [ ] **Hero font/colour variants for comparison** (planned 22 Nov): current design vs pure black with
   Space Grotesk headlines vs a more technical monospace-headline version. Pick one; apply site-wide via
   tokens.
