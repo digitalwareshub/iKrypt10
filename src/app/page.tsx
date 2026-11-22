@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import SecretForm from '@/components/SecretForm';
+import ProductStage from '@/components/ProductStage';
 import Footer from '@/components/Footer';
 import { Eyebrow, SectionHeading, CheckIcon, CrossIcon } from '@/components/ui';
 
@@ -125,35 +126,57 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       <main id="content" className="relative isolate overflow-clip">
-        {/* Concept A: a focused, product-first hero. Encryption stays in SecretForm. */}
-        <section className="relative mx-auto max-w-site px-4 pb-20 pt-20 text-center sm:px-6 sm:pb-28 sm:pt-28">
-          <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[500px] w-full max-w-[900px] -translate-x-1/2 rounded-full bg-primary-strong/[0.06] blur-[110px]" />
-          <div className="mx-auto max-w-[900px]">
-            <Eyebrow>Private by design · No account required</Eyebrow>
-            <h1 className="font-sans text-[clamp(3rem,7vw,6.1rem)] font-semibold leading-[1.06] tracking-[-0.06em] text-heading">
-              Share secrets securely.
-              <span className="mt-1 block text-muted-foreground">Once viewed. Gone forever.</span>
-            </h1>
-            <p className="mx-auto mt-7 max-w-[660px] text-base leading-[1.8] text-muted-foreground sm:text-lg">
-              Send passwords, API keys and <code className="font-mono text-[0.9em] text-foreground">.env</code> values
-              through encrypted, self-destructing links. Your browser encrypts the secret. The key never reaches our servers.
-            </p>
-          </div>
-          <div id="create" className="relative mx-auto mt-12 max-w-[680px] scroll-mt-24 rounded-2xl border border-line-strong bg-surface p-5 text-left shadow-[0_24px_90px_-35px_rgba(0,0,0,0.9)] sm:mt-14 sm:p-8">
-            <div className="mb-6 flex items-center justify-between gap-3 border-b border-line pb-5">
-              <div>
-                <h2 className="text-lg font-semibold tracking-tight text-foreground">Create an encrypted link</h2>
-                <p className="mt-1 text-xs text-muted-foreground">Your secret stays private from the start.</p>
+        {/* Large left-aligned editorial-free hero, following the supplied Linear layout reference. */}
+        <section className="ikrypt-linear-hero">
+          <div className="mx-auto max-w-[1320px] px-5 pt-[108px] sm:px-9 sm:pt-[142px] lg:px-12 lg:pt-[148px]">
+            <div className="max-w-[1200px]">
+              <h1 className="max-w-[1160px] font-sans text-[clamp(3.25rem,6.1vw,6.35rem)] font-medium leading-[1.075] tracking-[-0.065em] text-[#F4F4F5]">
+                Share secrets securely.
+                <br className="hidden md:block" />
+                {' '}Once viewed. Gone forever.
+              </h1>
+              <p className="mt-8 max-w-[660px] text-[17px] leading-[1.7] text-[#96969F] sm:text-[21px]">
+                Send passwords, API keys and sensitive information through encrypted, self-destructing links.
+                No accounts. No readable secrets on our servers.
+              </p>
+              <div className="mt-9 flex flex-wrap items-center gap-x-9 gap-y-5">
+                <a href="#create" className="inline-flex min-h-[54px] items-center justify-center rounded-xl bg-[#F2F2F4] px-7 text-base font-semibold text-[#151519] transition-colors hover:bg-white focus-visible:outline-offset-4">
+                  Create a secret <span aria-hidden="true" className="ml-3">↗</span>
+                </a>
+                <a href="#how-it-works" className="text-base font-medium text-[#D0D0D6] transition-colors hover:text-white">
+                  How it works <span aria-hidden="true" className="ml-2 text-[#858591]">→</span>
+                </a>
               </div>
-              <span className="rounded-xl border border-line bg-background p-3"><LockIcon /></span>
             </div>
-            <SecretForm />
           </div>
-          <ul className="mx-auto mt-8 flex max-w-[950px] flex-wrap items-center justify-center gap-x-8 gap-y-4 text-[13px] text-muted-foreground sm:text-sm">
-            <li className="flex items-center gap-2"><LockIcon /> AES-256-GCM in your browser</li>
-            <li className="flex items-center gap-2"><span className="font-semibold text-primary" aria-hidden="true">✓</span> No account or tracking on secret pages</li>
-            <li className="flex items-center gap-2"><span className="font-mono text-primary" aria-hidden="true">&lt;/&gt;</span><a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" className="underline-offset-4 hover:text-foreground hover:underline">Open source on GitHub</a></li>
-          </ul>
+          <ProductStage />
+        </section>
+
+        {/* Functional, accessible encryption form. ProductStage above is visual only. */}
+        <section id="create" aria-labelledby="create-h" className="scroll-mt-24 border-t border-line bg-background px-4 py-20 sm:px-6 sm:py-28">
+          <div className="mx-auto grid max-w-site gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,590px)] lg:gap-20">
+            <div className="lg:pt-14">
+              <Eyebrow>Private by design</Eyebrow>
+              <h2 id="create-h" className="font-sans text-[clamp(2.25rem,4vw,3.75rem)] font-semibold leading-[1.12] tracking-[-0.05em] text-heading">
+                Create an encrypted link in seconds.
+              </h2>
+              <p className="mt-6 max-w-[470px] text-lg leading-relaxed text-muted-foreground">
+                Your browser encrypts your secret before uploading it. Only the recipient with the full link can decrypt it.
+              </p>
+              <ul className="mt-9 flex flex-col gap-4 text-sm text-muted-foreground">
+                <li className="flex items-center gap-3"><LockIcon /> AES-256-GCM in your browser</li>
+                <li className="flex items-center gap-3"><span className="w-[18px] text-center text-primary">✓</span> No account or tracking on secret pages</li>
+                <li className="flex items-center gap-3"><span className="w-[18px] text-center font-mono text-primary">⌘</span><a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" className="underline-offset-4 hover:text-foreground hover:underline">Public source code on GitHub</a></li>
+              </ul>
+            </div>
+            <div className="min-w-0 rounded-2xl border border-line-strong bg-surface p-5 shadow-[0_28px_90px_-40px_rgba(0,0,0,0.9)] sm:p-8">
+              <div className="mb-6 flex items-center justify-between gap-4 border-b border-line pb-5">
+                <div><h3 className="text-lg font-semibold text-foreground">Your secret</h3><p className="mt-1 text-sm text-muted-foreground">Encrypted on this device.</p></div>
+                <span className="rounded-xl border border-line bg-background p-3"><LockIcon /></span>
+              </div>
+              <SecretForm />
+            </div>
+          </div>
         </section>
 
         {/* LINK ANATOMY */}
