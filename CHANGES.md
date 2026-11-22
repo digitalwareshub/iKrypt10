@@ -5,7 +5,12 @@ Code-level detail is in the git history; this file is the human-readable log.
 
 ## 2026-11-22 (later)
 
-- **Codex homepage redesign reviewed** (15 commits pushed directly to `main`, live): Inter-only,
+- **Codex homepage redesign** (15 commits pushed directly to `main` as instructed by the owner, live).
+  Owner approvals recorded at the time (moved here from the removed `docs/to-do.md`):
+  homepage release ([screenshots](docs/design/hero-refinement/)), lower homepage revision
+  ([screenshots](docs/design/homepage-details/)), supporting-page revisions
+  ([screenshots](docs/design/supporting-pages/)).
+- **Codex redesign reviewed:** Inter-only,
   near-black, angled product illustration, form below the hero. CI was failing on it (axe colour
   contrast on 12 px grey text in the illustration: 4.22:1).
 - **Fixed on branch `fix/og-image-and-ci`:** illustration grey `#777985` → `#9393A6` (6.05:1);
