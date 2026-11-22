@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 /**
- * "Midnight Fragment" design tokens.
+ * "Concept A Minimal Security" design tokens.
  * Near-black navy ground, the logo's indigo as the single accent,
  * editorial serif display, Inter body, JetBrains Mono for technical text.
  * All text colours below pass WCAG AA (4.5:1) on `background` and `surface`.
@@ -15,25 +15,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#070A13', // page ground
-        deep: '#05070E', // footer
-        band: '#0A0E1A', // alternate section band
-        surface: '#0D1220', // cards, inputs container
-        raised: '#121A2E', // hovered / highlighted surfaces
-        foreground: '#E8EAF6', // primary text
-        heading: '#F3F4FB', // display headings
-        line: 'rgba(165, 180, 252, 0.14)', // hairline borders
-        'line-strong': 'rgba(165, 180, 252, 0.24)',
+        background: '#09090B', // page ground
+        deep: '#07070A', // footer
+        band: '#0E0E12', // alternate section band
+        surface: '#15151B', // cards, inputs container
+        raised: '#1C1C25', // hovered / highlighted surfaces
+        foreground: '#F5F5F7', // primary text
+        heading: '#FAFAFC', // display headings
+        line: 'rgba(185, 190, 215, 0.13)', // hairline borders
+        'line-strong': 'rgba(185, 190, 215, 0.23)',
         primary: {
-          DEFAULT: '#A5B4FC', // accent: buttons, links, highlights (indigo-300)
-          hover: '#C7D2FE',
-          strong: '#818CF8', // logo indigo, decorative only
-          foreground: '#070A13', // text on primary buttons
+          DEFAULT: '#A9B5FF', // accent: buttons, links, highlights (indigo-300)
+          hover: '#CBD3FF',
+          strong: '#8B9CF8', // logo indigo, decorative only
+          foreground: '#09090B', // text on primary buttons
         },
         // Legacy token name kept so existing pages map onto the dark theme.
         secondary: {
-          DEFAULT: '#0D1220',
-          hover: '#121A2E',
+          DEFAULT: '#15151B',
+          hover: '#1C1C25',
         },
         accent: {
           DEFAULT: '#4ADE80', // success
@@ -41,8 +41,8 @@ const config: Config = {
           danger: '#F87171',
         },
         muted: {
-          DEFAULT: '#8C93B5', // tertiary text (5.9:1)
-          foreground: '#A3A9C7', // secondary text (8.4:1)
+          DEFAULT: '#9393A6', // tertiary text (5.9:1)
+          foreground: '#ABABBA', // secondary text (8.4:1)
         },
       },
       fontFamily: {
