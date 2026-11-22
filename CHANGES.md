@@ -3,6 +3,13 @@
 Everything implemented, changed, deleted, deployed, verified or configured, newest first.
 Code-level detail is in the git history; this file is the human-readable log.
 
+## 2026-11-22 (night)
+
+- **Deleted `docs/design/`** (20 review screenshots, 1.6 MB, from Codex's redesign). Out of date and not
+  used by the site; approvals stay recorded as text. Links removed from `CHANGES.md` and `docs/CHANGES.md`.
+- **Deleted local-only files** (never in git): `docs/design/final/`, `docs/design/mockup/`, `.claude/`,
+  `firestore-debug.log`, `.DS_Store` files.
+
 ## 2026-11-22 (evening)
 
 - **Secret size limit lowered from 64 KB to 16 KB** (`MAX_PLAINTEXT_BYTES` in `src/lib/secretFormat.ts`).
@@ -35,9 +42,8 @@ Code-level detail is in the git history; this file is the human-readable log.
 
 - **Codex homepage redesign** (15 commits pushed directly to `main` as instructed by the owner, live).
   Owner approvals recorded at the time (moved here from the removed `docs/to-do.md`):
-  homepage release ([screenshots](docs/design/hero-refinement/)), lower homepage revision
-  ([screenshots](docs/design/homepage-details/)), supporting-page revisions
-  ([screenshots](docs/design/supporting-pages/)).
+  homepage release, lower homepage revision and supporting-page revisions (review screenshots
+  removed 22 Nov; still in git history before commit "Remove outdated design screenshots").
 - **Codex redesign reviewed:** Inter-only,
   near-black, angled product illustration, form below the hero. CI was failing on it (axe colour
   contrast on 12 px grey text in the illustration: 4.22:1).
