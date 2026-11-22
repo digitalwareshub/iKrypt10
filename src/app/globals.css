@@ -263,3 +263,90 @@ main p a:hover,
 main dd a:hover {
   text-decoration-color: currentColor;
 }
+
+/* Linear-reference homepage composition: near-black breathing room and a
+   large, tilted illustration of the actual iKrypt product. The illustration
+   is decorative only; the usable form follows it in normal document flow. */
+.ikrypt-linear-hero {
+  position: relative;
+  overflow: hidden;
+  background: #09090b;
+  min-height: 940px;
+}
+.ikrypt-product-stage {
+  position: relative;
+  margin-top: 68px;
+  height: 470px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ikrypt-product-window {
+  position: absolute;
+  top: 110px;
+  left: 8%;
+  width: max(1280px, 102%);
+  min-height: 650px;
+  overflow: hidden;
+  transform: rotate(-8deg);
+  transform-origin: left top;
+  border: 1px solid #303139;
+  border-radius: 20px;
+  background: #141519;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.025), 0 35px 110px rgba(0,0,0,0.85);
+}
+.ikrypt-product-toolbar {
+  display: flex;
+  height: 68px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 32px;
+  border-bottom: 1px solid #303139;
+  color: #d1d2dc;
+  font-size: 14px;
+}
+.ikrypt-product-toolbar i {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #3c3d45;
+}
+.ikrypt-product-body {
+  display: grid;
+  grid-template-columns: 258px minmax(0,1fr);
+  min-height: 590px;
+}
+.ikrypt-product-sidebar {
+  padding: 32px 20px;
+  border-right: 1px solid #303139;
+  color: #a1a2b0;
+  font-size: 14px;
+}
+.ikrypt-product-main {
+  padding: 48px 56px;
+  min-width: 0;
+}
+@media (min-width: 1600px) {
+  .ikrypt-linear-hero { min-height: 1010px; }
+  .ikrypt-product-stage { height: 520px; }
+  .ikrypt-product-window { top: 105px; left: 7%; width: 95%; }
+}
+@media (max-width: 767px) {
+  .ikrypt-linear-hero { min-height: 760px; }
+  .ikrypt-product-stage { height: 325px; margin-top: 28px; }
+  .ikrypt-product-window {
+    top: 50px;
+    left: 20px;
+    width: 1070px;
+    transform: rotate(-7deg) scale(0.64);
+    transform-origin: left top;
+  }
+}
+@media (max-width: 420px) {
+  .ikrypt-product-stage { height: 270px; }
+  .ikrypt-product-window { transform: rotate(-7deg) scale(0.55); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ikrypt-product-window { transition: none; }
+}
