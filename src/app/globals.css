@@ -274,14 +274,13 @@ main dd a:hover {
 }
 .ikrypt-product-stage {
   position: relative;
-  margin-top: 32px;
+  margin-top: 16px;
   height: clamp(430px, 54vh, 580px);
-  overflow: hidden;
   pointer-events: none;
 }
 .ikrypt-product-window {
   position: absolute;
-  top: 8vw;
+  top: 44px;
   left: max(5%, calc((100% - 1224px) / 2));
   width: clamp(1100px, 92%, 1550px);
   min-height: 650px;
@@ -327,7 +326,7 @@ main dd a:hover {
   min-width: 0;
 }
 @media (max-width: 767px) {
-  .ikrypt-product-stage { height: 300px; margin-top: 24px; }
+  .ikrypt-product-stage { height: 300px; margin-top: 16px; overflow: hidden; }
   .ikrypt-product-window {
     top: 7vw;
     left: 4%;

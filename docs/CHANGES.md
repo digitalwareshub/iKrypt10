@@ -27,3 +27,7 @@
 - Applied shared sans-serif headings, left-aligned introductions, white primary actions, and section dividers across the guides, informational pages, and legal documents. Updated the contact form presentation and the confirmation, reveal, and missing-page typography.
 - Added a sender-to-recipient diagram on Security, made the blog index scannable with thumbnail rows, and placed article titles before cover images.
 - Lint and TypeScript passed and the production build completed. Verified 18 local routes at 1440px and 390px in Chrome, including hero placement, CTA navigation, a legal contents link, and page overflow. [Review screenshots](design/supporting-pages/)
+
+## 2026-11-22 — Hero illustration spacing
+
+- Moved the angled interface closer to the hero actions. Its left edge now begins 60px below the desktop button row, independent of viewport width. Reduced the mobile stage margin by 8px.
