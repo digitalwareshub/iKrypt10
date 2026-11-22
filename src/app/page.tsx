@@ -128,18 +128,18 @@ export default function Home() {
       <main id="content" className="relative isolate overflow-clip">
         {/* Large left-aligned editorial-free hero, following the supplied Linear layout reference. */}
         <section className="ikrypt-linear-hero">
-          <div className="mx-auto max-w-[1320px] px-5 pt-[108px] sm:px-9 sm:pt-[142px] lg:px-12 lg:pt-[148px]">
+          <div className="mx-auto max-w-[1320px] px-5 pt-10 sm:px-9 sm:pt-14 lg:px-12 lg:pt-[clamp(3rem,6vh,4.5rem)]">
             <div className="max-w-[1200px]">
-              <h1 className="max-w-[1160px] font-sans text-[clamp(3.25rem,6.1vw,6.35rem)] font-medium leading-[1.075] tracking-[-0.065em] text-[#F4F4F5]">
+              <h1 className="max-w-[1160px] font-sans text-[clamp(2.625rem,4.75vw,5rem)] font-medium leading-[1.075] tracking-[-0.055em] text-[#F4F4F5]">
                 Share secrets securely.
                 <br className="hidden md:block" />
                 {' '}Once viewed. Gone forever.
               </h1>
-              <p className="mt-8 max-w-[660px] text-[17px] leading-[1.7] text-[#96969F] sm:text-[21px]">
+              <p className="mt-5 max-w-[660px] text-[17px] leading-[1.55] text-[#96969F] sm:text-[19px]">
                 Send passwords, API keys and sensitive information through encrypted, self-destructing links.
                 No accounts. No readable secrets on our servers.
               </p>
-              <div className="mt-9 flex flex-wrap items-center gap-x-9 gap-y-5">
+              <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
                 <a href="#create" className="inline-flex min-h-[54px] items-center justify-center rounded-xl bg-[#F2F2F4] px-7 text-base font-semibold text-[#151519] transition-colors hover:bg-white focus-visible:outline-offset-4">
                   Create a secret <span aria-hidden="true" className="ml-3">↗</span>
                 </a>

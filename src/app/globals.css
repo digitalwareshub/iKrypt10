@@ -271,23 +271,22 @@ main dd a:hover {
   position: relative;
   overflow: hidden;
   background: #09090b;
-  min-height: 940px;
 }
 .ikrypt-product-stage {
   position: relative;
-  margin-top: 68px;
-  height: 470px;
+  margin-top: 32px;
+  height: clamp(430px, 54vh, 580px);
   overflow: hidden;
   pointer-events: none;
 }
 .ikrypt-product-window {
   position: absolute;
-  top: 110px;
-  left: 8%;
-  width: max(1280px, 102%);
+  top: 8vw;
+  left: max(5%, calc((100% - 1224px) / 2));
+  width: clamp(1100px, 92%, 1550px);
   min-height: 650px;
   overflow: hidden;
-  transform: rotate(-8deg);
+  transform: rotate(-5deg);
   transform-origin: left top;
   border: 1px solid #303139;
   border-radius: 20px;
@@ -327,25 +326,17 @@ main dd a:hover {
   padding: 48px 56px;
   min-width: 0;
 }
-@media (min-width: 1600px) {
-  .ikrypt-linear-hero { min-height: 1010px; }
-  .ikrypt-product-stage { height: 520px; }
-  .ikrypt-product-window { top: 105px; left: 7%; width: 95%; }
-}
 @media (max-width: 767px) {
-  .ikrypt-linear-hero { min-height: 760px; }
-  .ikrypt-product-stage { height: 325px; margin-top: 28px; }
+  .ikrypt-product-stage { height: 300px; margin-top: 24px; }
   .ikrypt-product-window {
-    top: 50px;
-    left: 20px;
-    width: 1070px;
-    transform: rotate(-7deg) scale(0.64);
-    transform-origin: left top;
+    top: 7vw;
+    left: 4%;
+    width: 900px;
+    transform: rotate(-4deg) scale(0.62);
   }
-}
-@media (max-width: 420px) {
-  .ikrypt-product-stage { height: 270px; }
-  .ikrypt-product-window { transform: rotate(-7deg) scale(0.55); }
+  .ikrypt-product-sidebar { display: none; }
+  .ikrypt-product-body { grid-template-columns: minmax(0, 1fr); }
+  .ikrypt-product-main { padding: 28px 32px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ikrypt-product-window { transition: none; }
