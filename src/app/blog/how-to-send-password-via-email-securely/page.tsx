@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
 import Mesh from '@/components/Mesh';
 
@@ -25,12 +24,11 @@ export const metadata: Metadata = {
 export default function BlogPost() {
   return (
     <div className="min-h-screen flex flex-col pattern-bg">
-      <SiteHeader />
 
       {/* Breadcrumbs */}
-      <nav className="sticky top-[60px] z-40 px-4 py-3 border-b border-line bg-background/90 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto">
-          <ol className="flex items-center gap-2 text-sm text-muted-foreground">
+      <nav aria-label="Breadcrumb" className="pt-8">
+        <div className="mx-auto max-w-site px-4 sm:px-6">
+          <ol className="flex flex-wrap items-center gap-2 text-[13px] text-muted">
             <li>
               <Link href="/" className="hover:text-foreground transition-colors">
                 Home
@@ -49,7 +47,7 @@ export default function BlogPost() {
       </nav>
 
       {/* Article */}
-      <main id="content" className="relative isolate flex-1 overflow-hidden py-12 px-4">
+      <main id="content" className="relative isolate flex-1 overflow-clip px-4 pb-12 pt-8">
         <Mesh variant="right" />
         <article className="mx-auto max-w-3xl">
           {/* Hero Image */}

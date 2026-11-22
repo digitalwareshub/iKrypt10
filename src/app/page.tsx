@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import SecretForm from '@/components/SecretForm';
-import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
 import Mesh from '@/components/Mesh';
 import { Eyebrow, SectionHeading, CheckIcon, CrossIcon } from '@/components/ui';
@@ -125,9 +124,8 @@ export default function Home() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <SiteHeader />
 
-      <main id="content" className="relative isolate overflow-hidden">
+      <main id="content" className="relative isolate overflow-clip">
         <Mesh />
 
         {/* HERO: on phones the form follows the headline; trust points come after it. */}
@@ -146,7 +144,10 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="min-w-0 rounded-[18px] border border-line-strong bg-surface p-5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] sm:p-7 lg:row-span-2">
+          <div
+            id="create"
+            className="min-w-0 scroll-mt-24 rounded-[18px] border border-line-strong bg-surface p-5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] sm:p-7 lg:row-span-2"
+          >
             <SecretForm />
           </div>
 

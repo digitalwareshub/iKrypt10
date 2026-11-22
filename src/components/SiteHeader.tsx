@@ -22,10 +22,16 @@ function GitHubIcon() {
   );
 }
 
+// Routes with their own focused, logo-only layout (components/FlowShell.tsx).
+const FLOW_ROUTE = /^\/(sent|s\/)/;
+
+/**
+ * The one site header, rendered once by the root layout so it persists across
+ * navigation. Its contents and height never change between pages.
+ */
 export default function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname();
-  const onHome = pathname === '/';
+  const pathname = usePathname() ?? '/';
 
   // Close the mobile menu on navigation and on Escape.
   useEffect(() => setMenuOpen(false), [pathname]);
@@ -36,9 +42,11 @@ export default function SiteHeader() {
     return () => window.removeEventListener('keydown', onKey);
   }, [menuOpen]);
 
+  if (FLOW_ROUTE.test(pathname)) return null;
+
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-background/85 backdrop-blur-md">
-      <div className="mx-auto flex max-w-site items-center justify-between gap-6 px-4 py-3.5 sm:px-6">
+      <div className="mx-auto flex h-16 max-w-site items-center justify-between gap-6 px-4 sm:px-6">
         <Link href="/" aria-label="iKrypt home" className="flex items-center gap-2.5 rounded-lg">
           <LogoMark size={30} />
           <span className="text-lg font-semibold tracking-tight text-foreground">iKrypt</span>
@@ -67,14 +75,12 @@ export default function SiteHeader() {
             <GitHubIcon />
             Source
           </a>
-          {!onHome && (
-            <Link
-              href="/"
-              className="rounded-[10px] bg-primary px-4 py-2 font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
-            >
-              Create a secret
-            </Link>
-          )}
+          <Link
+            href="/#create"
+            className="rounded-[10px] bg-primary px-4 py-2 font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+          >
+            Create a secret
+          </Link>
         </nav>
 
         <button
@@ -94,7 +100,7 @@ export default function SiteHeader() {
       {menuOpen && (
         <nav id="mobile-menu" aria-label="Main" className="border-t border-line px-4 pb-4 pt-2 md:hidden">
           <ul className="flex flex-col">
-            {[{ href: '/', label: 'Create a secret' }, ...NAV_LINKS].map((link) => (
+            {[{ href: '/#create', label: 'Create a secret' }, ...NAV_LINKS].map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}

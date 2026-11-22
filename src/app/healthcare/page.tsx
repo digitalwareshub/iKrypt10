@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
 import Mesh from '@/components/Mesh';
 
@@ -77,9 +76,22 @@ function XIcon({ className = 'h-4 w-4' }: { className?: string }) {
 export default function HealthcarePage() {
   return (
     <div className="min-h-screen flex flex-col pattern-bg">
-      <SiteHeader />
 
-      <div className="border-b border-accent-warning/30 bg-accent-warning/10/85 px-4 py-3">
+      <nav aria-label="Breadcrumb" className="pt-8">
+        <div className="mx-auto max-w-site px-4 sm:px-6">
+          <ol className="flex flex-wrap items-center gap-2 text-[13px] text-muted">
+            <li>
+              <Link href="/" className="transition-colors hover:text-foreground">
+                Home
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li className="text-foreground">Healthcare Interest</li>
+          </ol>
+        </div>
+      </nav>
+
+      <div className="mt-6 border-y border-accent-warning/30 bg-accent-warning/10 px-4 py-3">
         <div className="mx-auto flex max-w-6xl items-start justify-center gap-3 text-sm leading-6 text-[#FCD34D]">
           <svg
             className="mt-0.5 h-5 w-5 flex-shrink-0"
@@ -103,21 +115,8 @@ export default function HealthcarePage() {
         </div>
       </div>
 
-      <nav className="sticky top-[60px] z-40 border-b border-line bg-background/90 px-4 py-3 backdrop-blur-md">
-        <div className="mx-auto max-w-6xl">
-          <ol className="flex items-center gap-2 text-sm text-muted-foreground">
-            <li>
-              <Link href="/" className="transition-colors hover:text-foreground">
-                Home
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li className="text-foreground">Healthcare Interest</li>
-          </ol>
-        </div>
-      </nav>
 
-      <main id="content" className="relative isolate flex-1 overflow-hidden px-4 py-14 md:py-20">
+      <main id="content" className="relative isolate flex-1 overflow-clip px-4 pb-14 pt-8 md:pb-20 md:pt-10">
         <Mesh variant="right" />
         <div className="mx-auto max-w-6xl">
           <section className="mx-auto max-w-3xl text-center">

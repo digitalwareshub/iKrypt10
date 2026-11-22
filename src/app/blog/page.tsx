@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
 import Mesh from '@/components/Mesh';
 
@@ -123,11 +122,10 @@ export default function BlogPage() {
       />
 
       <div className="min-h-screen flex flex-col pattern-bg">
-        <SiteHeader />
 
-        <nav className="sticky top-[60px] z-40 border-b border-line bg-background/90 px-4 py-3 backdrop-blur-md">
-          <div className="mx-auto max-w-6xl">
-            <ol className="flex items-center gap-2 text-sm text-muted-foreground">
+        <nav aria-label="Breadcrumb" className="pt-8">
+          <div className="mx-auto max-w-site px-4 sm:px-6">
+            <ol className="flex flex-wrap items-center gap-2 text-[13px] text-muted">
               <li>
                 <Link href="/" className="transition-colors hover:text-foreground">
                   Home
@@ -139,7 +137,7 @@ export default function BlogPage() {
           </div>
         </nav>
 
-        <main id="content" className="relative isolate flex-1 overflow-hidden px-4 py-14 md:py-20">
+        <main id="content" className="relative isolate flex-1 overflow-clip px-4 pb-14 pt-8 md:pb-20 md:pt-10">
         <Mesh variant="right" />
           <div className="mx-auto max-w-6xl">
             <section className="mx-auto max-w-3xl text-center">

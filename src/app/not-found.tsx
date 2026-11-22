@@ -1,13 +1,11 @@
 import Link from 'next/link';
-import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
 import Mesh from '@/components/Mesh';
 
 export default function NotFound() {
   return (
     <>
-      <SiteHeader />
-      <main id="content" className="relative isolate flex min-h-[70vh] items-center justify-center overflow-hidden px-4 py-20">
+      <main id="content" className="relative isolate flex min-h-[70vh] items-center justify-center overflow-clip px-4 py-20">
         <Mesh variant="right" />
         <div className="max-w-md text-center">
           <p className="mb-4 font-mono text-xs uppercase tracking-[0.08em] text-primary">Error 404</p>

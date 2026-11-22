@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Instrument_Serif, JetBrains_Mono } from 'next/font/google';
 import SiteAnalytics from '@/components/SiteAnalytics';
+import SiteHeader from '@/components/SiteHeader';
 import './globals.css';
 
 // Self-hosted at build time by next/font: no requests to Google at runtime.
@@ -186,6 +187,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <SiteHeader />
         <div className="min-h-screen">{children}</div>
 
         {/* First-party analytics: allow-listed marketing pages only, every

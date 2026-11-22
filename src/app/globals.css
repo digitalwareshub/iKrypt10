@@ -19,6 +19,9 @@
 html {
   min-height: 100%;
   background: var(--bg);
+  /* Always reserve the scrollbar's space so pages of different lengths
+     never shift the layout sideways (Macs with visible scrollbars). */
+  scrollbar-gutter: stable;
 }
 
 body {

@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
 import Mesh from '@/components/Mesh';
 import { PageHero, CheckIcon, CrossIcon } from '@/components/ui';
@@ -77,9 +76,8 @@ export default function SecurityPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <SiteHeader />
 
-      <main id="content" className="relative isolate overflow-hidden">
+      <main id="content" className="relative isolate overflow-clip">
         <Mesh variant="right" />
         <PageHero
           crumbs={[{ href: '/', label: 'Home' }, { label: 'Security' }]}

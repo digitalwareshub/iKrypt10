@@ -61,11 +61,11 @@ export function PageHero({
   children?: ReactNode;
 }) {
   return (
-    <section className="mx-auto max-w-site px-4 pb-12 pt-12 sm:px-6 sm:pb-14 sm:pt-[72px]">
-      <nav aria-label="Breadcrumb" className="mb-7 text-[13px] text-muted">
-        <ol className="flex flex-wrap items-center gap-1.5">
+    <section className="mx-auto max-w-site px-4 pb-12 pt-8 sm:px-6 sm:pb-14">
+      <nav aria-label="Breadcrumb" className="mb-10 text-[13px] text-muted">
+        <ol className="flex flex-wrap items-center gap-2">
           {crumbs.map((crumb, i) => (
-            <li key={crumb.label} className="flex items-center gap-1.5">
+            <li key={crumb.label} className="flex items-center gap-2">
               {i > 0 && <span aria-hidden="true">/</span>}
               {crumb.href ? (
                 <Link href={crumb.href} className="hover:text-foreground">
