@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import SecretForm from '@/components/SecretForm';
 import Footer from '@/components/Footer';
-import Mesh from '@/components/Mesh';
 import { Eyebrow, SectionHeading, CheckIcon, CrossIcon } from '@/components/ui';
 
 // Rendered per request so the middleware's CSP nonce is applied (see src/middleware.ts).
@@ -126,53 +125,34 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       <main id="content" className="relative isolate overflow-clip">
-        <Mesh />
-
-        {/* HERO: on phones the form follows the headline; trust points come after it. */}
-        <section className="mx-auto grid max-w-site grid-cols-1 gap-x-14 gap-y-9 px-4 pb-16 pt-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] lg:pb-20 lg:pt-[88px]">
-          <div className="min-w-0 lg:pt-6">
-            <Eyebrow>One-time encrypted links</Eyebrow>
-            <h1 className="font-display text-[46px] leading-[0.98] tracking-[-0.02em] text-heading sm:text-6xl lg:text-[76px]">
-              Send a secret once.
-              <br />
-              <span className="italic text-primary">Then it’s gone.</span>
+        {/* Concept A: a focused, product-first hero. Encryption stays in SecretForm. */}
+        <section className="relative mx-auto max-w-site px-4 pb-20 pt-20 text-center sm:px-6 sm:pb-28 sm:pt-28">
+          <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[500px] w-full max-w-[900px] -translate-x-1/2 rounded-full bg-primary-strong/[0.06] blur-[110px]" />
+          <div className="mx-auto max-w-[900px]">
+            <Eyebrow>Private by design · No account required</Eyebrow>
+            <h1 className="font-sans text-[clamp(3rem,7vw,6.1rem)] font-semibold leading-[1.06] tracking-[-0.06em] text-heading">
+              Share secrets securely.
+              <span className="mt-1 block text-muted-foreground">Once viewed. Gone forever.</span>
             </h1>
-            <p className="mt-7 max-w-[500px] text-lg leading-relaxed text-muted-foreground">
-              Share passwords, API keys and <code className="font-mono text-base text-[#C9CDE3]">.env</code> values
-              through a link that works a set number of times, then self-destructs. It’s encrypted in your
-              browser, and the key never reaches our servers.
+            <p className="mx-auto mt-7 max-w-[660px] text-base leading-[1.8] text-muted-foreground sm:text-lg">
+              Send passwords, API keys and <code className="font-mono text-[0.9em] text-foreground">.env</code> values
+              through encrypted, self-destructing links. Your browser encrypts the secret. The key never reaches our servers.
             </p>
           </div>
-
-          <div
-            id="create"
-            className="min-w-0 scroll-mt-24 rounded-[18px] border border-line-strong bg-surface p-5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] sm:p-7 lg:row-span-2"
-          >
+          <div id="create" className="relative mx-auto mt-12 max-w-[680px] scroll-mt-24 rounded-2xl border border-line-strong bg-surface p-5 text-left shadow-[0_24px_90px_-35px_rgba(0,0,0,0.9)] sm:mt-14 sm:p-8">
+            <div className="mb-6 flex items-center justify-between gap-3 border-b border-line pb-5">
+              <div>
+                <h2 className="text-lg font-semibold tracking-tight text-foreground">Create an encrypted link</h2>
+                <p className="mt-1 text-xs text-muted-foreground">Your secret stays private from the start.</p>
+              </div>
+              <span className="rounded-xl border border-line bg-background p-3"><LockIcon /></span>
+            </div>
             <SecretForm />
           </div>
-
-          <ul className="flex flex-col gap-3.5 text-[15px] text-[#C9CDE3]">
-            <li className="flex items-center gap-3">
-              <LockIcon />
-              AES-256-GCM, performed by your browser
-            </li>
-            <li className="flex items-center gap-3">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A5B4FC" strokeWidth="1.8" aria-hidden="true">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" />
-                <path d="M3 3l18 18" />
-              </svg>
-              No account, no tracking on secret pages
-            </li>
-            <li className="flex items-center gap-3">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A5B4FC" strokeWidth="1.8" aria-hidden="true">
-                <path d="M8 6l-6 6 6 6" />
-                <path d="M16 6l6 6-6 6" />
-              </svg>
-              <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
-                Public source code on GitHub
-              </a>
-            </li>
+          <ul className="mx-auto mt-8 flex max-w-[950px] flex-wrap items-center justify-center gap-x-8 gap-y-4 text-[13px] text-muted-foreground sm:text-sm">
+            <li className="flex items-center gap-2"><LockIcon /> AES-256-GCM in your browser</li>
+            <li className="flex items-center gap-2"><span className="font-semibold text-primary" aria-hidden="true">✓</span> No account or tracking on secret pages</li>
+            <li className="flex items-center gap-2"><span className="font-mono text-primary" aria-hidden="true">&lt;/&gt;</span><a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" className="underline-offset-4 hover:text-foreground hover:underline">Open source on GitHub</a></li>
           </ul>
         </section>
 
@@ -182,12 +162,12 @@ export default function Home() {
             <Eyebrow>Anatomy of a link</Eyebrow>
             <h2
               id="anatomy"
-              className="max-w-[720px] font-display text-[34px] leading-[1.05] tracking-[-0.015em] text-heading sm:text-[52px]"
+              className="max-w-[840px] font-sans text-[34px] font-semibold leading-[1.12] tracking-[-0.045em] text-heading sm:text-[52px]"
             >
-              The key lives in the one part of a URL <span className="italic">browsers never send.</span>
+              The encryption key stays in your browser. <span className="text-muted-foreground">Never on our servers.</span>
             </h2>
 
-            <div className="mt-12 flex flex-col gap-1 font-mono text-base leading-none sm:mt-14 md:flex-row md:items-stretch md:gap-0 md:text-[22px]">
+            <div className="mt-10 flex flex-col gap-1 overflow-hidden rounded-2xl border border-line-strong bg-surface p-5 font-mono text-base leading-none sm:mt-12 sm:p-9 md:flex-row md:items-stretch md:gap-0 md:text-[20px]">
               <div>
                 <span className="block break-all py-[18px] text-[#7C83A6]">https://ikrypt.com/s/</span>
               </div>
@@ -221,7 +201,7 @@ export default function Home() {
           </SectionHeading>
           <ol className="grid gap-5 md:grid-cols-3">
             {STEPS.map((step, i) => (
-              <li key={step.title} className="border-t border-line-strong pt-[22px]">
+              <li key={step.title} className="rounded-2xl border border-line bg-surface p-7 transition-colors hover:border-line-strong">
                 <p className="font-mono text-[13px] text-primary">{String(i + 1).padStart(2, '0')}</p>
                 <h3 className="mb-2 mt-3 text-[19px] font-semibold text-foreground">{step.title}</h3>
                 <p className="text-[15px] leading-relaxed text-muted-foreground">{step.desc}</p>
@@ -233,7 +213,7 @@ export default function Home() {
         {/* WHAT WE STORE */}
         <section id="what-we-store" aria-labelledby="store-h" className="mx-auto max-w-site scroll-mt-20 px-4 pb-16 sm:px-6 sm:pb-24">
           <div className="grid gap-5 md:grid-cols-2">
-            <div className="rounded-[18px] border border-line bg-surface p-6 sm:p-8">
+            <div className="rounded-2xl border border-line bg-surface p-6 sm:p-8">
               <h2 id="store-h" className="text-xl font-semibold text-foreground">
                 What our database holds
               </h2>
@@ -251,7 +231,7 @@ export default function Home() {
                 ))}
               </dl>
             </div>
-            <div className="rounded-[18px] border border-dashed border-line-strong p-6 sm:p-8">
+            <div className="rounded-2xl border border-line bg-surface p-6 sm:p-8">
               <h2 className="text-xl font-semibold text-foreground">What we never see</h2>
               <p className="mb-6 mt-1.5 text-sm text-muted">Not stored, not logged, not sent to us at any point.</p>
               <ul className="flex flex-col gap-3.5 text-[15px] text-[#C9CDE3]">
@@ -318,7 +298,7 @@ export default function Home() {
               <Link
                 key={guide.href}
                 href={guide.href}
-                className="group block rounded-[14px] border border-line bg-surface p-6 transition-colors hover:border-line-strong hover:bg-raised"
+                className="group block rounded-2xl border border-line bg-surface p-6 transition-colors hover:border-primary/40 hover:bg-raised"
               >
                 <span className="block text-[17px] font-semibold text-foreground">{guide.title}</span>
                 <span className="mt-2 block text-sm leading-relaxed text-muted-foreground">{guide.desc}</span>
