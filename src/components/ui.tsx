@@ -8,7 +8,7 @@ export function Eyebrow({ children, className = '' }: { children: ReactNode; cla
   );
 }
 
-/** Serif section heading (h2). */
+/** Sans-serif section heading (h2). */
 export function SectionHeading({
   id,
   children,
@@ -21,7 +21,7 @@ export function SectionHeading({
   return (
     <h2
       id={id}
-      className={`font-display text-[32px] leading-[1.05] tracking-[-0.01em] text-heading sm:text-[44px] ${className}`}
+      className={`font-sans text-[32px] font-semibold leading-[1.13] tracking-[-0.045em] text-heading sm:text-[44px] ${className}`}
     >
       {children}
     </h2>
@@ -44,7 +44,7 @@ export function CrossIcon() {
   );
 }
 
-/** Standard hero for inner pages: breadcrumb, eyebrow, serif title, lede. */
+/** Standard hero for inner pages: breadcrumb, eyebrow, sans-serif title, lede. */
 export function PageHero({
   crumbs,
   eyebrow,
@@ -81,7 +81,7 @@ export function PageHero({
         </ol>
       </nav>
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      <h1 className="max-w-[880px] font-display text-[40px] leading-[1.02] tracking-[-0.02em] text-heading sm:text-[56px] lg:text-[64px]">
+      <h1 className="max-w-[880px] font-sans text-[40px] font-semibold leading-[1.08] tracking-[-0.045em] text-heading sm:text-[56px] lg:text-[64px]">
         {title}
         {accent && (
           <>
